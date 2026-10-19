@@ -346,7 +346,7 @@ function searchMovies(query, page) {
 function findMovieByTitle(title, year, imdbId) {
   // Use WordPress REST API for search (more reliable than HTML scraping)
   var apiUrl = BASE_URL + "/wp-json/wp/v2/search?search=" + encodeURIComponent(title) + "&per_page=20";
-  return fetchWithTimeout(apiUrl, {}, 15000).then(function (r) {
+  return fetchWithTimeout(apiUrl, {}, 8000).then(function (r) {
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }).then(function (results) {
@@ -392,7 +392,7 @@ function getMovieSignedLinks(movieUrl, postId) {
     var slug = movieUrl.replace(/\/$/, "").split("/").pop();
     apiUrl = BASE_URL + "/wp-json/wp/v2/posts?slug=" + encodeURIComponent(slug);
   }
-  return fetchWithTimeout(apiUrl, {}, 15000).then(function (r) {
+  return fetchWithTimeout(apiUrl, {}, 8000).then(function (r) {
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }).then(function (data) {
@@ -409,11 +409,11 @@ function getMovieSignedLinks(movieUrl, postId) {
         if (h3s[i].pos < bm.index) { label = h3s[i].text; break; }
       }
       tasks.push({ mvlinkUrl: bm[1], qualityLabel: label });
-      // Limit to 2 URLs for speed (Nuvio timeout)
-      if (tasks.length >= 2) break;
+      // Limit to 1 URL for speed (Nuvio timeout) - was 2, now 1
+      if (tasks.length >= 1) break;
     }
     var jobs = tasks.map(function (t) {
-      return getHtml(t.mvlinkUrl, 8000).then(function (mvHtml) {
+      return getHtml(t.mvlinkUrl, 6000).then(function (mvHtml) {
         var rawHref = findHShareAnchor(mvHtml);
         if (!rawHref) return null;
         // Skip HMAC signing - server auto-redirects unsigned URLs to signed ones
