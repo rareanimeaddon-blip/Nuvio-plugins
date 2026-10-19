@@ -587,14 +587,16 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         if (siteEntry.imdbId && meta.imdbId && siteEntry.imdbId !== meta.imdbId) return [];
         if (type === "movie") {
           return getMovieSignedLinks(siteEntry.url, siteEntry.postId).then(function (signedLinks) {
-            var jobs = signedLinks.map(function (sl) {
-              return resolveSignedUrl(sl.signedUrl, sl.qualityLabel).catch(function () { return []; });
+            // Return hshare URLs directly - Nuvio will follow redirects
+            // Skip resolveSignedUrl which is slow and may fail in Nuvio
+            var out = signedLinks.map(function (sl) {
+              return {
+                title: sl.qualityLabel || "HindMovies",
+                url: sl.signedUrl,
+                quality: "HD"
+              };
             });
-            return Promise.all(jobs).then(function (arr) {
-              var out = [];
-              arr.forEach(function (x) { out = out.concat(x); });
-              return toNuvioStreams(out);
-            });
+            return toNuvioStreams(out);
           });
         }
         if (seasonNum == null || episodeNum == null) return [];
