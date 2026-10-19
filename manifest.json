@@ -1,8 +1,9 @@
 {
+  "name": "26-Provider Collection",
+  "version": "1.0.0",
+  "description": "26 providers converted from Stremio addons to Nuvio JavaScript scrapers",
   "author": "Converted from Stremio addon",
-  "description": "25 providers converted from Stremio addons to Nuvio JavaScript scrapers",
-  "name": "User's 26-Provider Collection",
-  "providers": [
+  "scrapers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
@@ -14,333 +15,384 @@
       ],
       "filename": "providers/anidisk.js",
       "enabled": true,
-      "contentLanguage": "en"
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/animedekho.js",
       "id": "animedekho",
       "name": "AnimeDekho",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/animedekho.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "en",
-      "enabled": true,
-      "filename": "providers/animesalt.js",
       "id": "animesalt",
       "name": "AnimeSalt",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/animesalt.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "en",
-      "enabled": true,
-      "filename": "providers/animeworld.js",
       "id": "animeworld",
       "name": "AnimeWorld",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/animeworld.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/castletv.js",
       "id": "castletv",
       "name": "CastleTV",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/castletv.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/cinejoy.js",
       "id": "cinejoy",
       "name": "CineJoy",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/cinejoy.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/dooflix.js",
       "id": "dooflix",
       "name": "Dooflix",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/dooflix.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "phisher98 (adapted)",
-      "contentLanguage": "hi",
-      "enabled": true,
-      "filename": "providers/fourkdhub.js",
       "id": "fourkdhub",
       "name": "4KHDHub",
+      "version": "1.0.0",
+      "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/fourkdhub.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/goojara.js",
       "id": "goojara",
       "name": "Goojara",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/goojara.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "hi",
-      "enabled": true,
-      "filename": "providers/hdhub4u.js",
       "id": "hdhub4u",
       "name": "HDHub4u",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/hdhub4u.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "hi",
-      "enabled": true,
-      "filename": "providers/hindmovies.js",
       "id": "hindmovies",
       "name": "HindMovies",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/hindmovies.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "en",
-      "enabled": true,
-      "filename": "providers/kartoons.js",
       "id": "kartoons",
       "name": "Kartoons",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/kartoons.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/kmmovies.js",
       "id": "kmmovies",
       "name": "KMMovies",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/kmmovies.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/meowtv.js",
       "id": "meowtv",
       "name": "MeowTV",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/meowtv.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/moviebox.js",
       "id": "moviebox",
       "name": "MovieBox",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/moviebox.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "hi",
-      "enabled": true,
-      "filename": "providers/moviesdrive.js",
       "id": "moviesdrive",
       "name": "MoviesDrive",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/moviesdrive.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/multimovies.js",
       "id": "multimovies",
       "name": "MultiMovies",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/multimovies.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/netmirror.js",
       "id": "netmirror",
       "name": "NetMirror",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/netmirror.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/onetouchtv.js",
       "id": "onetouchtv",
       "name": "OneTouchTV",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/onetouchtv.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/piratexplay.js",
       "id": "piratexplay",
       "name": "PirateXPlay",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/piratexplay.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "en",
-      "enabled": true,
-      "filename": "providers/rareanime.js",
       "id": "rareanime",
       "name": "RareAnime",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/rareanime.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/showbox.js",
       "id": "showbox",
       "name": "ShowBox",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/showbox.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/streamflix.js",
       "id": "streamflix",
       "name": "StreamFlix",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/streamflix.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "en",
-      "enabled": true,
-      "filename": "providers/toonworld.js",
       "id": "toonworld",
       "name": "ToonWorld",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/toonworld.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "Converted",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/vaplayer.js",
       "id": "vaplayer",
       "name": "VAPlayer",
+      "version": "1.0.0",
+      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/vaplayer.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     },
     {
-      "author": "phisher98 (adapted)",
-      "contentLanguage": "multi",
-      "enabled": true,
-      "filename": "providers/vidlink.js",
       "id": "vidlink",
       "name": "VidLink",
+      "version": "1.0.0",
+      "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "filename": "providers/vidlink.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     }
-  ],
-  "version": "1.0.0"
+  ]
 }
