@@ -344,30 +344,31 @@ function searchMovies(query, page) {
   return getHtml(url).then(parseMovieList).catch(function () { return []; });
 }
 function findMovieByTitle(title, year, imdbId) {
-  function tryMatch(results) {
-    if (!results.length) return null;
-    var i;
-    if (imdbId) {
-      for (i = 0; i < results.length; i++) {
-        if (results[i].imdbId && results[i].imdbId === imdbId) return results[i];
-      }
-    }
-    var qy = year ? parseInt(year, 10) : undefined;
+  // Use WordPress REST API for search (more reliable than HTML scraping)
+  var apiUrl = BASE_URL + "/wp-json/wp/v2/search?search=" + encodeURIComponent(title) + "&per_page=20";
+  return fetchWithTimeout(apiUrl, {}, 15000).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function (results) {
+    if (!results || !results.length) return null;
+    // Find best match by title
     var best = null, bestScore = 0.45;
-    for (i = 0; i < results.length; i++) {
-      var c = results[i];
-      var s = scoreCandidate(title, qy, c.title, c.year ? parseInt(c.year, 10) : undefined);
-      if (s > bestScore) { bestScore = s; best = c; }
+    var qy = year ? parseInt(year, 10) : undefined;
+    for (var i = 0; i < results.length; i++) {
+      var r = results[i];
+      if (r.type !== "post" || r.subtype !== "post") continue;
+      var s = scoreCandidate(title, qy, r.title, undefined);
+      if (s > bestScore) { bestScore = s; best = r; }
     }
-    return best;
-  }
-  return searchMovies(title, 1).then(function (page1) {
-    var hit = tryMatch(page1);
-    if (hit) return hit;
-    if (page1.length > 0) {
-      return searchMovies(title, 2).then(tryMatch).catch(function () { return null; });
-    }
-    return null;
+    if (!best) return null;
+    // Return with post ID for direct API fetch
+    return {
+      title: best.title,
+      url: best.url,
+      postId: best.id,
+      year: year,
+      imdbId: imdbId
+    };
   }).catch(function () { return null; });
 }
 function findHShareAnchor(html) {
@@ -381,8 +382,23 @@ function findHShareAnchor(html) {
   var m = /href="([^"]*\?id=[^"]*)"/i.exec(html);
   return m ? m[1] : null;
 }
-function getMovieSignedLinks(movieUrl) {
-  return getHtml(movieUrl).then(function (html) {
+function getMovieSignedLinks(movieUrl, postId) {
+  // Use WordPress API with post ID (more reliable)
+  var apiUrl;
+  if (postId) {
+    apiUrl = BASE_URL + "/wp-json/wp/v2/posts/" + postId;
+  } else {
+    // Fallback: extract slug from URL
+    var slug = movieUrl.replace(/\/$/, "").split("/").pop();
+    apiUrl = BASE_URL + "/wp-json/wp/v2/posts?slug=" + encodeURIComponent(slug);
+  }
+  return fetchWithTimeout(apiUrl, {}, 15000).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function (data) {
+    var post = Array.isArray(data) ? data[0] : data;
+    if (!post) return [];
+    var html = post.content && post.content.rendered ? post.content.rendered : "";
     var h3Re = /<h3[^>]*>([\s\S]*?)<\/h3>/gi, hm, h3s = [];
     while ((hm = h3Re.exec(html))) h3s.push({ pos: hm.index, text: stripTags(hm[1]) });
     var tasks = [];
@@ -565,7 +581,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         if (!siteEntry) return [];
         if (siteEntry.imdbId && meta.imdbId && siteEntry.imdbId !== meta.imdbId) return [];
         if (type === "movie") {
-          return getMovieSignedLinks(siteEntry.url).then(function (signedLinks) {
+          return getMovieSignedLinks(siteEntry.url, siteEntry.postId).then(function (signedLinks) {
             var jobs = signedLinks.map(function (sl) {
               return resolveSignedUrl(sl.signedUrl, sl.qualityLabel).catch(function () { return []; });
             });
