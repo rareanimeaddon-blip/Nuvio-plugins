@@ -673,6 +673,8 @@ function toNuvioStreams(items) {
 }
 
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
+  // DEBUG: return immediately to test if provider is called
+  return Promise.resolve([{name: "DEBUG", title: "HINDMOVIES CALLED OK", url: "https://example.com", quality: "Unknown", type: "direct"}]);
   var type = mediaType === "tv" ? "series" : "movie";
 
   return getTmdbMeta(tmdbId, type).then(function (meta) {
