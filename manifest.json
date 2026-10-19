@@ -1,12 +1,11 @@
 {
   "name": "26-Provider Collection",
   "version": "1.0.0",
-  "description": "26 providers converted from Stremio addons to Nuvio JavaScript scrapers",
-  "author": "Converted from Stremio addon",
-  "providers": [
+  "scrapers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
+      "description": "AniDisk anime streams via Hydrax",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -17,12 +16,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "AniDisk anime streams via Hydrax"
+      ]
     },
     {
       "id": "animedekho",
       "name": "AnimeDekho",
+      "description": "AnimeDekho anime streams",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -33,12 +32,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "AnimeDekho anime streams"
+      ]
     },
     {
       "id": "animesalt",
       "name": "AnimeSalt",
+      "description": "AnimeSalt anime streams",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -49,12 +48,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "AnimeSalt anime streams"
+      ]
     },
     {
       "id": "animeworld",
       "name": "AnimeWorld",
+      "description": "AnimeWorld anime streams",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -65,12 +64,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "AnimeWorld anime streams"
+      ]
     },
     {
       "id": "castletv",
       "name": "CastleTV",
+      "description": "CastleTV movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -81,12 +80,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "CastleTV movies and shows"
+      ]
     },
     {
       "id": "cinejoy",
       "name": "CineJoy",
+      "description": "CineJoy movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -97,12 +96,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "CineJoy movies and shows"
+      ]
     },
     {
       "id": "dooflix",
       "name": "Dooflix",
+      "description": "Dooflix movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -113,12 +112,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "Dooflix movies and shows"
+      ]
     },
     {
       "id": "fourkdhub",
       "name": "4KHDHub",
+      "description": "4KHDHub direct links",
       "version": "1.0.0",
       "author": "phisher98 (adapted)",
       "supportedTypes": [
@@ -129,12 +128,12 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ],
-      "description": "4KHDHub direct links"
+      ]
     },
     {
       "id": "goojara",
       "name": "Goojara",
+      "description": "Goojara movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -145,12 +144,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "Goojara movies and shows"
+      ]
     },
     {
       "id": "hdhub4u",
       "name": "HDHub4u",
+      "description": "HDHub4u movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -161,12 +160,12 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ],
-      "description": "HDHub4u movies and shows"
+      ]
     },
     {
       "id": "hindmovies",
       "name": "HindMovies",
+      "description": "HindMovies Hindi dubbed movies",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -177,12 +176,12 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ],
-      "description": "HindMovies Hindi dubbed movies"
+      ]
     },
     {
       "id": "kartoons",
       "name": "Kartoons",
+      "description": "Kartoons animated content",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -193,12 +192,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "Kartoons animated content"
+      ]
     },
     {
       "id": "kmmovies",
       "name": "KMMovies",
+      "description": "KMMovies movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -209,12 +208,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "KMMovies movies and shows"
+      ]
     },
     {
       "id": "meowtv",
       "name": "MeowTV",
+      "description": "MeowTV movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -225,12 +224,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "MeowTV movies and shows"
+      ]
     },
     {
       "id": "moviebox",
       "name": "MovieBox",
+      "description": "MovieBox movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -241,12 +240,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "MovieBox movies and shows"
+      ]
     },
     {
       "id": "moviesdrive",
       "name": "MoviesDrive",
+      "description": "MoviesDrive movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -257,12 +256,12 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ],
-      "description": "MoviesDrive movies and shows"
+      ]
     },
     {
       "id": "multimovies",
       "name": "MultiMovies",
+      "description": "MultiMovies movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -273,12 +272,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "MultiMovies movies and shows"
+      ]
     },
     {
       "id": "netmirror",
       "name": "NetMirror",
+      "description": "NetMirror movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -289,12 +288,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "NetMirror movies and shows"
+      ]
     },
     {
       "id": "onetouchtv",
       "name": "OneTouchTV",
+      "description": "OneTouchTV movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -305,12 +304,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "OneTouchTV movies and shows"
+      ]
     },
     {
       "id": "piratexplay",
       "name": "PirateXPlay",
+      "description": "PirateXPlay movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -321,12 +320,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "PirateXPlay movies and shows"
+      ]
     },
     {
       "id": "rareanime",
       "name": "RareAnime",
+      "description": "RareAnime anime streams",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -337,12 +336,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "RareAnime anime streams"
+      ]
     },
     {
       "id": "showbox",
       "name": "ShowBox",
+      "description": "ShowBox movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -353,12 +352,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "ShowBox movies and shows"
+      ]
     },
     {
       "id": "streamflix",
       "name": "StreamFlix",
+      "description": "StreamFlix movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -369,12 +368,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "StreamFlix movies and shows"
+      ]
     },
     {
       "id": "toonworld",
       "name": "ToonWorld",
+      "description": "ToonWorld cartoons and anime",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -385,12 +384,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "ToonWorld cartoons and anime"
+      ]
     },
     {
       "id": "vaplayer",
       "name": "VAPlayer",
+      "description": "VAPlayer movies and shows",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
@@ -401,12 +400,12 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "VAPlayer movies and shows"
+      ]
     },
     {
       "id": "vidlink",
       "name": "VidLink",
+      "description": "VidLink movies and shows",
       "version": "1.0.0",
       "author": "phisher98 (adapted)",
       "supportedTypes": [
@@ -417,8 +416,7 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ],
-      "description": "VidLink movies and shows"
+      ]
     }
   ]
 }
