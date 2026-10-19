@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "26 providers converted from Stremio addons to Nuvio JavaScript scrapers",
   "author": "Converted from Stremio addon",
-  "scrapers": [
+  "providers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
