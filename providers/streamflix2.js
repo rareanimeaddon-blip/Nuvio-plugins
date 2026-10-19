@@ -191,9 +191,14 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   }).catch(function () { return []; });
 }
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { getStreams: getStreams };
-} else {
+if (typeof globalThis !== "undefined") {
+  globalThis.getStreams = getStreams;
+  globalThis.StreamFlixScraperModule = { getStreams: getStreams };
+} else if (typeof global !== "undefined") {
   global.getStreams = getStreams;
   global.StreamFlixScraperModule = { getStreams: getStreams };
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { getStreams: getStreams };
 }
