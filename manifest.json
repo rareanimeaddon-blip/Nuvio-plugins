@@ -134,13 +134,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Goojara movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara.js",
+      "filename": "providers/goojara2.js",
       "enabled": true,
       "contentLanguage": [
         "en"

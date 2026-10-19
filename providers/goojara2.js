@@ -20,18 +20,14 @@ var sessionCookie = null; // {name, value}
 
 function fetchWithTimeout(url, opts, timeout) {
   opts = opts || {};
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, timeout || 15000);
-  opts.signal = controller.signal;
+  // AbortController removed for Nuvio QuickJS compatibility
   opts.headers = opts.headers || {};
   if (!opts.headers['User-Agent']) opts.headers['User-Agent'] = UA;
-  return fetch(url, opts).then(function (res) {
-    clearTimeout(timer);
-    return res;
-  }).catch(function (e) {
-    clearTimeout(timer);
-    throw e;
+  var fetchP = fetch(url, opts);
+  var timeoutP = new Promise(function(_, rej) {
+    setTimeout(function() { rej(new Error('Timeout')); }, timeout || 15000);
   });
+  return Promise.race([fetchP, timeoutP]);
 }
 
 function getText(url, opts, timeout) {
@@ -46,13 +42,10 @@ function getText(url, opts, timeout) {
 function ensureSession() {
   if (sessionCookie) return Promise.resolve(sessionCookie);
   // Capture Set-Cookie headers from homepage + JS challenge cookie
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, 10000);
+  // AbortController removed for Nuvio QuickJS compatibility
   return fetch(BASE + '/', {
-    signal: controller.signal,
     headers: { 'Accept': 'text/html', 'User-Agent': UA }
   }).then(function (res) {
-    clearTimeout(timer);
     // Collect server-set cookies
     var serverCookies = [];
     // getSetCookie is the standard way; fall back to parsing
@@ -182,12 +175,10 @@ function getGoPhpLinks(pageUrl) {
 
 function followGoPhp(goUrl, referer) {
   // Don't auto-follow; we need the Location header
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, 10000);
+  // AbortController removed for Nuvio QuickJS compatibility
   return fetch(goUrl, {
     method: 'GET',
     redirect: 'manual',
-    signal: controller.signal,
     headers: {
       'User-Agent': UA,
       'Referer': referer,
