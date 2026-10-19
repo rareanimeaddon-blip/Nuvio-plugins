@@ -94,14 +94,21 @@ function searchGoojara(query) {
     var body = 'z=' + encodeURIComponent(sess.dataIns) +
       '&x=bcb23b0360' +
       '&q=' + encodeURIComponent(query);
+    // Note: Do NOT set Cookie header manually. Nuvio's fetch handles
+    // server cookies (PHPSESSID) automatically. We append the _3chk
+    // challenge cookie via a separate mechanism below.
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Referer': BASE + '/',
+      'X-Requested-With': 'XMLHttpRequest'
+    };
+    // Only add _3chk manually if we have it; server cookies are automatic
+    if (sess.name && sess.value) {
+      headers['Cookie'] = sess.name + '=' + sess.value;
+    }
     return fetchWithTimeout(BASE + '/xmre.php', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Referer': BASE + '/',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Cookie': cookieHeader()
-      },
+      headers: headers,
       body: body
     }, 10000);
   }).then(function (res) {
