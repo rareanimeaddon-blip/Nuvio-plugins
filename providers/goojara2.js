@@ -365,8 +365,8 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
 
 function resolveAllEmbeds(goLinks, referer, label) {
   var chain = Promise.resolve([]);
-  // Limit to first 4 embeds to avoid timeouts
-  goLinks.slice(0, 1).forEach(function (goUrl) {
+  // Try first 3 embeds to avoid timeouts (was 1, increased for reliability)
+  goLinks.slice(0, 3).forEach(function (goUrl) {
     chain = chain.then(function (streams) {
       return followGoPhp(goUrl, referer).then(function (embedUrl) {
         if (!embedUrl) return streams;
