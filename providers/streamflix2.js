@@ -65,21 +65,25 @@ function getBases() {
   var chain = Promise.resolve();
   CONFIG_URLS.forEach(function (url) {
     chain = chain.then(function () {
+      // Prefer the current config and only use the legacy config if it has no
+      // usable download hosts. The other config lists serve different app
+      // features and may contain hosts that do not serve direct file links.
+      if (bases.length) return;
       return getJson(url, 8000).then(function (config) {
-        [config.download, config.movies, config.tv, config.premium].forEach(function (list) {
-          (list || []).forEach(function (entry) {
-            var n = normalizeBase(entry);
-            if (n && bases.indexOf(n) === -1) bases.push(n);
-          });
+        (config && config.download || []).forEach(function (entry) {
+          var n = normalizeBase(entry);
+          if (n && bases.indexOf(n) === -1) bases.push(n);
         });
       }).catch(function () { /* config unreachable, try next */ });
     });
   });
   return chain.then(function () {
-    FALLBACK_BASES.forEach(function (f) {
-      var n = normalizeBase(f);
-      if (n && bases.indexOf(n) === -1) bases.push(n);
-    });
+    if (!bases.length) {
+      FALLBACK_BASES.forEach(function (f) {
+        var n = normalizeBase(f);
+        if (n && bases.indexOf(n) === -1) bases.push(n);
+      });
+    }
     basesCache = { bases: bases, ts: Date.now() };
     return bases;
   });
@@ -187,9 +191,14 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   }).catch(function () { return []; });
 }
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { getStreams: getStreams };
-} else {
+if (typeof globalThis !== "undefined") {
+  globalThis.getStreams = getStreams;
+  globalThis.StreamFlixScraperModule = { getStreams: getStreams };
+} else if (typeof global !== "undefined") {
   global.getStreams = getStreams;
   global.StreamFlixScraperModule = { getStreams: getStreams };
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { getStreams: getStreams };
 }
