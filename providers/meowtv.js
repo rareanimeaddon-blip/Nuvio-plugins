@@ -1,9 +1,10 @@
 // MeowTV scraper for Nuvio.
-// Converted from the Stremio addon provider (api-server/src/providers/meowtv).
-// Flow: Altcha PoW challenge -> solve (pure-JS SHA-256) -> ticket ->
-// per-server stream fetch -> WASM deobfuscate(n, d) -> direct URL.
-// The WASM binary is inlined as base64 below (standard WebAssembly API, sandbox-safe).
-// Nuvio passes the TMDB ID directly, so no IMDB lookup is needed.
+// Converted from the Stremio addon provider (api-server/src/providers/meowtv/meowtv.ts).
+// Flow: Altcha PoW challenge -> solve with pure-JS SHA-256 -> ticket ->
+// per-server stream fetch (each ticket is single-use) -> WASM deobfuscate(n, d)
+// -> direct URL. The WASM binary is inlined as base64 below (standard
+// WebAssembly API, sandbox-safe). Nuvio passes the TMDB ID directly, so the
+// addon's IMDb->TMDB lookup step is skipped.
 
 var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 var API_BASE = "https://api.meowtv.ru";
@@ -142,7 +143,7 @@ function solveAltcha(c) {
 }
 function fetchWithTimeout(url, opts, ms) {
   var ctrl = new AbortController();
-  var t = setTimeout(function () { ctrl.abort(); }, ms || 30000);
+  var t = setTimeout(function () { ctrl.abort(); }, ms || 15000);
   opts = opts || {};
   opts.signal = ctrl.signal;
   return fetch(url, opts).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });
