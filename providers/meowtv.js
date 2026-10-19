@@ -255,7 +255,7 @@ function urlTitleMismatch(url, requestedTitle) {
 }
 function tmdbTitle(tmdbId, mediaType) {
   var kind = mediaType === "tv" ? "tv" : "movie";
-  return fetchWithTimeout("https://api.themoviedb.org/3/" + kind + "/" + tmdbId + "?api_key=" + TMDB_API_KEY, {}, 15000)
+  return fetchWithTimeout("https://api.themoviedb.org/3/" + kind + "/" + tmdbId + "?api_key=" + TMDB_API_KEY, {}, 10000)
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (j) { return j ? (j.title || j.name || null) : null; })
     .catch(function () { return null; });

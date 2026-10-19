@@ -262,7 +262,7 @@ function resolveGdshine(url) {
 }
 
 function resolveSignedUrl(signedUrl, qualityLabel) {
-  return getHtml(signedUrl, 20000).then(function (html) {
+  return getHtml(signedUrl, 10000).then(function (html) {
     var nameM = /Name:\s*([^\n<]+)/i.exec(html.replace(/<[^>]+>/g, "\n"));
     var sizeM = /Size:\s*([^\n<]+)/i.exec(html.replace(/<[^>]+>/g, "\n"));
     var rawName = nameM ? nameM[1].trim() : "";

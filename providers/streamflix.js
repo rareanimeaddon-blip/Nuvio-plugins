@@ -3,7 +3,6 @@
 // Source: StreamFlix provider (api.streamflix.app data.json + CDN bases)
 
 var API_BASE = "https://api.streamflix.app";
-var TMDB_KEY = "5f39fd16e987a9e3fce30d55cf09b438";
 var FIREBASE_BASE = "https://chilflix-410be-default-rtdb.asia-southeast1.firebasedatabase.app";
 
 var CONFIG_URLS = [
@@ -155,41 +154,15 @@ function getEpisodes(movieKey, season) {
     });
 }
 
-function normTitle(s) {
-  return String(s || "").toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
-}
-
-function titlesMatch(expected, actual) {
-  var e = normTitle(expected), a = normTitle(actual);
-  if (!e || !a) return false;
-  if (e === a) return true;
-  if (a.indexOf(e) === 0 || e.indexOf(a) === 0) return true;
-  var ew = e.split(" ").filter(function(w){return w.length>=3;});
-  var matched = ew.filter(function(w){return a.indexOf(w)!==-1;}).length;
-  return ew.length > 0 && matched === ew.length;
-}
-
-function getTmdbTitle(tmdbId, mediaType) {
-  var type = mediaType === "tv" ? "tv" : "movie";
-  var url = "https://api.themoviedb.org/3/" + type + "/" + tmdbId + "?api_key=" + TMDB_KEY;
-  return fetch(url).then(function(r){return r.json();}).then(function(d){
-    return d.title || d.name || "";
-  }).catch(function(){return "";});
-}
-
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   var type = mediaType === "tv" ? "series" : "movie";
-  return Promise.all([getData(), getBases(), getTmdbTitle(tmdbId, mediaType)]).then(function (results) {
-    var items = results[0], bases = results[1], expectedTitle = results[2];
+  return Promise.all([getData(), getBases()]).then(function (results) {
+    var items = results[0], bases = results[1];
     var match = null;
     for (var i = 0; i < items.length; i++) {
       if (String(items[i].tmdb) === String(tmdbId)) { match = items[i]; break; }
     }
     if (!match || bases.length === 0) return [];
-    // Verify title to catch upstream DB errors (e.g. wrong TMDB mapping)
-    if (expectedTitle && match.moviename && !titlesMatch(expectedTitle, match.moviename)) {
-      return [];
-    }
     var toUrls = function (link) {
       return bases.map(function (base) { return base + String(link).replace(/^\/+/, ""); });
     };

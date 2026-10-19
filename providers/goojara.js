@@ -1,5 +1,5 @@
 /*
- * Goojara Nuvio Provider v1.0.1
+ * Goojara Nuvio Provider
  * Source: goojara.to (ww1.goojara.to)
  *
  * Flow:
@@ -47,7 +47,7 @@ function ensureSession() {
   if (sessionCookie) return Promise.resolve(sessionCookie);
   // Capture Set-Cookie headers from homepage + JS challenge cookie
   var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, 15000);
+  var timer = setTimeout(function () { controller.abort(); }, 10000);
   return fetch(BASE + '/', {
     signal: controller.signal,
     headers: { 'Accept': 'text/html', 'User-Agent': UA }
@@ -110,7 +110,7 @@ function searchGoojara(query) {
         'Cookie': cookieHeader()
       },
       body: body
-    }, 15000);
+    }, 10000);
   }).then(function (res) {
     if (!res.ok) throw new Error('Search HTTP ' + res.status);
     return res.text();
@@ -169,7 +169,7 @@ function findBest(results, title, year, wantType) {
 function getGoPhpLinks(pageUrl) {
   return getText(pageUrl, {
     headers: { 'Referer': BASE + '/', 'Cookie': cookieHeader() }
-  }, 15000).then(function (html) {
+  }, 10000).then(function (html) {
     var links = [];
     var re = /href="(https?:\/\/[^"]*go\.php\?url=[^"]+)"/g;
     var m;
@@ -183,7 +183,7 @@ function getGoPhpLinks(pageUrl) {
 function followGoPhp(goUrl, referer) {
   // Don't auto-follow; we need the Location header
   var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, 15000);
+  var timer = setTimeout(function () { controller.abort(); }, 10000);
   return fetch(goUrl, {
     method: 'GET',
     redirect: 'manual',
@@ -239,7 +239,7 @@ function unpackDeanEdwards(packed) {
 function extractM3u8FromLuluvdo(embedUrl) {
   return getText(embedUrl, {
     headers: { 'Referer': BASE + '/' }
-  }, 20000).then(function (html) {
+  }, 10000).then(function (html) {
     // Find packed script
     var scripts = [];
     var re = /<script[^>]*>([\s\S]*?)<\/script>/g;
@@ -273,7 +273,7 @@ function resolveEmbed(embedUrl, referer) {
   }
   if (/wootly/.test(embedUrl)) {
     // Wootly requires JS form submission; try to extract from embed page
-    return getText(embedUrl, { headers: { 'Referer': referer } }, 15000).then(function (html) {
+    return getText(embedUrl, { headers: { 'Referer': referer } }, 10000).then(function (html) {
       var m = /src="(https?:\/\/web\.wootly\.ch\/e\/[^"]+)"/.exec(html);
       if (!m) return null;
       // Wootly web player needs JS interaction; return null for now
@@ -289,7 +289,7 @@ function resolveEmbed(embedUrl, referer) {
 function findEpisode(tvPageUrl, season, episode) {
   return getText(tvPageUrl, {
     headers: { 'Referer': BASE + '/', 'Cookie': cookieHeader() }
-  }, 15000).then(function (html) {
+  }, 10000).then(function (html) {
     // Get show ID for season AJAX: <div id="seon" data-id="157860">
     var idM = /id="seon"[^>]*data-id="(\d+)"/.exec(html);
     if (!idM) return null;
@@ -305,7 +305,7 @@ function findEpisode(tvPageUrl, season, episode) {
         "Cookie": cookieHeader()
       },
       body: body
-    }, 15000).then(function (res) {
+    }, 10000).then(function (res) {
       if (!res.ok) throw new Error("Season HTTP " + res.status);
       return res.text();
     });
@@ -331,7 +331,7 @@ function findEpisode(tvPageUrl, season, episode) {
 
 function tmdb(path) {
   return fetchWithTimeout('https://api.themoviedb.org/3' + path +
-    (path.indexOf('?') === -1 ? '?' : '&') + 'api_key=' + TMDB_KEY, {}, 15000)
+    (path.indexOf('?') === -1 ? '?' : '&') + 'api_key=' + TMDB_KEY, {}, 10000)
     .then(function (r) { return r.json(); });
 }
 
@@ -378,7 +378,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
 function resolveAllEmbeds(goLinks, referer, label) {
   var chain = Promise.resolve([]);
   // Limit to first 4 embeds to avoid timeouts
-  goLinks.slice(0, 4).forEach(function (goUrl) {
+  goLinks.slice(0, 2).forEach(function (goUrl) {
     chain = chain.then(function (streams) {
       return followGoPhp(goUrl, referer).then(function (embedUrl) {
         if (!embedUrl) return streams;

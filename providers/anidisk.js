@@ -38,7 +38,7 @@ function apiHeaders(extra) {
 }
 
 function apiGet(path) {
-  return fetchWithTimeout(API_BASE + path, { headers: apiHeaders() }, 20000)
+  return fetchWithTimeout(API_BASE + path, { headers: apiHeaders() }, 10000)
     .then(function (r) {
       if (r.status === 404) { var e = new Error("not found"); e.status = 404; throw e; }
       if (!r.ok) throw new Error("AniDisk API HTTP " + r.status);

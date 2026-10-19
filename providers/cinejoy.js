@@ -55,7 +55,7 @@ function createEncryptedSession(tmdbId, mediaType, server, season, episode) {
     "&server=" + encodeURIComponent(server);
   if (mediaType === "series") target += "&season=" + season + "&episode=" + episode;
   var proxyUrl = ENCRYPTION_URL + "?url=" + encodeURIComponent(target);
-  return fetchWithTimeout(proxyUrl, { headers: { "User-Agent": USER_AGENT } }, 20000)
+  return fetchWithTimeout(proxyUrl, { headers: { "User-Agent": USER_AGENT } }, 10000)
     .then(function (r) {
       if (!r.ok) throw new Error("Cinejoy session encoder HTTP " + r.status);
       return r.json();
@@ -160,7 +160,7 @@ function getStreamsFromServer(tmdbId, mediaType, season, episode, server) {
         method: "POST",
         body: session.body,
         headers: Object.assign({}, REQUEST_HEADERS, { "Content-Type": "application/octet-stream" }),
-      }, 20000).then(function (r) {
+      }, 10000).then(function (r) {
         return r.ok ? r : attempt(i + 1);
       }).catch(function () { return attempt(i + 1); });
     };
