@@ -414,11 +414,9 @@ function getMovieSignedLinks(movieUrl, postId) {
       return getHtml(t.mvlinkUrl).then(function (mvHtml) {
         var rawHref = findHShareAnchor(mvHtml);
         if (!rawHref) return null;
-        var hshare = parseHShareLink(rawHref);
-        if (!hshare) return null;
-        return signHShare(hshare.rawId, hshare.domain).then(function (signed) {
-          return { signedUrl: signed, qualityLabel: t.qualityLabel };
-        });
+        // Skip HMAC signing - server auto-redirects unsigned URLs to signed ones
+        // Return the raw hshare URL directly; Nuvio will follow the redirect
+        return { signedUrl: rawHref, qualityLabel: t.qualityLabel };
       }).catch(function () { return null; });
     });
     return Promise.all(jobs).then(function (arr) {
@@ -516,9 +514,14 @@ function resolveSignedUrl(signedUrl, qualityLabel) {
         quality: quality
       };
     }
-    var btnUrls = [], re = /<a[^>]*class="[^"]*\bbtn\b[^"]*"[^>]*href="([^"]+)"[^>]*>/gi, m;
+    var btnUrls = [], re = /<a\b[^>]*>/gi, m;
     while ((m = re.exec(html))) {
-      var href = m[1];
+      var tag = m[0];
+      // Check if class contains 'btn' (attribute order independent)
+      if (!/\bclass="[^"]*\bbtn\b/i.test(tag)) continue;
+      var hrefM = /href="([^"]+)"/i.exec(tag);
+      if (!hrefM) continue;
+      var href = hrefM[1];
       if (href && href.indexOf("javascript") !== 0) btnUrls.push(href);
     }
     var jobs = btnUrls.map(function (btnUrl) {
