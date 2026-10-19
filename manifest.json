@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scrapers": [
     {
       "id": "anidisk",
@@ -211,22 +211,6 @@
       ]
     },
     {
-      "id": "meowtv",
-      "name": "MeowTV",
-      "description": "MeowTV movies and shows",
-      "version": "1.0.0",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/meowtv.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
@@ -413,6 +397,22 @@
         "tv"
       ],
       "filename": "providers/vidlink.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "dahmermovies",
+      "name": "DahmerMovies",
+      "description": "DahmerMovies movies and shows",
+      "version": "1.0.0",
+      "author": "NuvioPlugin",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dahmermovies.js",
       "enabled": true,
       "contentLanguage": [
         "en"
