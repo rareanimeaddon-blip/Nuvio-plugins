@@ -81,7 +81,180 @@ function cleanTitle(raw) {
     .trim();
 }
 
-// ─── HMAC-SHA256 signing (WebCrypto) ─────────────────────────────────────────
+// ─── HMAC-SHA256 signing (pure JS, no WebCrypto) ──────────────────────────────
+/**
+ * Pure-JavaScript SHA-256 + HMAC-SHA256 (no WebCrypto, no Node.js APIs).
+ * Sandbox-safe: uses only var, Uint8Array, Math.
+ *
+ * Exports:
+ *   sha256Bytes(dataBytes)              -> Uint8Array(32)
+ *   hmacSha256(keyBytes, dataBytes)     -> Uint8Array(32)
+ *   hmacSha256Hex(key, data)            -> hex string (64 chars), accepts strings or Uint8Arrays
+ *   hmacSha256Hex16(key, data)          -> Promise resolving to first 16 hex chars
+ *                                          (drop-in replacement for the WebCrypto version in
+ *                                          providers/hindmovies.js — keeps the .then() chain working)
+ */
+
+// SHA-256 round constants
+var SHA256_K = [
+  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
+  0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+  0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786,
+  0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+  0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+  0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+  0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+  0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+  0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
+  0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+];
+
+// SHA-256 initial hash values
+var SHA256_H0 = [
+  0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+  0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+];
+
+function sha256Rotr(x, n) {
+  return (x >>> n) | (x << (32 - n));
+}
+
+// SHA-256 over a Uint8Array. Returns Uint8Array(32).
+function sha256Bytes(data) {
+  var i, j;
+  var bitLenHi = Math.floor(data.length / 0x20000000); // high 32 bits of bit length
+  var bitLenLo = (data.length << 3) >>> 0;             // low 32 bits of bit length
+
+  // padded length: data + 0x80 + zeros + 8-byte length, multiple of 64
+  var paddedLen = data.length + 1;
+  while ((paddedLen % 64) !== 56) paddedLen++;
+  paddedLen += 8;
+
+  var msg = new Uint8Array(paddedLen);
+  for (i = 0; i < data.length; i++) msg[i] = data[i];
+  msg[data.length] = 0x80;
+  // 64-bit big-endian bit length at the end
+  msg[paddedLen - 8] = (bitLenHi >>> 24) & 0xff;
+  msg[paddedLen - 7] = (bitLenHi >>> 16) & 0xff;
+  msg[paddedLen - 6] = (bitLenHi >>> 8) & 0xff;
+  msg[paddedLen - 5] = bitLenHi & 0xff;
+  msg[paddedLen - 4] = (bitLenLo >>> 24) & 0xff;
+  msg[paddedLen - 3] = (bitLenLo >>> 16) & 0xff;
+  msg[paddedLen - 2] = (bitLenLo >>> 8) & 0xff;
+  msg[paddedLen - 1] = bitLenLo & 0xff;
+
+  var h0 = SHA256_H0[0], h1 = SHA256_H0[1], h2 = SHA256_H0[2], h3 = SHA256_H0[3],
+      h4 = SHA256_H0[4], h5 = SHA256_H0[5], h6 = SHA256_H0[6], h7 = SHA256_H0[7];
+
+  var w = new Array(64);
+  var a, b, c, d, e, f, g, hh, t1, t2, s0, s1, ch, maj;
+
+  for (i = 0; i < paddedLen; i += 64) {
+    for (j = 0; j < 16; j++) {
+      w[j] = ((msg[i + j * 4] << 24) | (msg[i + j * 4 + 1] << 16) |
+              (msg[i + j * 4 + 2] << 8) | msg[i + j * 4 + 3]) >>> 0;
+    }
+    for (j = 16; j < 64; j++) {
+      s0 = (sha256Rotr(w[j - 15], 7) ^ sha256Rotr(w[j - 15], 18) ^ (w[j - 15] >>> 3)) >>> 0;
+      s1 = (sha256Rotr(w[j - 2], 17) ^ sha256Rotr(w[j - 2], 19) ^ (w[j - 2] >>> 10)) >>> 0;
+      w[j] = (w[j - 16] + s0 + w[j - 7] + s1) >>> 0;
+    }
+
+    a = h0; b = h1; c = h2; d = h3; e = h4; f = h5; g = h6; hh = h7;
+
+    for (j = 0; j < 64; j++) {
+      s1 = (sha256Rotr(e, 6) ^ sha256Rotr(e, 11) ^ sha256Rotr(e, 25)) >>> 0;
+      ch = ((e & f) ^ (~e & g)) >>> 0;
+      t1 = (hh + s1 + ch + SHA256_K[j] + w[j]) >>> 0;
+      s0 = (sha256Rotr(a, 2) ^ sha256Rotr(a, 13) ^ sha256Rotr(a, 22)) >>> 0;
+      maj = ((a & b) ^ (a & c) ^ (b & c)) >>> 0;
+      t2 = (s0 + maj) >>> 0;
+      hh = g; g = f; f = e; e = (d + t1) >>> 0;
+      d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+
+    h0 = (h0 + a) >>> 0; h1 = (h1 + b) >>> 0; h2 = (h2 + c) >>> 0; h3 = (h3 + d) >>> 0;
+    h4 = (h4 + e) >>> 0; h5 = (h5 + f) >>> 0; h6 = (h6 + g) >>> 0; h7 = (h7 + hh) >>> 0;
+  }
+
+  var out = new Uint8Array(32);
+  var hs = [h0, h1, h2, h3, h4, h5, h6, h7];
+  for (i = 0; i < 8; i++) {
+    out[i * 4] = (hs[i] >>> 24) & 0xff;
+    out[i * 4 + 1] = (hs[i] >>> 16) & 0xff;
+    out[i * 4 + 2] = (hs[i] >>> 8) & 0xff;
+    out[i * 4 + 3] = hs[i] & 0xff;
+  }
+  return out;
+}
+
+function toBytes(v) {
+  if (v instanceof Uint8Array) return v;
+  return new TextEncoder().encode(String(v));
+}
+
+function bytesToHex(bytes) {
+  var hex = "", i, h;
+  for (i = 0; i < bytes.length; i++) {
+    h = bytes[i].toString(16);
+    hex += (h.length === 1 ? "0" + h : h);
+  }
+  return hex;
+}
+
+// HMAC-SHA256. keyBytes, dataBytes: Uint8Array (or anything toBytes accepts).
+// Returns Uint8Array(32).
+function hmacSha256(keyBytes, dataBytes) {
+  var key = toBytes(keyBytes);
+  var data = toBytes(dataBytes);
+  var i;
+
+  // Keys longer than the block size are hashed first
+  if (key.length > 64) key = sha256Bytes(key);
+
+  var k = new Uint8Array(64);
+  for (i = 0; i < key.length; i++) k[i] = key[i];
+
+  var ipad = new Uint8Array(64 + data.length);
+  var opad = new Uint8Array(64 + 32);
+  for (i = 0; i < 64; i++) {
+    ipad[i] = k[i] ^ 0x36;
+    opad[i] = k[i] ^ 0x5c;
+  }
+  for (i = 0; i < data.length; i++) ipad[64 + i] = data[i];
+
+  var inner = sha256Bytes(ipad);
+  for (i = 0; i < 32; i++) opad[64 + i] = inner[i];
+
+  return sha256Bytes(opad);
+}
+
+// HMAC-SHA256 -> full 64-char hex string. Accepts strings or Uint8Arrays.
+function hmacSha256Hex(key, data) {
+  return bytesToHex(hmacSha256(toBytes(key), toBytes(data)));
+}
+
+// Drop-in replacement for the WebCrypto-based hmacSha256Hex16 in
+// providers/hindmovies.js. Returns a Promise resolving to the first 16
+// hex chars, so existing .then() call sites keep working unchanged.
+function hmacSha256Hex16(key, data) {
+  return Promise.resolve(hmacSha256Hex(key, data).substring(0, 16));
+}
+
+// Self-test with known-answer vectors. Returns {sha256Ok, hmacOk}.
+function hmacSha256SelfTest() {
+  var shaEmpty = bytesToHex(sha256Bytes(new Uint8Array(0)));
+  var shaAbc = bytesToHex(sha256Bytes(toBytes("abc")));
+  var hmac1 = hmacSha256Hex("key", "The quick brown fox jumps over the lazy dog");
+  return {
+    sha256EmptyOk: shaEmpty === "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    sha256AbcOk: shaAbc === "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    hmacQuickBrownFoxOk: hmac1 === "f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8"
+  };
+}
+
+// ─── HMAC-SHA256 signing (pure JS) ─────────────────────────────────────────
 
 function base64Url(input) {
   var bytes = new TextEncoder().encode(String(input)), bin = "", i;
@@ -89,18 +262,7 @@ function base64Url(input) {
   return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
-function hmacSha256Hex16(key, data) {
-  return crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"])
-    .then(function (k) { return crypto.subtle.sign("HMAC", k, new TextEncoder().encode(data)); })
-    .then(function (ab) {
-      var bytes = new Uint8Array(ab), hex = "", i, h;
-      for (i = 0; i < bytes.length; i++) {
-        h = bytes[i].toString(16);
-        hex += (h.length === 1 ? "0" + h : h);
-      }
-      return hex.substring(0, 16);
-    });
-}
+// hmacSha256Hex16 defined above (pure JS version)
 
 function signHShare(rawId, domain) {
   var t = Math.floor(Date.now() / 1000);
