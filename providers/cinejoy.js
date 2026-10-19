@@ -378,27 +378,39 @@ async function getStreams(tmdbId, mediaType, season, episode) {
       }
     };
 
-    let apiResponse = null;
-    for (const endpoint of API_BASE) {
-      try {
-        apiResponse = await fetch(`${endpoint}/g`, postRequestOptions);
-        if (apiResponse.ok) break;
-      } catch { }
-    }
-    if (!apiResponse?.ok) return [];
+    let apiResponses = [];
+    // Query ALL endpoints (not just first) to get streams from all servers
+    var endpointJobs = API_BASE.map(function (endpoint) {
+      return fetch(endpoint + '/g', postRequestOptions).then(function (r) {
+        if (!r.ok) return null;
+        return r.arrayBuffer().then(function (buf) { return new Uint8Array(buf); });
+      }).catch(function () { return null; });
+    });
+    var endpointResults = await Promise.all(endpointJobs);
+    endpointResults.forEach(function (bytes) {
+      if (bytes) apiResponses.push(bytes);
+    });
+    if (apiResponses.length === 0) return [];
 
-    const encryptedResponseBytes = new Uint8Array(await apiResponse.arrayBuffer());
-
-    const responseJson = JSON.parse(decryptSealedResponse(encryptedResponseBytes, sealedSession));
-    const streamRequestHeaders = {
+    var streamRequestHeaders = {
       "Origin": BASE_URL,
-      "Referer": `${BASE_URL}/`,
+      "Referer": BASE_URL + "/",
       "User-Agent": HEADERS["User-Agent"]
     };
-    return resolveStreamItems(responseJson?.data?.stream || [], streamRequestHeaders);
+    // Decrypt and combine streams from all servers
+    var allStreamItems = [];
+    for (const encryptedResponseBytes of apiResponses) {
+      try {
+        const responseJson = JSON.parse(decryptSealedResponse(encryptedResponseBytes, sealedSession));
+        var items = responseJson?.data?.stream || [];
+        allStreamItems = allStreamItems.concat(items);
+      } catch { }
+    }
+    return resolveStreamItems(allStreamItems, streamRequestHeaders);
   } catch {
     return [];
   }
 }
 
 module.exports = { getStreams };
+if (typeof global !== 'undefined') global.getStreams = getStreams;
