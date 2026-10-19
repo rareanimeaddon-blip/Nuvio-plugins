@@ -336,7 +336,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "streamflix",
