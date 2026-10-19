@@ -290,9 +290,30 @@ function findEpisode(tvPageUrl, season, episode) {
   return getText(tvPageUrl, {
     headers: { 'Referer': BASE + '/', 'Cookie': cookieHeader() }
   }, 15000).then(function (html) {
-    // Exact structure:
-    // <div class="seho"><div class="seep"><span class="sea"> 16</span><span>Season 5</span></div>
-    // <div class="snfo"><h1><a href="/eVqRrx">Felina</a></h1>
+    // Get show ID for season AJAX: <div id="seon" data-id="157860">
+    var idM = /id="seon"[^>]*data-id="(\d+)"/.exec(html);
+    if (!idM) return null;
+    var showId = idM[1];
+    // POST /xmre.php s={season}&t={show_id} to get season episodes
+    var body = "s=" + encodeURIComponent(season) + "&t=" + encodeURIComponent(showId);
+    return fetchWithTimeout(BASE + "/xmre.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Referer": tvPageUrl,
+        "X-Requested-With": "XMLHttpRequest",
+        "Cookie": cookieHeader()
+      },
+      body: body
+    }, 15000).then(function (res) {
+      if (!res.ok) throw new Error("Season HTTP " + res.status);
+      return res.text();
+    });
+  }).then(function (html) {
+    if (!html) return null;
+    // Exact structure in season response:
+    // <div class="seho"><div class="seep"><span class="sea"> 1</span><span>Season 1</span></div>
+    // <div class="snfo"><h1><a href="/eXXXX">Title</a></h1>
     var re = /<div class="seho">[\s\S]*?<span class="sea">\s*(\d+)\s*<\/span>\s*<span>Season\s*(\d+)<\/span>[\s\S]*?<a href="(\/e[A-Za-z0-9]+)"/g;
     var m;
     while ((m = re.exec(html))) {
