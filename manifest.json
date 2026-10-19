@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scrapers": [
     {
       "id": "anidisk",
@@ -157,22 +157,6 @@
         "tv"
       ],
       "filename": "providers/hdhub4u.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
-      ]
-    },
-    {
-      "id": "hindmovies",
-      "name": "HindMovies",
-      "description": "HindMovies Hindi dubbed movies",
-      "version": "1.0.6",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/hindmovies2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -415,6 +399,23 @@
       ],
       "filename": "providers/dahmermovies.js",
       "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "gramcinema",
+      "name": "GramCinema",
+      "description": "GramCinema movies and shows via CinemaTV",
+      "version": "1.0.0",
+      "author": "NuvioPlugin",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/gramcinema.js",
+      "enabled": true,
+      "hasSettings": true,
       "contentLanguage": [
         "en"
       ]
