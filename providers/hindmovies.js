@@ -5,7 +5,7 @@
 // resolve to direct file links (incl. gdshine worker URLs).
 // Standalone, sandbox-compatible: fetch + WebCrypto + regex HTML parsing only.
 
-var BASE_URL = "https://hindmovie.fit";
+var BASE_URL = "https://hindmovie.one";
 var TMDB_KEY = "5f39fd16e987a9e3fce30d55cf09b438";
 // HMAC secret (base64-decoded from the addon source)
 var SECRET = "5e96085c56e0f54eda657790ac58d19b271479c504367fc9e6a6c33f1f824e6b";
