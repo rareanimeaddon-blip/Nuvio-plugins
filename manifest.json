@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scrapers": [
     {
       "id": "anidisk",
@@ -134,13 +134,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Goojara movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara.js",
+      "filename": "providers/goojara2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -166,13 +166,13 @@
       "id": "hindmovies",
       "name": "HindMovies",
       "description": "HindMovies Hindi dubbed movies",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/hindmovies.js",
+      "filename": "providers/hindmovies2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -342,13 +342,13 @@
       "id": "showbox",
       "name": "ShowBox",
       "description": "ShowBox movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/showbox.js",
+      "filename": "providers/showbox2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
