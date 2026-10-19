@@ -17,7 +17,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "AniDisk anime streams via Hydrax"
     },
     {
       "id": "animedekho",
@@ -32,7 +33,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "AnimeDekho anime streams"
     },
     {
       "id": "animesalt",
@@ -47,7 +49,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "AnimeSalt anime streams"
     },
     {
       "id": "animeworld",
@@ -62,7 +65,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "AnimeWorld anime streams"
     },
     {
       "id": "castletv",
@@ -77,7 +81,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "CastleTV movies and shows"
     },
     {
       "id": "cinejoy",
@@ -92,7 +97,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "CineJoy movies and shows"
     },
     {
       "id": "dooflix",
@@ -107,7 +113,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "Dooflix movies and shows"
     },
     {
       "id": "fourkdhub",
@@ -122,7 +129,8 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
+      ],
+      "description": "4KHDHub direct links"
     },
     {
       "id": "goojara",
@@ -137,7 +145,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "Goojara movies and shows"
     },
     {
       "id": "hdhub4u",
@@ -152,7 +161,8 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
+      ],
+      "description": "HDHub4u movies and shows"
     },
     {
       "id": "hindmovies",
@@ -167,7 +177,8 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
+      ],
+      "description": "HindMovies Hindi dubbed movies"
     },
     {
       "id": "kartoons",
@@ -182,7 +193,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "Kartoons animated content"
     },
     {
       "id": "kmmovies",
@@ -197,7 +209,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "KMMovies movies and shows"
     },
     {
       "id": "meowtv",
@@ -212,7 +225,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "MeowTV movies and shows"
     },
     {
       "id": "moviebox",
@@ -227,7 +241,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "MovieBox movies and shows"
     },
     {
       "id": "moviesdrive",
@@ -242,7 +257,8 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
+      ],
+      "description": "MoviesDrive movies and shows"
     },
     {
       "id": "multimovies",
@@ -257,7 +273,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "MultiMovies movies and shows"
     },
     {
       "id": "netmirror",
@@ -272,7 +289,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "NetMirror movies and shows"
     },
     {
       "id": "onetouchtv",
@@ -287,7 +305,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "OneTouchTV movies and shows"
     },
     {
       "id": "piratexplay",
@@ -302,7 +321,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "PirateXPlay movies and shows"
     },
     {
       "id": "rareanime",
@@ -317,7 +337,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "RareAnime anime streams"
     },
     {
       "id": "showbox",
@@ -332,7 +353,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "ShowBox movies and shows"
     },
     {
       "id": "streamflix",
@@ -347,7 +369,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "StreamFlix movies and shows"
     },
     {
       "id": "toonworld",
@@ -362,7 +385,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "ToonWorld cartoons and anime"
     },
     {
       "id": "vaplayer",
@@ -377,7 +401,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "VAPlayer movies and shows"
     },
     {
       "id": "vidlink",
@@ -392,7 +417,8 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "VidLink movies and shows"
     }
   ]
 }
