@@ -431,7 +431,7 @@ function searchMovies(query, page) {
   var url = page === 1
     ? BASE_URL + "/?s=" + encodeURIComponent(query)
     : BASE_URL + "/page/" + page + "/?s=" + encodeURIComponent(query);
-  return getHtml(url).then(parseMovieList).catch(function () { return []; });
+  return getHtml(url).then(parseMovieList).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
 }
 
 function findMovieByTitle(title, year, imdbId) {
@@ -507,7 +507,7 @@ function getMovieSignedLinks(movieUrl) {
     return Promise.all(jobs).then(function (arr) {
       return arr.filter(function (x) { return !!x; });
     });
-  }).catch(function () { return []; });
+  }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
 }
 
 function getSeriesEpisodeSignedLink(seriesUrl, season, episode) {
@@ -620,7 +620,7 @@ function resolveSignedUrl(signedUrl, qualityLabel) {
       if (btnUrl.toLowerCase().indexOf("gdshine") >= 0) {
         return resolveGdshine(btnUrl).then(function (directUrl) {
           return directUrl ? [mk("GDShine", directUrl)] : [];
-        }).catch(function () { return []; });
+        }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
       }
       return getHtml(btnUrl, 12000).then(function (btnHtml) {
         var out = [], a;
@@ -643,7 +643,7 @@ function resolveSignedUrl(signedUrl, qualityLabel) {
           out.push(mk("Stream", h3));
         }
         return out;
-      }).catch(function () { return []; });
+      }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
     });
 
     return Promise.all(jobs).then(function (arr) {
@@ -651,7 +651,7 @@ function resolveSignedUrl(signedUrl, qualityLabel) {
       arr.forEach(function (x) { flat = flat.concat(x); });
       return flat;
     });
-  }).catch(function () { return []; });
+  }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
 }
 
 // ─── Entry point ─────────────────────────────────────────────────────────────
@@ -689,7 +689,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         if (type === "movie") {
           return getMovieSignedLinks(siteEntry.url).then(function (signedLinks) {
             var jobs = signedLinks.map(function (sl) {
-              return resolveSignedUrl(sl.signedUrl, sl.qualityLabel).catch(function () { return []; });
+              return resolveSignedUrl(sl.signedUrl, sl.qualityLabel).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
             });
             return Promise.all(jobs).then(function (arr) {
               var out = [];
@@ -708,7 +708,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
           })
           .then(toNuvioStreams);
       });
-  }).catch(function () { return []; });
+  }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
 }
 
 if (typeof module !== "undefined" && module.exports) {
