@@ -263,7 +263,8 @@ function extractM3u8FromLuluvdo(embedUrl) {
     // Fallback: look for m3u8 directly in HTML
     var dm = /(https?:\/\/[^\s"'<>]+\.m3u8[^\s"'<>]*)/.exec(html);
     if (dm) return { url: dm[1], source: 'Luluvdo' };
-    return null;
+    // Last resort: return embed URL itself (player might handle it)
+    return { url: embedUrl, source: 'Luluvdo-embed' };
   }).catch(function () { return null; });
 }
 
@@ -378,7 +379,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
 function resolveAllEmbeds(goLinks, referer, label) {
   var chain = Promise.resolve([]);
   // Limit to first 4 embeds to avoid timeouts
-  goLinks.slice(0, 2).forEach(function (goUrl) {
+  goLinks.slice(0, 1).forEach(function (goUrl) {
     chain = chain.then(function (streams) {
       return followGoPhp(goUrl, referer).then(function (embedUrl) {
         if (!embedUrl) return streams;
