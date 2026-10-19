@@ -319,7 +319,8 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
                   title: title + " | " + src.label + "p",
                   url: url,
                   quality: qualityLabel(src.label),
-                  type: "direct"
+                  type: "direct",
+                  headers: { "Referer": "https://player.abyssplayer.com/" }
                 };
               });
             });

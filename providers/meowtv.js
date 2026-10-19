@@ -295,7 +295,8 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
           title: label + " | " + lang + " | " + q,
           url: data.url,
           quality: q,
-          type: "direct"
+          type: "direct",
+          headers: { "Referer": "https://meowtv.ru/", "Origin": "https://meowtv.ru" }
         });
       }
       return out;
