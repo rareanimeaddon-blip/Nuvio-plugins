@@ -249,6 +249,8 @@ function qualityLabel(q) {
 
 // --- Nuvio entry point ---
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
+  // DEBUG: return immediately to test if provider is called
+  return Promise.resolve([{name: "DEBUG", title: "SHOWBOX CALLED OK", url: "https://example.com", quality: "Unknown", type: "direct"}]);
   var type = mediaType === "tv" ? "series" : "movie";
   if (type === "series" && (seasonNum == null || episodeNum == null)) {
     return Promise.resolve([]);
