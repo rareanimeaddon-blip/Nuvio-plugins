@@ -168,21 +168,21 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
     };
     if (type === "movie") {
       if (!match.movielink) return [];
-      return filterPlayable(toUrls(match.movielink)).then(function (urls) {
-        if (!urls.length) return [];
-        return buildStreams(urls, match.moviename, subtitleHint(match.movielink));
-      });
+      // Skip probe in Nuvio - return URLs directly (Nuvio handles playback)
+      var urls = toUrls(match.movielink);
+      if (!urls.length) return [];
+      return buildStreams(urls, match.moviename, subtitleHint(match.movielink));
     }
     if (seasonNum == null || episodeNum == null) return [];
     return getEpisodes(match.moviekey, seasonNum).then(function (episodes) {
       var episodeData = episodes[episodeNum - 1] || episodes[episodeNum];
       if (!episodeData || !episodeData.link) return [];
-      return filterPlayable(toUrls(episodeData.link)).then(function (urls) {
-        if (!urls.length) return [];
-        var label = match.moviename + " S" + seasonNum + "E" + episodeNum +
-          (episodeData.name ? " | " + episodeData.name : "");
-        return buildStreams(urls, label, subtitleHint(episodeData.link));
-      });
+      // Skip probe in Nuvio - return URLs directly
+      var urls = toUrls(episodeData.link);
+      if (!urls.length) return [];
+      var label = match.moviename + " S" + seasonNum + "E" + episodeNum +
+        (episodeData.name ? " | " + episodeData.name : "");
+      return buildStreams(urls, label, subtitleHint(episodeData.link));
     }).catch(function () { return []; });
   }).catch(function () { return []; });
 }
