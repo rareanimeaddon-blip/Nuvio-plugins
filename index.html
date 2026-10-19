@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvio Providers - 25 Scrapers</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 20px; text-align: center; border-bottom: 1px solid #2a2a4a; }
+  .hero h1 { font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(90deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { color: #a0a0c0; font-size: 1.1em; max-width: 600px; margin: 0 auto 20px; }
+  .badge { display: inline-block; background: #00d4ff22; border: 1px solid #00d4ff; color: #00d4ff; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; margin: 5px; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+  .section { margin-bottom: 40px; }
+  .section h2 { color: #00d4ff; margin-bottom: 15px; font-size: 1.5em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+  .card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 15px; transition: transform 0.2s, border-color 0.2s; }
+  .card:hover { transform: translateY(-2px); border-color: #00d4ff; }
+  .card h3 { color: #fff; font-size: 1.1em; margin-bottom: 5px; }
+  .card .lang { color: #7b2ff7; font-size: 0.85em; }
+  .card .status { font-size: 0.85em; margin-top: 8px; }
+  .status.ok { color: #00ff88; }
+  .status.warn { color: #ffaa00; }
+  .install { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 25px; }
+  .install ol { margin-left: 20px; }
+  .install li { margin-bottom: 10px; }
+  code { background: #0a0a15; padding: 2px 8px; border-radius: 4px; font-family: monospace; color: #00d4ff; }
+  .note { background: #2a1a0a; border: 1px solid #ffaa00; border-radius: 8px; padding: 15px; margin-top: 20px; }
+  .note strong { color: #ffaa00; }
+  footer { text-align: center; padding: 30px; color: #606080; border-top: 1px solid #2a2a4a; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🎬 Nuvio Providers</h1>
+  <p>25 standalone JavaScript scrapers for the Nuvio TV app. Converted from a Stremio addon collection.</p>
+  <div>
+    <span class="badge">25 Providers</span>
+    <span class="badge">Movies & TV</span>
+    <span class="badge">Multi-language</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section">
+<h2>📦 Installation</h2>
+<div class="install">
+<ol>
+  <li>Download and unzip the plugin package</li>
+  <li>Host the <code>nuvio-plugin</code> folder (GitHub Pages, Netlify, or any static host)</li>
+  <li>Copy the raw URL to <code>manifest.json</code></li>
+  <li>In Nuvio app: <strong>Settings → Plugins → Add</strong> and paste the URL</li>
+  <li>Enable the providers you want</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Providers</h2>
+<div class="grid">
+  <div class="card"><h3>AniDekho</h3><div class="lang">Anime • 20 extractors</div><div class="status warn">⚠ Returns empty while site gate active</div></div>
+  <div class="card"><h3>AniDisk</h3><div class="lang">Anime • Hydrax</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>AnimeSalt</h3><div class="lang">Anime</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>AnimeWorld</h3><div class="lang">Anime</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>CastleTV</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>CineJoy</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>Dooflix</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>4KHDHub</h3><div class="lang">Hindi • 4K</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>HDHub4u</h3><div class="lang">Hindi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>HindMovies</h3><div class="lang">Hindi</div><div class="status warn">⚠ Site currently down</div></div>
+  <div class="card"><h3>Kartoons</h3><div class="lang">Cartoons</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>KMMovies</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>MeowTV</h3><div class="lang">Multi • WASM</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>MovieBox</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>MoviesDrive</h3><div class="lang">Hindi • Auto-domain</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>MultiMovies</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>NetMirror</h3><div class="lang">Multi • Netflix/Prime</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>OneTouchTV</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>PirateXPlay</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>RareAnime</h3><div class="lang">Anime • Hindi Dubbed</div><div class="status ok">✓ Working (decoder fixed)</div></div>
+  <div class="card"><h3>ShowBox</h3><div class="lang">Multi • FebBox</div><div class="status ok">✓ Working (token included)</div></div>
+  <div class="card"><h3>StreamFlix</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>ToonWorld</h3><div class="lang">Cartoons</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>VAPlayer</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+  <div class="card"><h3>VidLink</h3><div class="lang">Multi</div><div class="status ok">✓ Working</div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="note">
+<strong>⚠ Notes:</strong>
+<ul style="margin-left: 20px; margin-top: 10px;">
+  <li><strong>AniDekho:</strong> Returns empty while the site's ad gate is active. Clear it in a browser first.</li>
+  <li><strong>HindMovies:</strong> Site is currently down (HTTP 502). Will work when it recovers.</li>
+  <li><strong>RareAnime:</strong> Final step requires JS eval for their obfuscated player — stubbed.</li>
+  <li><strong>AniDisk:</strong> Segment URLs need <code>Referer: https://player.abyssplayer.com/</code> header.</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<footer>
+  <p>Converted from Stremio addon • 25 providers • Nuvio compatible</p>
+</footer>
+
+</body>
+</html>
