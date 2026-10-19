@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "scrapers": [
     {
       "id": "anidisk",
@@ -166,7 +166,7 @@
       "id": "hindmovies",
       "name": "HindMovies",
       "description": "HindMovies Hindi dubbed movies",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
@@ -343,7 +343,7 @@
       "id": "streamflix",
       "name": "StreamFlix",
       "description": "StreamFlix movies and shows",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "author": "Converted",
       "supportedTypes": [
         "movie",

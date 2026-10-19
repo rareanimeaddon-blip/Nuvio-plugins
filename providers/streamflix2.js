@@ -190,5 +190,6 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { getStreams: getStreams };
 } else {
+  global.getStreams = getStreams;
   global.StreamFlixScraperModule = { getStreams: getStreams };
 }
