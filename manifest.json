@@ -433,6 +433,22 @@
       "contentLanguage": [
         "en"
       ]
+    },
+    {
+      "id": "diag2",
+      "name": "DIAG-Test2",
+      "description": "Diagnostic v2 - tests crypto/wasm",
+      "version": "1.0.0",
+      "author": "debug",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/_diag2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     }
   ]
 }
