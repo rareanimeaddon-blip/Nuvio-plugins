@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "scrapers": [
     {
       "id": "anidisk",
@@ -166,7 +166,7 @@
       "id": "hindmovies",
       "name": "HindMovies",
       "description": "HindMovies Hindi dubbed movies",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "author": "Converted",
       "supportedTypes": [
         "movie",

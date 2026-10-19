@@ -409,9 +409,11 @@ function getMovieSignedLinks(movieUrl, postId) {
         if (h3s[i].pos < bm.index) { label = h3s[i].text; break; }
       }
       tasks.push({ mvlinkUrl: bm[1], qualityLabel: label });
+      // Limit to 2 URLs for speed (Nuvio timeout)
+      if (tasks.length >= 2) break;
     }
     var jobs = tasks.map(function (t) {
-      return getHtml(t.mvlinkUrl).then(function (mvHtml) {
+      return getHtml(t.mvlinkUrl, 8000).then(function (mvHtml) {
         var rawHref = findHShareAnchor(mvHtml);
         if (!rawHref) return null;
         // Skip HMAC signing - server auto-redirects unsigned URLs to signed ones
