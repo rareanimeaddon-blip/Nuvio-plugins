@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scrapers": [
     {
       "id": "anidisk",
@@ -343,13 +343,13 @@
       "id": "streamflix",
       "name": "StreamFlix",
       "description": "StreamFlix movies and shows",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/streamflix.js",
+      "filename": "providers/streamflix2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
