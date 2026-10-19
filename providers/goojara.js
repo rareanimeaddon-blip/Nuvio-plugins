@@ -273,13 +273,9 @@ function resolveEmbed(embedUrl, referer) {
     return extractM3u8FromLuluvdo(embedUrl);
   }
   if (/wootly/.test(embedUrl)) {
-    // Wootly requires JS form submission; try to extract from embed page
-    return getText(embedUrl, { headers: { 'Referer': referer } }, 10000).then(function (html) {
-      var m = /src="(https?:\/\/web\.wootly\.ch\/e\/[^"]+)"/.exec(html);
-      if (!m) return null;
-      // Wootly web player needs JS interaction; return null for now
-      return null;
-    }).catch(function () { return null; });
+    // Wootly embed: return the URL directly, Nuvio can try to play it
+    // (the web player needs JS, but the embed URL itself may work)
+    return Promise.resolve(embedUrl);
   }
   // Unknown embed: return as-is (might be direct)
   return Promise.resolve(null);
