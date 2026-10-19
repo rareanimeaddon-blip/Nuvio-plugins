@@ -20,13 +20,13 @@ var REQ_HEADERS = {
 // ─── HTTP ────────────────────────────────────────────────────────────────────
 
 function fetchWithTimeout(url, options, timeoutMs) {
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, timeoutMs || 15000);
-  var opts = Object.assign({}, options || {}, { signal: controller.signal });
-  return fetch(url, opts).then(
-    function (res) { clearTimeout(timer); return res; },
-    function (err) { clearTimeout(timer); throw err; }
-  );
+  var timeout = timeoutMs || 15000;
+  return Promise.race([
+    fetch(url, options || {}),
+    new Promise(function (_, reject) {
+      setTimeout(function () { reject(new Error("Timeout")); }, timeout);
+    })
+  ]);
 }
 
 function getHtml(url, timeoutMs) {
