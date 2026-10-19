@@ -199,7 +199,7 @@ function hmacSha256SelfTest() {
 function base64Url(input) {
   var bytes = new TextEncoder().encode(String(input)), bin = "", i;
   for (i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin).replace(/\+/g, "-").replace(/\
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 function signHShare(rawId, domain) {
   var t = Math.floor(Date.now() / 1000);
