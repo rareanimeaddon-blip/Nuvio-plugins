@@ -40,6 +40,25 @@ function getText(url, opts, timeout) {
 // ─── Session / Cookie Bypass ─────────────────────────────────────────────
 
 function ensureSession() {
+  // Check for manual session from settings first
+  var manual = getManualSession();
+  if (manual) {
+    // Parse "PHPSESSID=xxx; chkname=chkval" and get dataIns from homepage
+    return fetch(BASE + '/', {
+      headers: { 'Accept': 'text/html', 'User-Agent': UA }
+    }).then(function (res) {
+      return res.text().then(function (html) {
+        var d = /data-ins="(\d+)"/.exec(html);
+        var m = /_3chk\('([^']+)','([^']+)'\)/.exec(html);
+        sessionCookie = {
+          name: m ? m[1] : '', value: m ? m[2] : '',
+          dataIns: d ? d[1] : '',
+          cookieStr: manual
+        };
+        return sessionCookie;
+      });
+    });
+  }
   if (sessionCookie) return Promise.resolve(sessionCookie);
   // Capture Set-Cookie headers from homepage + JS challenge cookie
   // AbortController removed for Nuvio QuickJS compatibility
@@ -395,4 +414,32 @@ function resolveAllEmbeds(goLinks, referer, label) {
   return chain;
 }
 
-module.exports = { getStreams: getStreams };
+function onSettings() {
+  return Promise.resolve([
+    { type: 'header', label: 'Goojara Configuration' },
+    {
+      type: 'text',
+      isPassword: false,
+      key: 'goojaraSession',
+      label: 'Session Cookies (optional)',
+      placeholder: 'PHPSESSID=abc123; d92f1e6f=187229df6ab78d91e3a438',
+      description: 'If auto-session fails, paste cookies from browser DevTools → Application → Cookies on ww1.goojara.to'
+    }
+  ]);
+}
+
+function getManualSession() {
+  try {
+    if (typeof global !== 'undefined' && global.SCRAPER_SETTINGS && global.SCRAPER_SETTINGS.goojaraSession) {
+      return String(global.SCRAPER_SETTINGS.goojaraSession).trim();
+    }
+  } catch (e) {}
+  return '';
+}
+
+module.exports = { getStreams: getStreams, onSettings: onSettings };
+// Nuvio requires global exports, not module.exports
+if (typeof global !== 'undefined') {
+  global.getStreams = getStreams;
+  global.onSettings = onSettings;
+}
