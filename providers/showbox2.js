@@ -22,17 +22,13 @@ var USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 C
 var REQ_TIMEOUT = 15000;
 
 function fetchWithTimeout(url, opts, ms) {
-  opts = opts || {};
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, ms || REQ_TIMEOUT);
-  opts.signal = controller.signal;
-  return fetch(url, opts).then(function (r) {
-    clearTimeout(timer);
-    return r;
-  }).catch(function (e) {
-    clearTimeout(timer);
-    throw e;
-  });
+  var timeout = ms || REQ_TIMEOUT;
+  return Promise.race([
+    fetch(url, opts || {}),
+    new Promise(function (_, reject) {
+      setTimeout(function () { reject(new Error("Timeout")); }, timeout);
+    })
+  ]);
 }
 
 function addonHeaders(extra) {
