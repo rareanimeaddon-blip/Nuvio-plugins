@@ -1,0 +1,24 @@
+{
+  "name": "Test",
+  "version": "1.0.0",
+  "description": "Test",
+  "author": "Test",
+  "providers": [
+    {
+      "id": "goojara",
+      "name": "Goojara",
+      "description": "Goojara movies and shows",
+      "version": "1.0.0",
+      "author": "Test",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/goojara.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    }
+  ]
+}
