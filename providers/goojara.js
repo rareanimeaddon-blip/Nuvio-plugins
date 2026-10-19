@@ -369,7 +369,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         });
       });
     }
-  }).catch(function () { return []; });
+  }).catch(function (e) { return [{name: 'DEBUG', title: 'Error: ' + (e && e.message || e), url: 'https://example.com', quality: 'Unknown', type: 'direct'}]; });
 }
 
 function resolveAllEmbeds(goLinks, referer, label) {
