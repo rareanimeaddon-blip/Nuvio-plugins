@@ -28,13 +28,13 @@ var REQUEST_HEADERS = {
 };
 
 function fetchWithTimeout(url, options, timeoutMs) {
-  var controller = new AbortController();
-  var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
-  var opts = Object.assign({}, options, { signal: controller.signal });
-  return fetch(url, opts).then(
-    function (res) { clearTimeout(timer); return res; },
-    function (err) { clearTimeout(timer); throw err; }
-  );
+  var timeout = timeoutMs || 15000;
+  // AbortController removed for Nuvio QuickJS compatibility - use Promise.race instead
+  var fetchP = fetch(url, options || {});
+  var timeoutP = new Promise(function (_, reject) {
+    setTimeout(function () { reject(new Error("Timeout " + timeout + "ms")); }, timeout);
+  });
+  return Promise.race([fetchP, timeoutP]);
 }
 
 function getJson(url, timeoutMs) {
