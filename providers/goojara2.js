@@ -43,17 +43,28 @@ function ensureSession() {
   // Check for manual session from settings first
   var manual = getManualSession();
   if (manual) {
-    // Parse "PHPSESSID=xxx; chkname=chkval" and get dataIns from homepage
+    // Extract PHPSESSID from manual input
+    var phpsess = '';
+    manual.split(';').forEach(function (p) {
+      var kv = p.trim().split('=');
+      if (kv[0].trim() === 'PHPSESSID' && kv.length >= 2) {
+        phpsess = kv.slice(1).join('=').trim();
+      }
+    });
+    // Get fresh _3chk and dataIns from homepage
     return fetch(BASE + '/', {
       headers: { 'Accept': 'text/html', 'User-Agent': UA }
     }).then(function (res) {
       return res.text().then(function (html) {
         var d = /data-ins="(\d+)"/.exec(html);
         var m = /_3chk\('([^']+)','([^']+)'\)/.exec(html);
+        var chkStr = m ? m[1] + '=' + m[2] : '';
+        var fullCookie = phpsess ? 'PHPSESSID=' + phpsess : '';
+        if (chkStr) fullCookie += (fullCookie ? '; ' : '') + chkStr;
         sessionCookie = {
           name: m ? m[1] : '', value: m ? m[2] : '',
           dataIns: d ? d[1] : '',
-          cookieStr: manual
+          cookieStr: fullCookie || manual
         };
         return sessionCookie;
       });
@@ -113,16 +124,17 @@ function searchGoojara(query) {
     var body = 'z=' + encodeURIComponent(sess.dataIns) +
       '&x=bcb23b0360' +
       '&q=' + encodeURIComponent(query);
-    // Note: Do NOT set Cookie header manually. Nuvio's fetch handles
-    // server cookies (PHPSESSID) automatically. We append the _3chk
-    // challenge cookie via a separate mechanism below.
+    // Note: For manual sessions, send the full cookie string.
+    // For auto sessions, send _3chk manually and hope Nuvio handles PHPSESSID.
     var headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Referer': BASE + '/',
       'X-Requested-With': 'XMLHttpRequest'
     };
-    // Only add _3chk manually if we have it; server cookies are automatic
-    if (sess.name && sess.value) {
+    // Use full cookieStr if available (manual session), else just _3chk
+    if (sess.cookieStr) {
+      headers['Cookie'] = sess.cookieStr;
+    } else if (sess.name && sess.value) {
       headers['Cookie'] = sess.name + '=' + sess.value;
     }
     return fetchWithTimeout(BASE + '/xmre.php', {
