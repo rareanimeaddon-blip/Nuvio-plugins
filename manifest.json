@@ -417,6 +417,22 @@
       "contentLanguage": [
         "en"
       ]
+    },
+    {
+      "id": "diag",
+      "name": "DIAG-Test",
+      "description": "Diagnostic tool - tests connectivity",
+      "version": "1.0.0",
+      "author": "debug",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/_diag.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
     }
   ]
 }
