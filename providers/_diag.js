@@ -1,9 +1,6 @@
 /**
- * DIAGNOSTIC Provider - Tests each failing provider step-by-step
- * Returns diagnostic info as stream titles so you can see where it fails
+ * DIAGNOSTIC v2 - Tests actual provider logic step-by-step
  */
-
-var TMDB_KEY = "5f39fd16e987a9e3fce30d55cf09b438";
 
 function fetchWithTimeout(url, opts, ms) {
   opts = opts || {};
@@ -19,90 +16,101 @@ function fetchWithTimeout(url, opts, ms) {
   });
 }
 
-function testUrl(label, url, opts) {
-  var start = Date.now();
-  return fetchWithTimeout(url, opts || {}, 10000).then(function (res) {
-    var ms = Date.now() - start;
-    return label + ": OK " + res.status + " (" + ms + "ms)";
-  }).catch(function (e) {
-    var ms = Date.now() - start;
-    return label + ": FAIL " + (e.message || e) + " (" + ms + "ms)";
-  });
-}
-
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
-  var results = [];
+  var streams = [];
+  var tests = [];
 
-  // Test 1: TMDB (baseline - should work since other providers use it)
-  var p1 = testUrl("TMDB", "https://api.themoviedb.org/3/movie/603?api_key=" + TMDB_KEY);
+  // Test crypto.subtle.digest (used by anidisk, hindmovies, cinejoy)
+  tests.push(
+    (async function () {
+      try {
+        if (typeof crypto === "undefined" || !crypto.subtle) {
+          return "crypto.subtle: MISSING";
+        }
+        var data = new TextEncoder().encode("test");
+        var hash = await crypto.subtle.digest("SHA-256", data);
+        return "crypto.subtle.digest: OK (" + hash.byteLength + " bytes)";
+      } catch (e) {
+        return "crypto.subtle.digest: FAIL " + (e.message || e);
+      }
+    })()
+  );
 
-  // Test 2: Cinejoy API
-  var p2 = testUrl("Cinejoy", "https://api.wing.st/v1/search?q=test", {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
+  // Test crypto.subtle.importKey (used by hindmovies for HMAC)
+  tests.push(
+    (async function () {
+      try {
+        if (typeof crypto === "undefined" || !crypto.subtle) {
+          return "crypto.subtle.importKey: SKIP (no subtle)";
+        }
+        var key = await crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode("testkey"),
+          { name: "HMAC", hash: "SHA-256" },
+          false,
+          ["sign"]
+        );
+        return "crypto.subtle.importKey: OK";
+      } catch (e) {
+        return "crypto.subtle.importKey: FAIL " + (e.message || e);
+      }
+    })()
+  );
 
-  // Test 3: HindMovies
-  var p3 = testUrl("HindMovies", "https://hindmovie.one/?s=test", {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
+  // Test WebAssembly (used by meowtv)
+  tests.push(
+    (async function () {
+      try {
+        if (typeof WebAssembly === "undefined") {
+          return "WebAssembly: MISSING";
+        }
+        // Minimal wasm module (empty)
+        var wasmCode = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]);
+        var mod = await WebAssembly.instantiate(wasmCode);
+        return "WebAssembly.instantiate: OK";
+      } catch (e) {
+        return "WebAssembly.instantiate: FAIL " + (e.message || e);
+      }
+    })()
+  );
 
-  // Test 4: MeowTV API
-  var p4 = testUrl("MeowTV-API", "https://api.meowtv.ru/altcha/challenge", {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
+  // Test TextEncoder/TextDecoder
+  tests.push(
+    Promise.resolve().then(function () {
+      try {
+        var enc = new TextEncoder().encode("hello");
+        var dec = new TextDecoder().decode(enc);
+        return "TextEncoder/Decoder: OK";
+      } catch (e) {
+        return "TextEncoder/Decoder: FAIL " + (e.message || e);
+      }
+    })
+  );
 
-  // Test 5: AniDisk API
-  var p5 = testUrl("AniDisk", "https://api.deadbase.host/api/v1/public/anime/search?q=test", {
-    headers: {
-      "User-Agent": "Mozilla/5.0",
-      "Origin": "https://anidisk.org",
-      "Referer": "https://anidisk.org/"
-    }
-  });
+  // Test atob/btoa with large string (meowtv has large base64)
+  tests.push(
+    Promise.resolve().then(function () {
+      try {
+        var large = btoa("x".repeat(100000));
+        var back = atob(large);
+        return "atob/btoa large: OK (" + back.length + ")";
+      } catch (e) {
+        return "atob/btoa large: FAIL " + (e.message || e);
+      }
+    })
+  );
 
-  // Test 6: Goojara
-  var p6 = testUrl("Goojara", "https://ww1.goojara.to/", {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
-
-  // Test 7: ShowBox/FebBox
-  var p7 = testUrl("FebBox", "https://www.febbox.com/", {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
-
-  // Test 8: crypto.subtle availability
-  var cryptoTest = "crypto.subtle: " + (typeof crypto !== "undefined" && crypto.subtle ? "AVAILABLE" : "MISSING");
-
-  // Test 9: WebAssembly availability
-  var wasmTest = "WebAssembly: " + (typeof WebAssembly !== "undefined" ? "AVAILABLE" : "MISSING");
-
-  return Promise.all([p1, p2, p3, p4, p5, p6, p7]).then(function (tests) {
-    var streams = [];
-    streams.push({
-      name: "DIAG",
-      title: "=== Environment === | " + cryptoTest + " | " + wasmTest,
-      url: "https://example.com/",
-      quality: "diag",
-      type: "direct"
-    });
-    tests.forEach(function (t, i) {
+  return Promise.all(tests).then(function (results) {
+    results.forEach(function (r) {
       streams.push({
-        name: "DIAG",
-        title: t,
+        name: "DIAG2",
+        title: r,
         url: "https://example.com/",
         quality: "diag",
         type: "direct"
       });
     });
     return streams;
-  }).catch(function (e) {
-    return [{
-      name: "DIAG",
-      title: "DIAG FAILED: " + (e.message || e),
-      url: "https://example.com/",
-      quality: "diag",
-      type: "direct"
-    }];
   });
 }
 
