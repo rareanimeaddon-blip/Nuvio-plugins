@@ -134,13 +134,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Goojara movies and shows",
-      "version": "1.0.1",
+      "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara2.js",
+      "filename": "providers/goojara.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -342,13 +342,13 @@
       "id": "showbox",
       "name": "ShowBox",
       "description": "ShowBox movies and shows",
-      "version": "1.0.1",
+      "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/showbox2.js",
+      "filename": "providers/showbox.js",
       "enabled": true,
       "contentLanguage": [
         "en"
