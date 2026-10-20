@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.16",
+  "version": "1.2.17",
   "scrapers": [
     {
       "id": "anidisk",
@@ -441,13 +441,13 @@
       "id": "tvdiag",
       "name": "TV Diag (temporary)",
       "description": "Diagnostic probes round 2",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/diag4.js",
+      "filename": "providers/diag5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
