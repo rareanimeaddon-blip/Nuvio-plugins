@@ -16,7 +16,11 @@ var CONFIG_TTL = 5 * 60 * 1000;
 var EPISODES_TTL = 60 * 60 * 1000;
 var PROBE_TTL = 10 * 60 * 1000;
 
+var DATA_INDEX_URL = "https://raw.githubusercontent.com/rareanimeaddon-blip/Nuvio-plugins/refs/heads/main/streamflix-data/index.json";
+var DATA_CHUNK_BASE = "https://raw.githubusercontent.com/rareanimeaddon-blip/Nuvio-plugins/refs/heads/main/streamflix-data/";
+
 var dataCache = null;
+var indexCache = null;
 var basesCache = null;
 var episodesCache = {};
 var probeCache = {};
@@ -46,8 +50,8 @@ function getJson(url, timeoutMs) {
 
 function getDataText() {
   if (dataCache && Date.now() - dataCache.ts < DATA_TTL) return Promise.resolve(dataCache.text);
-  // Fetch as text; do NOT JSON.parse the whole 3.7MB (QuickJS runs out of
-  // memory and returns []). We extract only the one item we need below.
+  // Fallback only: full 3.7MB catalog (slow/heavy in Nuvio - used when the
+  // title is missing from the pre-split chunks, e.g. brand-new additions).
   return fetchWithTimeout(API_BASE + "/data.json", { headers: REQUEST_HEADERS }, 25000).then(function (response) {
     if (!response.ok) throw new Error("HTTP " + response.status);
     return response.text();
@@ -55,6 +59,35 @@ function getDataText() {
     dataCache = { text: text, ts: Date.now() };
     return text;
   });
+}
+
+// Fast path: index (2.7KB) -> one chunk (~69KB) instead of the 3.7MB file.
+function findItemChunked(tmdbId, wantTv) {
+  var indexP = (indexCache && Date.now() - indexCache.ts < DATA_TTL)
+    ? Promise.resolve(indexCache.index)
+    : getJson(DATA_INDEX_URL, 8000).then(function (index) {
+        indexCache = { index: index, ts: Date.now() };
+        return index;
+      });
+  return indexP.then(function (index) {
+    var num = parseInt(tmdbId, 10);
+    if (!isFinite(num) || !index || !index.length) return null;
+    var file = null;
+    for (var i = 0; i < index.length; i++) {
+      if (num >= index[i].min && num <= index[i].max) { file = index[i].file; break; }
+    }
+    if (!file) return null;
+    return getJson(DATA_CHUNK_BASE + file, 8000).then(function (items) {
+      var fallback = null;
+      for (var j = 0; j < items.length; j++) {
+        if (String(items[j].tmdb) === String(tmdbId)) {
+          if (!!items[j].isTV === !!wantTv) return items[j];
+          if (!fallback) fallback = items[j];
+        }
+      }
+      return fallback;
+    });
+  }).catch(function () { return null; });
 }
 
 // Extract the single data object whose "tmdb" matches, by locating the
@@ -196,9 +229,18 @@ function getEpisodes(movieKey, season) {
 
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   var type = mediaType === "tv" ? "series" : "movie";
-  return Promise.all([getDataText(), getBases()]).then(function (results) {
-    var text = results[0], bases = results[1];
-    var match = extractItem(text, tmdbId, type === "series");
+  return Promise.all([findItemChunked(tmdbId, type === "series"), getBases()]).then(function (results) {
+    var match = results[0], bases = results[1];
+    if (match) return finish(match, bases, type, seasonNum, episodeNum);
+    // Not in chunks (new title) -> fall back to the full catalog text
+    return getDataText().then(function (text) {
+      var m2 = extractItem(text, tmdbId, type === "series");
+      return finish(m2, bases, type, seasonNum, episodeNum);
+    });
+  }).catch(function () { return []; });
+}
+
+function finish(match, bases, type, seasonNum, episodeNum) {
     if (!match || bases.length === 0) return [];
     var toUrls = function (link) {
       return bases.map(function (base) { return base + String(link).replace(/^\/+/, ""); });
@@ -221,7 +263,6 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         (episodeData.name ? " | " + episodeData.name : "");
       return buildStreams(urls, label, subtitleHint(episodeData.link));
     }).catch(function () { return []; });
-  }).catch(function () { return []; });
 }
 
 if (typeof module !== "undefined" && module.exports) {
