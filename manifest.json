@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "scrapers": [
     {
       "id": "anidisk",
@@ -198,13 +198,13 @@
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "description": "MoviesDrive movies and shows",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviesdrive.js",
+      "filename": "providers/moviesdrive2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
