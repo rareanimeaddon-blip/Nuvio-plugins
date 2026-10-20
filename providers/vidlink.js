@@ -122,7 +122,6 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
                     url: playlistUrl,
                     quality: 'Auto',
                     size: 'Unknown',
-                    headers: VIDLINK_HEADERS,
                     provider: 'vidlink'
                 }];
             }
@@ -138,7 +137,6 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
                     url: stream.url,
                     quality: quality,
                     size: 'Unknown',
-                    headers: VIDLINK_HEADERS,
                     provider: 'vidlink'
                 };
             });
@@ -154,7 +152,6 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
                 url: playlistUrl,
                 quality: 'Auto',
                 size: 'Unknown',
-                headers: VIDLINK_HEADERS,
                 provider: 'vidlink'
             }];
         });
@@ -264,7 +261,6 @@ function processVidlinkResponse(data, mediaInfo) {
                         url: qualityData.url,
                         quality: quality,
                         size: 'Unknown',
-                        headers: VIDLINK_HEADERS,
                         provider: 'vidlink'
                     });
                 }
@@ -318,7 +314,6 @@ function processVidlinkResponse(data, mediaInfo) {
                 url: data.url,
                 quality: quality,
                 size: 'Unknown',
-                headers: VIDLINK_HEADERS,
                 provider: 'vidlink'
             });
         }
@@ -339,7 +334,6 @@ function processVidlinkResponse(data, mediaInfo) {
                         url: stream.url,
                         quality: quality,
                         size: stream.size || 'Unknown',
-                        headers: VIDLINK_HEADERS,
                         provider: 'vidlink'
                     });
                 }
@@ -362,7 +356,6 @@ function processVidlinkResponse(data, mediaInfo) {
                         url: link.url,
                         quality: quality,
                         size: link.size || 'Unknown',
-                        headers: VIDLINK_HEADERS,
                         provider: 'vidlink'
                     });
                 }
@@ -393,7 +386,6 @@ function processVidlinkResponse(data, mediaInfo) {
                             url: value,
                             quality: quality,
                             size: 'Unknown',
-                            headers: VIDLINK_HEADERS,
                             provider: 'vidlink'
                         });
                     } else if (typeof value === 'object' && value !== null) {
