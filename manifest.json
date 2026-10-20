@@ -1,6 +1,6 @@
 {
   "name": "26-Provider Collection",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "scrapers": [
     {
       "id": "anidisk",
@@ -401,6 +401,23 @@
       "enabled": true,
       "hasSettings": true,
       "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "hindmovies",
+      "name": "HindMovies",
+      "description": "Hindi and dual-audio movies and series from hindmovie.one, resolved to direct files via GDShine",
+      "version": "1.1.0",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/hindmovies3.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi",
         "en"
       ]
     }
