@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "scrapers": [
     {
       "id": "anidisk",
@@ -432,6 +432,22 @@
         "tv"
       ],
       "filename": "providers/goojara5.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "tvdiag",
+      "name": "TV Diag (temporary)",
+      "description": "Diagnostic probes - reports host reachability from inside the TV",
+      "version": "1.0.0",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/diag3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
