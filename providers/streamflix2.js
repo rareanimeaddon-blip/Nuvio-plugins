@@ -44,13 +44,53 @@ function getJson(url, timeoutMs) {
   });
 }
 
-function getData() {
-  if (dataCache && Date.now() - dataCache.ts < DATA_TTL) return Promise.resolve(dataCache.items);
-  return getJson(API_BASE + "/data.json", 20000).then(function (payload) {
-    var items = (payload && payload.data) || [];
-    dataCache = { items: items, ts: Date.now() };
-    return items;
+function getDataText() {
+  if (dataCache && Date.now() - dataCache.ts < DATA_TTL) return Promise.resolve(dataCache.text);
+  // Fetch as text; do NOT JSON.parse the whole 3.7MB (QuickJS runs out of
+  // memory and returns []). We extract only the one item we need below.
+  return fetchWithTimeout(API_BASE + "/data.json", { headers: REQUEST_HEADERS }, 25000).then(function (response) {
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    return response.text();
+  }).then(function (text) {
+    dataCache = { text: text, ts: Date.now() };
+    return text;
   });
+}
+
+// Extract the single data object whose "tmdb" matches, by locating the
+// needle and brace-matching its enclosing object. Parses ~1KB, not 3.7MB.
+function extractItem(text, tmdbId, wantTv) {
+  var needles = ['"tmdb":"' + tmdbId + '"', '"tmdb":' + tmdbId + ','];
+  var fallback = null;
+  for (var n = 0; n < needles.length; n++) {
+    var searchFrom = 0;
+    while (true) {
+      var idx = text.indexOf(needles[n], searchFrom);
+      if (idx === -1) break;
+      var start = text.lastIndexOf('{', idx);
+      if (start === -1) break;
+      var depth = 0, inStr = false, esc = false, end = -1;
+      for (var i = start; i < text.length; i++) {
+        var c = text.charAt(i);
+        if (esc) { esc = false; continue; }
+        if (c === '\\') { esc = true; continue; }
+        if (c === '"') { inStr = !inStr; continue; }
+        if (inStr) continue;
+        if (c === '{') depth++;
+        else if (c === '}') { depth--; if (depth === 0) { end = i; break; } }
+      }
+      if (end === -1) break;
+      var obj = null;
+      try { obj = JSON.parse(text.slice(start, end + 1)); } catch (e) { obj = null; }
+      if (obj && String(obj.tmdb) === String(tmdbId)) {
+        if (!!obj.isTV === !!wantTv) return obj;
+        if (!fallback) fallback = obj;
+      }
+      searchFrom = idx + needles[n].length;
+    }
+    if (fallback) break;
+  }
+  return fallback;
 }
 
 function normalizeBase(base) {
@@ -156,12 +196,9 @@ function getEpisodes(movieKey, season) {
 
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   var type = mediaType === "tv" ? "series" : "movie";
-  return Promise.all([getData(), getBases()]).then(function (results) {
-    var items = results[0], bases = results[1];
-    var match = null;
-    for (var i = 0; i < items.length; i++) {
-      if (String(items[i].tmdb) === String(tmdbId)) { match = items[i]; break; }
-    }
+  return Promise.all([getDataText(), getBases()]).then(function (results) {
+    var text = results[0], bases = results[1];
+    var match = extractItem(text, tmdbId, type === "series");
     if (!match || bases.length === 0) return [];
     var toUrls = function (link) {
       return bases.map(function (base) { return base + String(link).replace(/^\/+/, ""); });
@@ -189,7 +226,9 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { getStreams: getStreams };
-} else {
+}
+// Always set the global export too - Nuvio looks for global.getStreams
+if (typeof global !== "undefined") {
   global.getStreams = getStreams;
   global.StreamFlixScraperModule = { getStreams: getStreams };
 }
