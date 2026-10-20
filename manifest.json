@@ -1,18 +1,18 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "scrapers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
       "description": "AniDisk anime streams via Hydrax",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/anidisk6.js",
+      "filename": "providers/anidisk7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -182,13 +182,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox2.js",
+      "filename": "providers/moviebox3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -432,6 +432,22 @@
         "tv"
       ],
       "filename": "providers/goojara6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "tvdiag",
+      "name": "TV Diag (temporary)",
+      "description": "Diagnostic probes round 2",
+      "version": "1.0.1",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/diag4.js",
       "enabled": true,
       "contentLanguage": [
         "en"
