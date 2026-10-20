@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.23",
+  "version": "1.2.24",
   "scrapers": [
     {
       "id": "anidisk",
@@ -432,6 +432,22 @@
         "tv"
       ],
       "filename": "providers/goojara7.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "tvdiag",
+      "name": "TV Diag (temporary)",
+      "description": "Crowd simulation of failing providers",
+      "version": "1.0.8",
+      "author": "diag",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/diag11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
