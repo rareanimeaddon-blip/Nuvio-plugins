@@ -1,18 +1,18 @@
 {
-  "name": "26-Provider Collection",
-  "version": "1.2.12",
+  "name": "27-Provider Collection",
+  "version": "1.2.13",
   "scrapers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
       "description": "AniDisk anime streams via Hydrax",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/anidisk4.js",
+      "filename": "providers/anidisk5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -70,13 +70,13 @@
       "id": "castletv",
       "name": "CastleTV",
       "description": "CastleTV movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/castletv.js",
+      "filename": "providers/castletv2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -86,13 +86,13 @@
       "id": "cinejoy",
       "name": "CineJoy",
       "description": "CineJoy movies and shows",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cinejoy.js",
+      "filename": "providers/cinejoy2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -102,13 +102,13 @@
       "id": "dooflix",
       "name": "Dooflix",
       "description": "Dooflix movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dooflix.js",
+      "filename": "providers/dooflix2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -134,13 +134,13 @@
       "id": "hdhub4u",
       "name": "HDHub4u",
       "description": "HDHub4u movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/hdhub4u.js",
+      "filename": "providers/hdhub4u2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -230,13 +230,13 @@
       "id": "netmirror",
       "name": "NetMirror",
       "description": "NetMirror movies and shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirror.js",
+      "filename": "providers/netmirror2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -262,13 +262,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay5.js",
+      "filename": "providers/piratexplay6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
