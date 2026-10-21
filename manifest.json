@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.45",
+  "version": "1.2.46",
   "scrapers": [
     {
       "id": "anidisk",
@@ -38,13 +38,13 @@
       "id": "animesalt",
       "name": "AnimeSalt",
       "description": "AnimeSalt anime streams",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animesalt5.js",
+      "filename": "providers/animesalt6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -102,13 +102,13 @@
       "id": "dooflix",
       "name": "Dooflix",
       "description": "Dooflix movies and shows",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dooflix6.js",
+      "filename": "providers/dooflix7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -262,13 +262,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.9",
+      "version": "1.0.10",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay10.js",
+      "filename": "providers/piratexplay11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
