@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.36",
+  "version": "1.2.37",
   "scrapers": [
     {
       "id": "anidisk",
@@ -432,6 +432,22 @@
         "tv"
       ],
       "filename": "providers/goojara9.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "mbdiag",
+      "name": "MB Diag",
+      "filename": "providers/mbdiag2.js",
+      "version": "1.0.1",
+      "description": "Temporary diagnostic for MovieBox playback",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
       "enabled": true,
       "contentLanguage": [
         "en"
