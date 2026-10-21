@@ -38,12 +38,19 @@
 
 // MultiMovies scraper for Nuvio
 // Standalone, sandbox-compatible (no Node APIs, no external deps).
-// Aggregates VidOut + Filmu singularity APIs by TMDB ID.
+// Aggregates VidOut + Vidly (vidly.pro embed pages) by TMDB ID.
+// 2026-10-21: filmu.in's singularity JSON API is dead (embed.filmu.in 301s
+// to vidly.pro, whose /api/singularity-* routes return the SPA shell, not
+// JSON). vidly.pro is the same service rebranded as an embed player; its
+// embed pages (/movie/{tmdbId}, /tv/{tmdbId}/{s}/{e}) server-render the
+// direct m3u8 URL in the HTML, so we extract it from the page instead.
+// No probe gate (see getStreams): the probe fetch runs through the plugin
+// fetch service, whose reachability says nothing about the player's.
 
 var PROVIDER = "MultiMovies";
 var VO_API = "https://api.eclq-404.workers.dev";
 var VO_HEADER = { Referer: VO_API + "/" };
-var FLMU_BASE = "https://embed.filmu.in";
+var VIDLY_BASE = "https://vidly.pro";
 var UPSTREAM_TIMEOUT_MS = 10000;
 
 function fetchWithTimeout(url, options, timeoutMs) {
@@ -117,40 +124,42 @@ function fetchVidout(tmdbId, mediaType, season, episode) {
   }).catch(function () { return []; });
 }
 
-function fetchFilmu(tmdbId, mediaType, season, episode) {
+function fetchText(url, options) {
+  return fetchWithTimeout(url, options, UPSTREAM_TIMEOUT_MS).then(function (res) {
+    if (!res.ok) return null;
+    return res.text().catch(function () { return null; });
+  }).catch(function () { return null; });
+}
+
+// Vidly embed-page extractor. The page server-renders the direct stream
+// URL (m3u8/mp4) in the HTML, both raw and JSON-escaped (\/). Dedupes and
+// skips subtitle playlists. TMDB-ID-keyed URLs keep the exact-title gate
+// intact by construction.
+function extractVidlyUrls(html) {
+  var cleaned = String(html || "").replace(/\\\//g, "/");
+  var re = /https?:\/\/[^"'<>\s\\]+\.(?:m3u8|mp4)(?:\?[^"'<>\s\\]*)?/gi;
+  var out = [];
+  var seen = {};
+  var m;
+  while ((m = re.exec(cleaned)) !== null) {
+    var u = m[0];
+    if (u.toLowerCase().indexOf("subtitle") !== -1) continue;
+    if (!seen[u]) { seen[u] = true; out.push(u); }
+  }
+  return out;
+}
+
+function fetchVidly(tmdbId, mediaType, season, episode) {
   var isTv = mediaType === "tv";
-  var path = isTv
-    ? FLMU_BASE + "/api/singularity-tv?tmdb=" + tmdbId + "&s=" + season + "&e=" + episode
-    : FLMU_BASE + "/api/singularity-movie?id=" + tmdbId;
-  var referer = isTv
-    ? FLMU_BASE + "/tv/" + tmdbId + "/" + season + "/" + episode
-    : FLMU_BASE + "/movie/" + tmdbId;
-  return fetchJson(path, { headers: { Referer: referer } }).then(function (root) {
-    if (!root) return [];
-    var base = root._base || "";
+  var pageUrl = isTv
+    ? VIDLY_BASE + "/tv/" + tmdbId + "/" + season + "/" + episode
+    : VIDLY_BASE + "/movie/" + tmdbId;
+  return fetchText(pageUrl, { headers: { Referer: VIDLY_BASE + "/" } }).then(function (html) {
+    if (!html) return [];
+    var urls = extractVidlyUrls(html);
     var streams = [];
-    var push = function (url, q, title) {
-      streams.push(makeStream("Filmu", url, q, title));
-    };
-    var sources = root.sources || [];
-    for (var i = 0; i < sources.length; i++) {
-      var src = sources[i];
-      if (!src || typeof src.url !== "string") continue;
-      var url = resolveUrl(src.url, base);
-      if (!isPlayable(url)) continue;
-      push(url, normalizeQuality(src.quality || "1080p"));
-    }
-    if (streams.length === 0) {
-      var q = normalizeQuality(root.quality || "1080p");
-      var single = (typeof root.url === "string" && root.url) ||
-        (root.multilingual && root.multilingual_url) || "";
-      var singleUrl = resolveUrl(single, base);
-      if (isPlayable(singleUrl)) {
-        push(singleUrl, q, PROVIDER + " • " + q);
-      } else if (root.m3u8_path && base) {
-        var m3u8 = resolveUrl(root.m3u8_path, base);
-        if (isPlayable(m3u8)) push(m3u8, q);
-      }
+    for (var i = 0; i < urls.length; i++) {
+      if (isPlayable(urls[i])) streams.push(makeStream("Vidly", urls[i], "HD"));
     }
     return streams;
   }).catch(function () { return []; });
@@ -169,7 +178,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   if (mediaType === "tv" && (seasonNum == null || episodeNum == null)) return Promise.resolve([]);
   return Promise.all([
     fetchVidout(tmdbId, mediaType, seasonNum, episodeNum),
-    fetchFilmu(tmdbId, mediaType, seasonNum, episodeNum),
+    fetchVidly(tmdbId, mediaType, seasonNum, episodeNum),
   ]).then(function (results) {
     // No probe gate: the probe fetch runs through the plugin fetch
     // service, whose reachability says nothing about the player's -
