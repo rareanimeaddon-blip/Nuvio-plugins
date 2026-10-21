@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.35",
+  "version": "1.2.36",
   "scrapers": [
     {
       "id": "anidisk",
@@ -182,13 +182,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox13.js",
+      "filename": "providers/moviebox14.js",
       "enabled": true,
       "contentLanguage": [
         "en"
