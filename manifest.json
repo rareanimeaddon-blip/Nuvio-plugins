@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.48",
+  "version": "1.2.49",
   "scrapers": [
     {
       "id": "anidisk",
@@ -278,13 +278,13 @@
       "id": "rareanime",
       "name": "RareAnime",
       "description": "RareAnime anime streams",
-      "version": "1.0.9",
+      "version": "1.0.10",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/rareanime10.js",
+      "filename": "providers/rareanime11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
