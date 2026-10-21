@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.27",
+  "version": "1.2.28",
   "scrapers": [
     {
       "id": "anidisk",
@@ -182,13 +182,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox7.js",
+      "filename": "providers/moviebox8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -424,7 +424,7 @@
     {
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to \u2014 port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction)",
+      "description": "Movies and series from goojara.to — port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction)",
       "version": "2.0.6",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
