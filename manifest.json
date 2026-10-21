@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.26",
+  "version": "1.2.27",
   "scrapers": [
     {
       "id": "anidisk",
@@ -182,13 +182,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox6.js",
+      "filename": "providers/moviebox7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -214,13 +214,13 @@
       "id": "multimovies",
       "name": "MultiMovies",
       "description": "MultiMovies movies and shows",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/multimovies5.js",
+      "filename": "providers/multimovies6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -311,13 +311,13 @@
       "id": "streamflix",
       "name": "StreamFlix",
       "description": "StreamFlix movies and shows",
-      "version": "1.0.12",
+      "version": "1.0.13",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/streamflix9.js",
+      "filename": "providers/streamflix10.js",
       "enabled": true,
       "contentLanguage": [
         "en"
