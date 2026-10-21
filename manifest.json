@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.33",
+  "version": "1.2.34",
   "scrapers": [
     {
       "id": "anidisk",
@@ -182,13 +182,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.0.10",
+      "version": "1.1.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox11.js",
+      "filename": "providers/moviebox12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -432,22 +432,6 @@
         "tv"
       ],
       "filename": "providers/goojara9.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "mbdiag",
-      "name": "MB Diag",
-      "filename": "providers/mbdiag2.js",
-      "version": "1.0.1",
-      "description": "Temporary diagnostic for MovieBox playback",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
       "enabled": true,
       "contentLanguage": [
         "en"
