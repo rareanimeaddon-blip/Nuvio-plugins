@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.44",
+  "version": "1.2.45",
   "scrapers": [
     {
       "id": "anidisk",
@@ -294,13 +294,13 @@
       "id": "showbox",
       "name": "ShowBox",
       "description": "ShowBox movies and shows",
-      "version": "1.0.3",
+      "version": "1.1.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/showbox4.js",
+      "filename": "providers/showbox5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -391,13 +391,13 @@
       "id": "gramcinema",
       "name": "GramCinema",
       "description": "GramCinema movies and shows via CinemaTV",
-      "version": "1.0.3",
+      "version": "1.1.0",
       "author": "NuvioPlugin",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/gramcinema4.js",
+      "filename": "providers/gramcinema5.js",
       "enabled": true,
       "hasSettings": true,
       "contentLanguage": [
