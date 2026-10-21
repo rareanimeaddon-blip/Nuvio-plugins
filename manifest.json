@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.37",
+  "version": "1.2.38",
   "scrapers": [
     {
       "id": "anidisk",
@@ -440,8 +440,8 @@
     {
       "id": "mbdiag",
       "name": "MB Diag",
-      "filename": "providers/mbdiag2.js",
-      "version": "1.0.1",
+      "filename": "providers/mbdiag3.js",
+      "version": "1.0.2",
       "description": "Temporary diagnostic for MovieBox playback",
       "author": "Converted",
       "supportedTypes": [
