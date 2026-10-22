@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.55",
+  "version": "1.2.56",
   "scrapers": [
     {
       "id": "anidisk",
@@ -425,13 +425,29 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Movies and series from goojara.to — port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction)",
-      "version": "2.0.6",
+      "version": "2.0.7",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara9.js",
+      "filename": "providers/goojara10.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "goojaradiag",
+      "name": "Goojara Diag",
+      "description": "Temporary diagnostic build of Goojara - stage readouts for the phone test error",
+      "version": "1.0.0",
+      "author": "Muse (diagnostic)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/goojaradiag1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
