@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.57",
+  "version": "1.2.58",
   "scrapers": [
     {
       "id": "anidisk",
@@ -425,13 +425,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Movies and series from goojara.to — port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction)",
-      "version": "2.0.7",
+      "version": "2.0.8",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara10.js",
+      "filename": "providers/goojara11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
