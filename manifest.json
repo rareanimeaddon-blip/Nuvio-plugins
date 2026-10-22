@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.70",
+  "version": "1.2.71",
   "scrapers": [
     {
       "id": "anidisk",
@@ -366,22 +366,6 @@
         "tv"
       ],
       "filename": "providers/vidlink4.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "dahmermovies",
-      "name": "DahmerMovies",
-      "description": "DahmerMovies movies and shows",
-      "version": "1.0.3",
-      "author": "NuvioPlugin",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/dahmermovies4.js",
       "enabled": true,
       "contentLanguage": [
         "en"
