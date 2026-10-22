@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.62",
+  "version": "1.2.63",
   "scrapers": [
     {
       "id": "anidisk",
@@ -440,14 +440,14 @@
     {
       "id": "goojaradiag",
       "name": "Goojara Diag",
-      "description": "Temporary diagnostic build of Goojara - transport probes with a real 9-second window (Diag4 clock was cache-shortened to 0.2s)",
-      "version": "1.0.4",
+      "description": "Temporary diagnostic build of Goojara - full chain readout (session cookies / search POST / page / embeds) now that transport is proven good",
+      "version": "1.0.5",
       "author": "Muse (diagnostic)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojaradiag5.js",
+      "filename": "providers/goojaradiag6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
