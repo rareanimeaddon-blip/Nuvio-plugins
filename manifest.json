@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.49",
+  "version": "1.2.50",
   "scrapers": [
     {
       "id": "anidisk",
@@ -262,13 +262,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.12",
+      "version": "1.0.13",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay13.js",
+      "filename": "providers/piratexplay14.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -278,13 +278,13 @@
       "id": "rareanime",
       "name": "RareAnime",
       "description": "RareAnime anime streams",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/rareanime11.js",
+      "filename": "providers/rareanime12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
