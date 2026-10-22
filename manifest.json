@@ -1,18 +1,18 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.50",
+  "version": "1.2.51",
   "scrapers": [
     {
       "id": "anidisk",
       "name": "AniDisk",
       "description": "AniDisk anime streams via Hydrax",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/anidisk11.js",
+      "filename": "providers/anidisk12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -262,13 +262,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.13",
+      "version": "1.0.14",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay14.js",
+      "filename": "providers/piratexplay15.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -278,13 +278,13 @@
       "id": "rareanime",
       "name": "RareAnime",
       "description": "RareAnime anime streams",
-      "version": "1.0.11",
+      "version": "1.0.12",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/rareanime12.js",
+      "filename": "providers/rareanime13.js",
       "enabled": true,
       "contentLanguage": [
         "en"
