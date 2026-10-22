@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.65",
+  "version": "1.2.66",
   "scrapers": [
     {
       "id": "anidisk",
@@ -424,14 +424,14 @@
     {
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.0: fully sequential embed walk (Wootly first, early stop) - parallel bursts were choking the embed hosts on repeat runs.",
-      "version": "2.1.0",
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.0.11 restored: CONFIRMED working on the LG TV (streams + playback) - do not replace without a TV verdict.",
+      "version": "2.0.11",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara15.js",
+      "filename": "providers/goojara14.js",
       "enabled": true,
       "contentLanguage": [
         "en"
