@@ -1,6 +1,6 @@
 {
-  "name": "27-Provider Collection",
-  "version": "1.2.72",
+  "name": "28-Provider Collection",
+  "version": "1.2.73",
   "scrapers": [
     {
       "id": "anidisk",
@@ -166,13 +166,13 @@
       "id": "kmmovies",
       "name": "KMMovies",
       "description": "KMMovies movies and shows",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/kmmovies5.js",
+      "filename": "providers/kmmovies6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -356,22 +356,6 @@
       ]
     },
     {
-      "id": "vidlink",
-      "name": "VidLink",
-      "description": "VidLink movies and shows",
-      "version": "1.0.4",
-      "author": "phisher98 (adapted)",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/vidlink4.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
       "id": "gramcinema",
       "name": "GramCinema",
       "description": "GramCinema movies and shows via CinemaTV",
@@ -448,6 +432,22 @@
         "tv"
       ],
       "filename": "providers/gjping1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "zxcstream",
+      "name": "ZXCStream",
+      "description": "ZXCStream movies and shows via VidBolt resolve",
+      "version": "1.0.0",
+      "author": "NuvioPlugin",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/zxcstream1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
