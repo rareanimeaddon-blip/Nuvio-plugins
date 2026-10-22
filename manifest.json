@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.63",
+  "version": "1.2.64",
   "scrapers": [
     {
       "id": "anidisk",
@@ -424,14 +424,14 @@
     {
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction). v2.0.10: plain fetch chains only (tick-race deadlines removed - they wedged the app fetch bridge after one good run).",
-      "version": "2.0.10",
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.0.11: clock-bounded collector + whole chain - hung embed servers can no longer freeze the provider past the app budget.",
+      "version": "2.0.11",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara13.js",
+      "filename": "providers/goojara14.js",
       "enabled": true,
       "contentLanguage": [
         "en"
