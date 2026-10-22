@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.68",
+  "version": "1.2.69",
   "scrapers": [
     {
       "id": "anidisk",
@@ -327,13 +327,13 @@
       "id": "toonworld",
       "name": "ToonWorld",
       "description": "ToonWorld cartoons and anime",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/toonworld9.js",
+      "filename": "providers/toonworld10.js",
       "enabled": true,
       "contentLanguage": [
         "en"
