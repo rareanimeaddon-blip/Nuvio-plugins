@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.51",
+  "version": "1.2.52",
   "scrapers": [
     {
       "id": "anidisk",
@@ -262,13 +262,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.14",
+      "version": "1.0.15-diag",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay15.js",
+      "filename": "providers/pxpdiag1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
