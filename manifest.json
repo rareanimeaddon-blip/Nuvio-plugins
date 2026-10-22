@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.64",
+  "version": "1.2.65",
   "scrapers": [
     {
       "id": "anidisk",
@@ -424,14 +424,14 @@
     {
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.0.11: clock-bounded collector + whole chain - hung embed servers can no longer freeze the provider past the app budget.",
-      "version": "2.0.11",
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.0: fully sequential embed walk (Wootly first, early stop) - parallel bursts were choking the embed hosts on repeat runs.",
+      "version": "2.1.0",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara14.js",
+      "filename": "providers/goojara15.js",
       "enabled": true,
       "contentLanguage": [
         "en"
