@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.69",
+  "version": "1.2.70",
   "scrapers": [
     {
       "id": "anidisk",
@@ -102,13 +102,13 @@
       "id": "dooflix",
       "name": "Dooflix",
       "description": "Dooflix movies and shows",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dooflix7.js",
+      "filename": "providers/dooflix8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
