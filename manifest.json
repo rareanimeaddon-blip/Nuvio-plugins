@@ -1,6 +1,6 @@
 {
-  "name": "28-Provider Collection",
-  "version": "1.2.75",
+  "name": "27-Provider Collection",
+  "version": "1.2.76",
   "scrapers": [
     {
       "id": "anidisk",
@@ -157,22 +157,6 @@
         "tv"
       ],
       "filename": "providers/kartoons5.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "kmmovies",
-      "name": "KMMovies",
-      "description": "KMMovies movies and shows",
-      "version": "1.0.7",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/kmmovies8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
