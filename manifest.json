@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.58",
+  "version": "1.2.59",
   "scrapers": [
     {
       "id": "anidisk",
@@ -424,14 +424,14 @@
     {
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to — port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction)",
-      "version": "2.0.8",
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin (session + xmre search + Luluvdo/Wootly extraction). v2.0.9: timer-free fetch deadlines, no retry amplification - a blocked host now fails bounded instead of hanging into an app error.",
+      "version": "2.0.9",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara11.js",
+      "filename": "providers/goojara12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -440,14 +440,14 @@
     {
       "id": "goojaradiag",
       "name": "Goojara Diag",
-      "description": "Temporary diagnostic build of Goojara - stage readouts for the phone test error",
-      "version": "1.0.1",
+      "description": "Temporary diagnostic build of Goojara - stage readouts + transport probes (https/http/IP+Host/proxy/TMDB control) for the phone test error",
+      "version": "1.0.2",
       "author": "Muse (diagnostic)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojaradiag2.js",
+      "filename": "providers/goojaradiag3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
