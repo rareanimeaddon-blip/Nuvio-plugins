@@ -1,6 +1,6 @@
 {
   "name": "27-Provider Collection",
-  "version": "1.2.66",
+  "version": "1.2.67",
   "scrapers": [
     {
       "id": "anidisk",
@@ -54,13 +54,13 @@
       "id": "animeworld",
       "name": "AnimeWorld",
       "description": "AnimeWorld anime streams",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animeworld9.js",
+      "filename": "providers/animeworld10.js",
       "enabled": true,
       "contentLanguage": [
         "en"
