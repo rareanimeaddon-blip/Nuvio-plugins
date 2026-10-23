@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.82",
+  "version": "1.2.83",
   "scrapers": [
     {
       "id": "anidisk",
@@ -471,16 +471,16 @@
       ]
     },
     {
-      "id": "cnoplay",
-      "name": "CNO PlayTest",
-      "description": "Temporary: plays CNO playlists directly with no headers to find the playable form",
+      "id": "cnopt2",
+      "name": "CNO PlayTest 2",
+      "description": "Temporary: labeled CNO playlists with no headers - tap P4 first",
       "version": "1.0.0",
       "author": "diag",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cnoplay1.js",
+      "filename": "providers/cnopt2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
