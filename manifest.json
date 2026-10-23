@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.80",
+  "version": "1.2.81",
   "scrapers": [
     {
       "id": "anidisk",
@@ -474,13 +474,13 @@
       "id": "cnodiag",
       "name": "CNO Diag",
       "description": "Temporary diagnostic for CNO playback - reports probe statuses as stream titles",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "diag",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cnodiag1.js",
+      "filename": "providers/cnodiag2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
