@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.83",
+  "version": "1.2.84",
   "scrapers": [
     {
       "id": "anidisk",
@@ -458,29 +458,13 @@
       "id": "cno",
       "name": "CNO",
       "description": "CNO (cno.to) own servers up to 4K plus CineSrc/VidFast players",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "cno.to (ported)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cno1.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "cnopt2",
-      "name": "CNO PlayTest 2",
-      "description": "Temporary: labeled CNO playlists with no headers - tap P4 first",
-      "version": "1.0.0",
-      "author": "diag",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/cnopt2.js",
+      "filename": "providers/cno2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
