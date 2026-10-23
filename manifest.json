@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.84",
+  "version": "1.2.85",
   "scrapers": [
     {
       "id": "anidisk",
@@ -384,38 +384,6 @@
         "tv"
       ],
       "filename": "providers/goojara14.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "goojaradiag",
-      "name": "Goojara Diag",
-      "description": "Temporary diagnostic build of Goojara - full chain readout (session cookies / search POST / page / embeds) now that transport is proven good",
-      "version": "1.0.5",
-      "author": "Muse (diagnostic)",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/goojaradiag6.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "gjping",
-      "name": "GJ Ping",
-      "description": "Temporary bisection build - returns one static row, no network. Tests whether provider code loads/runs at all.",
-      "version": "1.0.0",
-      "author": "Muse (diagnostic)",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/gjping1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
