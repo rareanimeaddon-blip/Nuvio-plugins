@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.78",
+  "version": "1.2.79",
   "scrapers": [
     {
       "id": "anidisk",
@@ -452,6 +452,22 @@
       "contentLanguage": [
         "en",
         "hi"
+      ]
+    },
+    {
+      "id": "cno",
+      "name": "CNO",
+      "description": "CNO (cno.to) own servers up to 4K plus CineSrc/VidFast players",
+      "version": "1.0.0",
+      "author": "cno.to (ported)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cno1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
       ]
     }
   ]
