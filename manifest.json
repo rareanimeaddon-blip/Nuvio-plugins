@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.77",
+  "version": "1.2.78",
   "scrapers": [
     {
       "id": "anidisk",
@@ -198,13 +198,13 @@
       "id": "multimovies",
       "name": "MultiMovies",
       "description": "MultiMovies movies and shows",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/multimovies7.js",
+      "filename": "providers/multimovies8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
