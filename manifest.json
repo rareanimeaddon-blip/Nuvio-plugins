@@ -1,6 +1,6 @@
 {
-  "name": "27-Provider Collection",
-  "version": "1.2.76",
+  "name": "28-Provider Collection",
+  "version": "1.2.77",
   "scrapers": [
     {
       "id": "anidisk",
@@ -435,6 +435,23 @@
       "enabled": true,
       "contentLanguage": [
         "en"
+      ]
+    },
+    {
+      "id": "vegamovies",
+      "name": "VegaMovies",
+      "description": "VegaMovies movies and shows via V-Cloud",
+      "version": "1.0.0",
+      "author": "CNCVerse (ported)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/vegamovies1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en",
+        "hi"
       ]
     }
   ]
