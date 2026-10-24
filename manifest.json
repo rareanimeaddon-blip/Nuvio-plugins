@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.90",
+  "version": "1.2.91",
   "scrapers": [
     {
       "id": "anidisk",
@@ -214,13 +214,13 @@
       "id": "netmirror",
       "name": "NetMirror",
       "description": "NetMirror movies and shows",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirror9.js",
+      "filename": "providers/netmirror10.js",
       "enabled": true,
       "contentLanguage": [
         "en"
