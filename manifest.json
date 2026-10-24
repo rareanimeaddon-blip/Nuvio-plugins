@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.87",
+  "version": "1.2.88",
   "scrapers": [
     {
       "id": "anidisk",
@@ -433,22 +433,6 @@
         "tv"
       ],
       "filename": "providers/cno2.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "uhdmovies",
-      "name": "UHDMovies",
-      "description": "UHDMovies direct, Driveseed and VideoSeed streams",
-      "version": "1.0.1",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/uhdmovies2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
