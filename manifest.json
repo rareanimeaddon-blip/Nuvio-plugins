@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.93",
+  "version": "1.2.94",
   "scrapers": [
     {
       "id": "anidisk",
@@ -449,6 +449,22 @@
         "tv"
       ],
       "filename": "providers/purstream1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "dulo",
+      "name": "Dulo",
+      "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dulo1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
