@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.88",
+  "version": "1.2.89",
   "scrapers": [
     {
       "id": "anidisk",
@@ -433,6 +433,22 @@
         "tv"
       ],
       "filename": "providers/cno2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "purstream",
+      "name": "Purstream",
+      "description": "Purstream French VF/VOSTFR streams via its API",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/purstream1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
