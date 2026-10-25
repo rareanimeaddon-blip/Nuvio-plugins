@@ -1,6 +1,6 @@
 {
-  "name": "28-Provider Collection",
-  "version": "1.2.95",
+  "name": "29-Provider Collection",
+  "version": "1.2.96",
   "scrapers": [
     {
       "id": "anidisk",
@@ -449,6 +449,22 @@
         "tv"
       ],
       "filename": "providers/dulo1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "cinegram",
+      "name": "Cinegram",
+      "description": "Cinegram (cinegram.tv) streams via its TMDB-keyed player chain: movies and TV, HLS",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cinegram1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
