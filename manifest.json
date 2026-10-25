@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.94",
+  "version": "1.2.95",
   "scrapers": [
     {
       "id": "anidisk",
@@ -13,22 +13,6 @@
         "tv"
       ],
       "filename": "providers/anidisk13.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "animedekho",
-      "name": "AnimeDekho",
-      "description": "AnimeDekho anime streams",
-      "version": "1.0.4",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/animedekho5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
