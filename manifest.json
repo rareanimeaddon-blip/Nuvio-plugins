@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.110",
+  "version": "1.2.111",
   "scrapers": [
     {
       "id": "anidisk",
@@ -102,13 +102,13 @@
       "id": "fourkdhub",
       "name": "4KHDHub",
       "description": "4KHDHub direct links",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/fourkdhub5.js",
+      "filename": "providers/fourkdhub6.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
