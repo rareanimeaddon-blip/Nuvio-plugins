@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.98",
+  "version": "1.2.99",
   "scrapers": [
     {
       "id": "anidisk",
@@ -449,6 +449,22 @@
         "tv"
       ],
       "filename": "providers/dulo1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "movielinkbd",
+      "name": "MovieLinkBD",
+      "description": "MovieLinkBD streams: movies, series, anime and drama via its player-data API, MKV with subtitles",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movielinkbd1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
