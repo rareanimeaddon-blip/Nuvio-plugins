@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.100",
+  "version": "1.2.101",
   "scrapers": [
     {
       "id": "anidisk",
@@ -457,30 +457,14 @@
     {
       "id": "movielinkbd",
       "name": "MovieLinkBD",
-      "description": "MovieLinkBD streams: movies, series, anime and drama via its player-data API, MKV with subtitles",
-      "version": "1.0.0",
+      "description": "MovieLinkBD (cs3 remake: hub-resolved mirror, exact gate)",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/movielinkbd1.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "movielinkbddiag",
-      "name": "MovieLinkBD Diag",
-      "description": "TEMPORARY diagnostic for MovieLinkBD: reports each chain step as a labeled stream",
-      "version": "1.0.0",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/movielinkbddiag1.js",
+      "filename": "providers/movielinkbd2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
