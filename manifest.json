@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.109",
+  "version": "1.2.110",
   "scrapers": [
     {
       "id": "anidisk",
@@ -22,13 +22,13 @@
       "id": "animesalt",
       "name": "AnimeSalt",
       "description": "AnimeSalt anime streams",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animesalt8.js",
+      "filename": "providers/animesalt9.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -38,13 +38,13 @@
       "id": "animeworld",
       "name": "AnimeWorld",
       "description": "AnimeWorld anime streams",
-      "version": "1.0.12",
+      "version": "1.0.13",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animeworld13.js",
+      "filename": "providers/animeworld14.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -86,13 +86,13 @@
       "id": "dooflix",
       "name": "Dooflix",
       "description": "Dooflix movies and shows",
-      "version": "1.0.9",
+      "version": "1.1.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dooflix10.js",
+      "filename": "providers/dooflix11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -182,13 +182,13 @@
       "id": "multimovies",
       "name": "MultiMovies",
       "description": "MultiMovies movies and shows",
-      "version": "1.0.9",
+      "version": "1.1.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/multimovies10.js",
+      "filename": "providers/multimovies11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -198,13 +198,13 @@
       "id": "netmirror",
       "name": "NetMirror",
       "description": "NetMirror movies and shows",
-      "version": "1.2.3",
+      "version": "1.2.4",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirror14.js",
+      "filename": "providers/netmirror15.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -214,13 +214,13 @@
       "id": "onetouchtv",
       "name": "OneTouchTV",
       "description": "OneTouchTV movies and shows",
-      "version": "1.1.6",
+      "version": "1.1.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/onetouchtv8.js",
+      "filename": "providers/onetouchtv9.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -230,13 +230,13 @@
       "id": "piratexplay",
       "name": "PirateXPlay",
       "description": "PirateXPlay movies and shows",
-      "version": "1.0.21",
+      "version": "1.0.22",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay21.js",
+      "filename": "providers/piratexplay22.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -455,16 +455,16 @@
       ]
     },
     {
-      "id": "movielinkbd5",
+      "id": "movielinkbd6",
       "name": "MovieLinkBD",
       "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/movielinkbd5.js",
+      "filename": "providers/movielinkbd6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
