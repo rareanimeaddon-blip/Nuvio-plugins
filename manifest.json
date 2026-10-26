@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.105",
+  "version": "1.2.106",
   "scrapers": [
     {
       "id": "anidisk",
@@ -471,16 +471,16 @@
       ]
     },
     {
-      "id": "movielinkbddiag4",
+      "id": "movielinkbddiag5",
       "name": "MovieLinkBD Diag",
-      "description": "TEMPORARY diagnostic for MovieLinkBD (v2 chain): verdict in first two SUMMARY lines",
+      "description": "TEMPORARY diagnostic for MovieLinkBD: page forensics + broad extraction + browser-header A/B",
       "version": "1.0.0",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/movielinkbddiag4.js",
+      "filename": "providers/movielinkbddiag5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
