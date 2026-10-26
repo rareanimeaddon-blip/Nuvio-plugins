@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.101",
+  "version": "1.2.102",
   "scrapers": [
     {
       "id": "anidisk",
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "id": "movielinkbd",
+      "id": "movielinkbd2",
       "name": "MovieLinkBD",
       "description": "MovieLinkBD (cs3 remake: hub-resolved mirror, exact gate)",
       "version": "1.0.1",
