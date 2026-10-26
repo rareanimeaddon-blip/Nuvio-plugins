@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.99",
+  "version": "1.2.100",
   "scrapers": [
     {
       "id": "anidisk",
@@ -465,6 +465,22 @@
         "tv"
       ],
       "filename": "providers/movielinkbd1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "movielinkbddiag",
+      "name": "MovieLinkBD Diag",
+      "description": "TEMPORARY diagnostic for MovieLinkBD: reports each chain step as a labeled stream",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movielinkbddiag1.js",
       "enabled": true,
       "contentLanguage": [
         "en"
