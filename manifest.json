@@ -469,6 +469,22 @@
       "contentLanguage": [
         "en"
       ]
+    },
+    {
+      "id": "animedekho",
+      "name": "Anime Dekho",
+      "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
+      "version": "1.0.5",
+      "author": "phisher98",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animedekho.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     }
   ]
 }
