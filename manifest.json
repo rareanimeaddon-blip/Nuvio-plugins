@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.111",
+  "version": "1.2.112",
   "scrapers": [
     {
       "id": "anidisk",
@@ -361,13 +361,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.0.11 restored: CONFIRMED working on the LG TV (streams + playback) - do not replace without a TV verdict.",
-      "version": "2.0.12",
+      "version": "2.0.13",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara17.js",
+      "filename": "providers/goojara18.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -468,22 +468,6 @@
       "enabled": true,
       "contentLanguage": [
         "en"
-      ]
-    },
-    {
-      "id": "animedekho",
-      "name": "Anime Dekho",
-      "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
-      "version": "1.0.6",
-      "author": "phisher98",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/animedekho.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
       ]
     }
   ]
