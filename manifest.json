@@ -1,490 +1,490 @@
 {
- "name": "28-Provider Collection",
- "version": "1.2.116",
- "scrapers": [
-  {
-   "id": "anidisk",
-   "name": "AniDisk",
-   "description": "AniDisk anime streams via Hydrax",
-   "version": "1.0.13",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/anidisk14.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "animesalt",
-   "name": "AnimeSalt",
-   "description": "AnimeSalt anime streams",
-   "version": "1.0.8",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/animesalt9.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "animeworld",
-   "name": "AnimeWorld",
-   "description": "AnimeWorld anime streams",
-   "version": "1.0.13",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/animeworld14.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "castletv",
-   "name": "CastleTV",
-   "description": "CastleTV movies and shows",
-   "version": "1.0.6",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/castletv7.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "cinejoy",
-   "name": "CineJoy",
-   "description": "CineJoy movies and shows",
-   "version": "1.0.6",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/cinejoy6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "dooflix",
-   "name": "Dooflix",
-   "description": "Dooflix movies and shows",
-   "version": "1.1.0",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/dooflix11.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "fourkdhub",
-   "name": "4KHDHub",
-   "description": "4KHDHub direct links",
-   "version": "1.0.5",
-   "author": "phisher98 (adapted)",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/fourkdhub6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi"
-   ]
-  },
-  {
-   "id": "hdhub4u",
-   "name": "HDHub4u",
-   "description": "HDHub4u movies and shows",
-   "version": "1.0.7",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/hdhub4u8.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi"
-   ]
-  },
-  {
-   "id": "kartoons",
-   "name": "Kartoons",
-   "description": "Kartoons animated content",
-   "version": "1.0.5",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/kartoons6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "moviebox",
-   "name": "MovieBox",
-   "description": "MovieBox movies and shows",
-   "version": "1.1.6",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/moviebox18.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "moviesdrive",
-   "name": "MoviesDrive",
-   "description": "MoviesDrive movies and shows",
-   "version": "1.1.7",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/moviesdrive9.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi"
-   ]
-  },
-  {
-   "id": "multimovies",
-   "name": "MultiMovies",
-   "description": "MultiMovies movies and shows",
-   "version": "1.1.0",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/multimovies11.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "netmirror",
-   "name": "NetMirror",
-   "description": "NetMirror movies and shows",
-   "version": "1.2.4",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/netmirror15.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "onetouchtv",
-   "name": "OneTouchTV",
-   "description": "OneTouchTV movies and shows",
-   "version": "1.1.7",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/onetouchtv9.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "piratexplay",
-   "name": "PirateXPlay",
-   "description": "PirateXPlay movies and shows",
-   "version": "1.0.22",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/piratexplay22.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "rareanime",
-   "name": "RareAnime",
-   "description": "RareAnime anime streams",
-   "version": "1.0.15",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/rareanime16.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "showbox",
-   "name": "ShowBox",
-   "description": "ShowBox movies and shows",
-   "version": "1.1.1",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/showbox6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ],
-   "hasSettings": true
-  },
-  {
-   "id": "streamflix",
-   "name": "StreamFlix",
-   "description": "StreamFlix movies and shows",
-   "version": "1.0.14",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/streamflix11.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "toonworld",
-   "name": "ToonWorld",
-   "description": "ToonWorld cartoons and anime",
-   "version": "1.0.10",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/toonworld11.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "vaplayer",
-   "name": "VAPlayer",
-   "description": "VAPlayer movies and shows",
-   "version": "1.0.5",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/vaplayer6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "gramcinema",
-   "name": "GramCinema",
-   "description": "GramCinema movies and shows via CinemaTV",
-   "version": "1.1.1",
-   "author": "NuvioPlugin",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/gramcinema6.js",
-   "enabled": true,
-   "hasSettings": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "hindmovies",
-   "name": "HindMovies",
-   "description": "Hindi and dual-audio movies and series from hindmovie.tax, resolved to direct files via GDShine",
-   "version": "1.1.7",
-   "author": "Muse",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/hindmovies10.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi",
-    "en"
-   ]
-  },
-  {
-   "id": "goojara",
-   "name": "Goojara",
-   "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.0.11 restored: CONFIRMED working on the LG TV (streams + playback) - do not replace without a TV verdict.",
-   "version": "2.0.13",
-   "author": "phisher98 (ported by Muse)",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/goojara18.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "zxcstream",
-   "name": "ZXCStream",
-   "description": "ZXCStream movies and shows via VidBolt resolve",
-   "version": "1.0.1",
-   "author": "NuvioPlugin",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/zxcstream2.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "vegamovies",
-   "name": "VegaMovies",
-   "description": "VegaMovies movies and shows via V-Cloud",
-   "version": "1.0.1",
-   "author": "CNCVerse (ported)",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/vegamovies2.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en",
-    "hi"
-   ]
-  },
-  {
-   "id": "cno",
-   "name": "CNO",
-   "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
-   "version": "1.0.4",
-   "author": "cno.to (ported)",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/cno5.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "purstream",
-   "name": "Purstream",
-   "description": "Purstream French VF/VOSTFR streams via its API",
-   "version": "1.0.1",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/purstream2.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "dulo",
-   "name": "Dulo",
-   "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
-   "version": "1.0.1",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/dulo2.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "movielinkbd6",
-   "name": "MovieLinkBD",
-   "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
-   "version": "1.0.2",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/movielinkbd6.js",
-   "enabled": true,
-   "contentLanguage": [
-    "en"
-   ]
-  },
-  {
-   "id": "animedekho",
-   "name": "Anime Dekho",
-   "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
-   "version": "1.0.6",
-   "author": "phisher98",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/animedekho.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi"
-   ]
-  }
- ]
+  "name": "28-Provider Collection",
+  "version": "1.2.117",
+  "scrapers": [
+    {
+      "id": "anidisk",
+      "name": "AniDisk",
+      "description": "AniDisk anime streams via Hydrax",
+      "version": "1.0.13",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/anidisk14.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "animesalt",
+      "name": "AnimeSalt",
+      "description": "AnimeSalt anime streams",
+      "version": "1.0.8",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animesalt9.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "animeworld",
+      "name": "AnimeWorld",
+      "description": "AnimeWorld anime streams",
+      "version": "1.0.13",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animeworld14.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "castletv",
+      "name": "CastleTV",
+      "description": "CastleTV movies and shows",
+      "version": "1.0.6",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/castletv7.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "cinejoy",
+      "name": "CineJoy",
+      "description": "CineJoy movies and shows",
+      "version": "1.0.6",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cinejoy6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "dooflix",
+      "name": "Dooflix",
+      "description": "Dooflix movies and shows",
+      "version": "1.1.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dooflix11.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "fourkdhub",
+      "name": "4KHDHub",
+      "description": "4KHDHub direct links",
+      "version": "1.0.5",
+      "author": "phisher98 (adapted)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/fourkdhub6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
+    },
+    {
+      "id": "hdhub4u",
+      "name": "HDHub4u",
+      "description": "HDHub4u movies and shows",
+      "version": "1.0.7",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/hdhub4u8.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
+    },
+    {
+      "id": "kartoons",
+      "name": "Kartoons",
+      "description": "Kartoons animated content",
+      "version": "1.0.5",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/kartoons6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "moviebox",
+      "name": "MovieBox",
+      "description": "MovieBox movies and shows",
+      "version": "1.1.6",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/moviebox18.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "moviesdrive",
+      "name": "MoviesDrive",
+      "description": "MoviesDrive movies and shows",
+      "version": "1.1.7",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/moviesdrive9.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
+    },
+    {
+      "id": "multimovies",
+      "name": "MultiMovies",
+      "description": "MultiMovies movies and shows",
+      "version": "1.1.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/multimovies11.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "netmirror",
+      "name": "NetMirror",
+      "description": "NetMirror movies and shows",
+      "version": "1.2.4",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/netmirror15.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "onetouchtv",
+      "name": "OneTouchTV",
+      "description": "OneTouchTV movies and shows",
+      "version": "1.1.7",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/onetouchtv9.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "piratexplay",
+      "name": "PirateXPlay",
+      "description": "PirateXPlay movies and shows",
+      "version": "1.0.22",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/piratexplay22.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "rareanime",
+      "name": "RareAnime",
+      "description": "RareAnime anime streams",
+      "version": "1.0.15",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/rareanime16.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "showbox",
+      "name": "ShowBox",
+      "description": "ShowBox movies and shows",
+      "version": "1.1.1",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/showbox6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ],
+      "hasSettings": true
+    },
+    {
+      "id": "streamflix",
+      "name": "StreamFlix",
+      "description": "StreamFlix movies and shows",
+      "version": "1.0.14",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/streamflix11.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "toonworld",
+      "name": "ToonWorld",
+      "description": "ToonWorld cartoons and anime",
+      "version": "1.0.10",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/toonworld11.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "vaplayer",
+      "name": "VAPlayer",
+      "description": "VAPlayer movies and shows",
+      "version": "1.0.5",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/vaplayer6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "gramcinema",
+      "name": "GramCinema",
+      "description": "GramCinema movies and shows via CinemaTV",
+      "version": "1.1.1",
+      "author": "NuvioPlugin",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/gramcinema6.js",
+      "enabled": true,
+      "hasSettings": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "hindmovies",
+      "name": "HindMovies",
+      "description": "Hindi and dual-audio movies and series from hindmovie.tax, resolved to direct files via GDShine",
+      "version": "1.1.7",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/hindmovies10.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "goojara",
+      "name": "Goojara",
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.1: fast path - no clock chains, one server at a time, stop at 2 streams (phone bridge was choking on the old build's request volume).",
+      "version": "2.1.1",
+      "author": "phisher98 (ported by Muse)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/goojara19.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "zxcstream",
+      "name": "ZXCStream",
+      "description": "ZXCStream movies and shows via VidBolt resolve",
+      "version": "1.0.1",
+      "author": "NuvioPlugin",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/zxcstream2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "vegamovies",
+      "name": "VegaMovies",
+      "description": "VegaMovies movies and shows via V-Cloud",
+      "version": "1.0.1",
+      "author": "CNCVerse (ported)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/vegamovies2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en",
+        "hi"
+      ]
+    },
+    {
+      "id": "cno",
+      "name": "CNO",
+      "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
+      "version": "1.0.4",
+      "author": "cno.to (ported)",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cno5.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "purstream",
+      "name": "Purstream",
+      "description": "Purstream French VF/VOSTFR streams via its API",
+      "version": "1.0.1",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/purstream2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "dulo",
+      "name": "Dulo",
+      "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
+      "version": "1.0.1",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dulo2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "movielinkbd6",
+      "name": "MovieLinkBD",
+      "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
+      "version": "1.0.2",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movielinkbd6.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "animedekho",
+      "name": "Anime Dekho",
+      "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
+      "version": "1.0.6",
+      "author": "phisher98",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animedekho.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
+    }
+  ]
 }
