@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.120",
+  "version": "1.2.121",
   "scrapers": [
     {
       "id": "anidisk",
@@ -484,22 +484,6 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
-    },
-    {
-      "id": "goojaradiag",
-      "name": "Goojara Diag",
-      "description": "Temporary diagnostic build of Goojara - session route probe (direct vs Cloudflare-IP) + full chain readout",
-      "version": "1.0.7",
-      "author": "phisher98 (ported by Muse)",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/goojaradiag8.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
       ]
     }
   ]
