@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.117",
+  "version": "1.2.118",
   "scrapers": [
     {
       "id": "anidisk",
