@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.119",
+  "version": "1.2.120",
   "scrapers": [
     {
       "id": "anidisk",
@@ -489,14 +489,14 @@
     {
       "id": "goojaradiag",
       "name": "Goojara Diag",
-      "description": "Temporary diagnostic build of Goojara - runs the live 2.1.1 chain with one row per step (session / search / pick / page / each server branch)",
-      "version": "1.0.6",
+      "description": "Temporary diagnostic build of Goojara - session route probe (direct vs Cloudflare-IP) + full chain readout",
+      "version": "1.0.7",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojaradiag7.js",
+      "filename": "providers/goojaradiag8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
