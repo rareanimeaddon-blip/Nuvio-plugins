@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.115",
+ "version": "1.2.116",
  "scrapers": [
   {
    "id": "anidisk",
@@ -118,13 +118,13 @@
    "id": "hdhub4u",
    "name": "HDHub4u",
    "description": "HDHub4u movies and shows",
-   "version": "1.0.6",
+   "version": "1.0.7",
    "author": "Converted",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "filename": "providers/hdhub4u7.js",
+   "filename": "providers/hdhub4u8.js",
    "enabled": true,
    "contentLanguage": [
     "hi"
