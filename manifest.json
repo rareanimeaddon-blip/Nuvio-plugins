@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.122",
+  "version": "1.2.123",
   "scrapers": [
     {
       "id": "anidisk",
@@ -214,13 +214,13 @@
       "id": "onetouchtv",
       "name": "OneTouchTV",
       "description": "OneTouchTV movies and shows",
-      "version": "1.1.8",
+      "version": "1.1.9",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/onetouchtv10.js",
+      "filename": "providers/onetouchtv11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
