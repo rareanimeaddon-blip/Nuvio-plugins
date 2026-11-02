@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.127",
+  "version": "1.2.128",
   "scrapers": [
     {
       "id": "anidisk",
@@ -214,13 +214,13 @@
       "id": "netmirrordiag",
       "name": "NetMirror Diag",
       "description": "Diagnostic only: reports TV reachability for NetMirror hosts as rows (do not play)",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirrordiag1.js",
+      "filename": "providers/netmirrordiag2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
