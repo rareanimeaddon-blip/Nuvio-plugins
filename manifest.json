@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.134",
+ "version": "1.2.135",
  "scrapers": [
   {
    "id": "anidisk",
@@ -516,6 +516,23 @@
    "enabled": true,
    "contentLanguage": [
     "hi"
+   ]
+  },
+  {
+   "id": "cinevooddiag",
+   "name": "CineVood Diag",
+   "description": "CineVood device diagnostic: reports TMDB, search, gate, detail buttons, hubcloud first button and vidaraa step by step",
+   "version": "1.0.0",
+   "author": "Converted",
+   "supportedTypes": [
+    "movie",
+    "tv"
+   ],
+   "filename": "providers/cinevooddiag1.js",
+   "enabled": true,
+   "contentLanguage": [
+    "hi",
+    "en"
    ]
   }
  ]
