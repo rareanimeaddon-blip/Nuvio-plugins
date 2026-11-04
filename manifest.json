@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.130",
+  "version": "1.2.131",
   "scrapers": [
     {
       "id": "anidisk",
@@ -500,21 +500,6 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
-    },
-    {
-      "id": "toonix",
-      "name": "Toonix",
-      "description": "Toonix (toonix.bond) TV anime streams via Hydrax",
-      "version": "1.0.0",
-      "author": "Converted",
-      "supportedTypes": [
-        "tv"
-      ],
-      "filename": "providers/toonix1.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
       ]
     }
   ]
