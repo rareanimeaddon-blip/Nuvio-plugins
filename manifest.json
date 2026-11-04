@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.135",
+ "version": "1.2.136",
  "scrapers": [
   {
    "id": "anidisk",
@@ -529,6 +529,23 @@
     "tv"
    ],
    "filename": "providers/cinevooddiag1.js",
+   "enabled": true,
+   "contentLanguage": [
+    "hi",
+    "en"
+   ]
+  },
+  {
+   "id": "cinevooddiag2",
+   "name": "CineVood Diag 2",
+   "description": "CineVood device diagnostic v2: reports detail body length, page title, marker flags and a no-header probe",
+   "version": "1.0.0",
+   "author": "Converted",
+   "supportedTypes": [
+    "movie",
+    "tv"
+   ],
+   "filename": "providers/cinevooddiag2.js",
    "enabled": true,
    "contentLanguage": [
     "hi",
