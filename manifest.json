@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.137",
+ "version": "1.2.138",
  "scrapers": [
   {
    "id": "anidisk",
@@ -521,42 +521,8 @@
   {
    "id": "cinevooddiag",
    "name": "CineVood Diag",
-   "description": "CineVood device diagnostic: reports TMDB, search, gate, detail buttons, hubcloud first button and vidaraa step by step",
-   "version": "1.0.0",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/cinevooddiag1.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi",
-    "en"
-   ]
-  },
-  {
-   "id": "cinevooddiag2",
-   "name": "CineVood Diag 2",
-   "description": "CineVood device diagnostic v2: reports detail body length, page title, marker flags and a no-header probe",
-   "version": "1.0.0",
-   "author": "Converted",
-   "supportedTypes": [
-    "movie",
-    "tv"
-   ],
-   "filename": "providers/cinevooddiag2.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi",
-    "en"
-   ]
-  },
-  {
-   "id": "cinevooddiag3",
-   "name": "CineVood Diag 3",
-   "description": "CineVood device diagnostic v3: reports detail fetch error messages and a site-root HTML control probe",
-   "version": "1.0.0",
+   "description": "CineVood device diagnostic: reports TMDB, search, gate, detail buttons, fetch error messages and a site-root HTML control probe",
+   "version": "1.0.1",
    "author": "Converted",
    "supportedTypes": [
     "movie",
