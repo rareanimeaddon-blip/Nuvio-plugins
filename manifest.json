@@ -501,6 +501,21 @@
       "contentLanguage": [
         "hi"
       ]
+    },
+    {
+      "id": "toonix",
+      "name": "Toonix",
+      "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
+      "version": "1.0.1",
+      "author": "Converted",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/toonix.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi"
+      ]
     }
   ]
 }
