@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.133",
+ "version": "1.2.134",
  "scrapers": [
   {
    "id": "anidisk",
@@ -490,32 +490,17 @@
    "id": "cinevood",
    "name": "CineVood",
    "description": "Movies and series from cinevood.net, resolved via hubcloud/gdflix/filepress and the OxxFile API",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "author": "Converted",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "filename": "providers/cinevood1.js",
+   "filename": "providers/cinevood2.js",
    "enabled": true,
    "contentLanguage": [
     "hi",
     "en"
-   ]
-  },
-  {
-   "id": "toonix",
-   "name": "Toonix",
-   "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
-   "version": "1.0.1",
-   "author": "Converted",
-   "supportedTypes": [
-    "tv"
-   ],
-   "filename": "providers/toonix.js",
-   "enabled": true,
-   "contentLanguage": [
-    "hi"
    ]
   }
  ]
