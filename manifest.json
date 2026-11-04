@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.131",
+  "version": "1.2.132",
   "scrapers": [
     {
       "id": "anidisk",
@@ -205,22 +205,6 @@
         "tv"
       ],
       "filename": "providers/netmirror17.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "netmirrordiag",
-      "name": "NetMirror Diag",
-      "description": "Diagnostic only: reports TV reachability for NetMirror hosts as rows (do not play)",
-      "version": "1.0.2",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/netmirrordiag3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -497,21 +481,6 @@
         "tv"
       ],
       "filename": "providers/animedekho.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
-      ]
-    },
-    {
-      "id": "toonix",
-      "name": "Toonix",
-      "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
-      "version": "1.0.1",
-      "author": "Converted",
-      "supportedTypes": [
-        "tv"
-      ],
-      "filename": "providers/toonix.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
