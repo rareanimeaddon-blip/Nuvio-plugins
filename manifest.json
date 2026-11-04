@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.136",
+ "version": "1.2.137",
  "scrapers": [
   {
    "id": "anidisk",
@@ -546,6 +546,23 @@
     "tv"
    ],
    "filename": "providers/cinevooddiag2.js",
+   "enabled": true,
+   "contentLanguage": [
+    "hi",
+    "en"
+   ]
+  },
+  {
+   "id": "cinevooddiag3",
+   "name": "CineVood Diag 3",
+   "description": "CineVood device diagnostic v3: reports detail fetch error messages and a site-root HTML control probe",
+   "version": "1.0.0",
+   "author": "Converted",
+   "supportedTypes": [
+    "movie",
+    "tv"
+   ],
+   "filename": "providers/cinevooddiag3.js",
    "enabled": true,
    "contentLanguage": [
     "hi",
