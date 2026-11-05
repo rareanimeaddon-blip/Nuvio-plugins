@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.145",
+  "version": "1.2.146",
   "scrapers": [
     {
       "id": "anidisk",
@@ -536,14 +536,14 @@
     {
       "id": "nepudiag",
       "name": "Nepu Diag",
-      "description": "One-time diag: tests the provider search on nepu.io AND nepu.to (nepu.net just redirects to .io)",
-      "version": "1.0.1",
+      "description": "One-time diag: plain-fetch test (no timeout race) on nepu.io/.to with provider + full browser headers",
+      "version": "1.0.2",
       "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/nepudiag2.js",
+      "filename": "providers/nepudiag3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
