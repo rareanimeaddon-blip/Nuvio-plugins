@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.140",
+ "version": "1.2.141",
  "scrapers": [
   {
    "id": "anidisk",
@@ -499,6 +499,22 @@
    "enabled": true,
    "contentLanguage": [
     "hi"
+   ]
+  },
+  {
+   "id": "desiserials",
+   "name": "DesiSerials",
+   "description": "Indian TV serials (Star Plus, Colors, Zee TV, Sony, SAB) - dated episodes resolved to direct 720p mp4 parts",
+   "version": "1.0.0",
+   "author": "Muse",
+   "supportedTypes": [
+    "tv"
+   ],
+   "filename": "providers/desiserials1.js",
+   "enabled": true,
+   "contentLanguage": [
+    "hi",
+    "en"
    ]
   }
  ]
