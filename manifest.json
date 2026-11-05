@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.148",
+  "version": "1.2.149",
   "scrapers": [
     {
       "id": "anidisk",
@@ -511,6 +511,23 @@
         "tv"
       ],
       "filename": "providers/desiserials2.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "dudefilms",
+      "name": "DudeFilms",
+      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "version": "1.0.0",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dudefilms1.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
