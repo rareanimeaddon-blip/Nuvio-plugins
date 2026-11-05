@@ -1,6 +1,6 @@
 {
  "name": "28-Provider Collection",
- "version": "1.2.138",
+ "version": "1.2.139",
  "scrapers": [
   {
    "id": "anidisk",
@@ -490,13 +490,13 @@
    "id": "cinevood",
    "name": "CineVood",
    "description": "Movies and series from cinevood.net, resolved via hubcloud/gdflix/filepress and the OxxFile API",
-   "version": "1.0.1",
+   "version": "1.0.2",
    "author": "Converted",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "filename": "providers/cinevood2.js",
+   "filename": "providers/cinevood3.js",
    "enabled": true,
    "contentLanguage": [
     "hi",
@@ -521,14 +521,14 @@
   {
    "id": "cinevooddiag",
    "name": "CineVood Diag",
-   "description": "CineVood device diagnostic: reports TMDB, search, gate, detail buttons, fetch error messages and a site-root HTML control probe",
-   "version": "1.0.1",
+   "description": "CineVood device diagnostic: reports TMDB, search, gate, detail buttons, fetch error messages, site-root probe and wp-json probe",
+   "version": "1.0.2",
    "author": "Converted",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "filename": "providers/cinevooddiag3.js",
+   "filename": "providers/cinevooddiag4.js",
    "enabled": true,
    "contentLanguage": [
     "hi",
