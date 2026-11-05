@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.149",
+  "version": "1.2.150",
   "scrapers": [
     {
       "id": "anidisk",
@@ -528,6 +528,23 @@
         "tv"
       ],
       "filename": "providers/dudefilms1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "allmovieland",
+      "name": "AllMovieLand",
+      "description": "Movies & TV shows \u2014 IMDb-keyed, IndStream M3U8 (host offline as of 2026-11-06; streams resume when it returns)",
+      "version": "1.0.0",
+      "author": "Muse",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/allmovieland1.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
