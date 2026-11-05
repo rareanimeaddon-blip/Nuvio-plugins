@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.144",
+  "version": "1.2.145",
   "scrapers": [
     {
       "id": "anidisk",
@@ -536,14 +536,14 @@
     {
       "id": "nepudiag",
       "name": "Nepu Diag",
-      "description": "One-time diag: reports what the app's fetch sees from nepu.io (Cloudflare block or reachable)",
-      "version": "1.0.0",
+      "description": "One-time diag: tests the provider search on nepu.io AND nepu.to (nepu.net just redirects to .io)",
+      "version": "1.0.1",
       "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/nepudiag1.js",
+      "filename": "providers/nepudiag2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
