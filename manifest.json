@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.173",
+  "version": "1.2.174",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -70,13 +70,13 @@
       "id": "animeworld",
       "name": "AnimeWorld",
       "description": "AnimeWorld anime streams",
-      "version": "1.0.13",
+      "version": "1.0.14",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animeworld14.js",
+      "filename": "providers/animeworld15.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -86,13 +86,13 @@
       "id": "castletv",
       "name": "CastleTV",
       "description": "CastleTV movies and shows",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/castletv12.js",
+      "filename": "providers/castletv13.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -102,13 +102,13 @@
       "id": "cinejoy",
       "name": "CineJoy",
       "description": "CineJoy movies and shows",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cinejoy6.js",
+      "filename": "providers/cinejoy7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
