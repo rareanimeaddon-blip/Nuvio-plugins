@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.162",
+  "version": "1.2.163",
   "scrapers": [
     {
       "id": "anidisk",
@@ -77,22 +77,6 @@
         "tv"
       ],
       "filename": "providers/cinejoy6.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
-    },
-    {
-      "id": "dooflix",
-      "name": "Dooflix",
-      "description": "Dooflix movies and shows",
-      "version": "1.1.0",
-      "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/dooflix11.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -531,6 +515,22 @@
       "enabled": true,
       "contentLanguage": [
         "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "xpass",
+      "name": "XPass",
+      "description": "XPass movies and shows",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/xpass1.js",
+      "enabled": true,
+      "contentLanguage": [
         "en"
       ]
     }
