@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.172",
+  "version": "1.2.173",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -22,13 +22,13 @@
       "id": "anidisk",
       "name": "AniDisk",
       "description": "AniDisk anime streams via Hydrax",
-      "version": "1.0.13",
+      "version": "1.0.14",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/anidisk14.js",
+      "filename": "providers/anidisk15.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -38,13 +38,13 @@
       "id": "animedekho",
       "name": "Anime Dekho",
       "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "phisher98",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animedekho.js",
+      "filename": "providers/animedekho2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -54,13 +54,13 @@
       "id": "animesalt",
       "name": "AnimeSalt",
       "description": "AnimeSalt anime streams",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animesalt9.js",
+      "filename": "providers/animesalt10.js",
       "enabled": true,
       "contentLanguage": [
         "en"
