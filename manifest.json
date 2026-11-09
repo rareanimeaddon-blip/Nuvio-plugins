@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.168",
+  "version": "1.2.169",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -506,13 +506,13 @@
       "id": "xpass",
       "name": "XPass",
       "description": "XPass movies and shows",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/xpass4.js",
+      "filename": "providers/xpass5.js",
       "enabled": true,
       "contentLanguage": [
         "en"
