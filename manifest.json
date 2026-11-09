@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.182",
+  "version": "1.2.183",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -134,12 +134,12 @@
       "id": "desiserials",
       "name": "DesiSerials",
       "description": "Indian TV serials (Star Plus, Colors, Zee TV, Sony, SAB) - dated episodes resolved to direct 720p mp4 parts",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Muse",
       "supportedTypes": [
         "tv"
       ],
-      "filename": "providers/desiserials3.js",
+      "filename": "providers/desiserials4.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
