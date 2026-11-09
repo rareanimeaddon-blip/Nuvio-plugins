@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.155",
+  "version": "1.2.156",
   "scrapers": [
     {
       "id": "anidisk",
@@ -54,13 +54,13 @@
       "id": "castletv",
       "name": "CastleTV",
       "description": "CastleTV movies and shows",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/castletv11.js",
+      "filename": "providers/castletv12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
