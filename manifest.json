@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.171",
+  "version": "1.2.172",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -265,13 +265,13 @@
       "id": "moviebox",
       "name": "MovieBox",
       "description": "MovieBox movies and shows",
-      "version": "1.1.6",
+      "version": "1.1.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox18.js",
+      "filename": "providers/moviebox19.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -281,13 +281,13 @@
       "id": "movielinkbd6",
       "name": "MovieLinkBD",
       "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/movielinkbd6.js",
+      "filename": "providers/movielinkbd7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -297,13 +297,13 @@
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "description": "MoviesDrive movies and shows",
-      "version": "1.1.7",
+      "version": "1.1.8",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviesdrive9.js",
+      "filename": "providers/moviesdrive10.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
