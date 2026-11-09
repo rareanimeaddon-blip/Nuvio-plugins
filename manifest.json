@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.170",
+  "version": "1.2.171",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -216,13 +216,13 @@
       "id": "hdhub4u",
       "name": "HDHub4u",
       "description": "HDHub4u movies and shows",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/hdhub4u8.js",
+      "filename": "providers/hdhub4u9.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -232,13 +232,13 @@
       "id": "hindmovies",
       "name": "HindMovies",
       "description": "Hindi and dual-audio movies and series from v1.hindmovie.im, resolved to direct files via GDShine",
-      "version": "1.1.8",
+      "version": "1.1.9",
       "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/hindmovies11.js",
+      "filename": "providers/hindmovies12.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
@@ -249,13 +249,13 @@
       "id": "kartoons",
       "name": "Kartoons",
       "description": "Kartoons animated content",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/kartoons6.js",
+      "filename": "providers/kartoons7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
