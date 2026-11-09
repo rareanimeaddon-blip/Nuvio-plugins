@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.183",
+  "version": "1.2.184",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -38,13 +38,13 @@
       "id": "animedekho",
       "name": "Anime Dekho",
       "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "phisher98",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animedekho.js",
+      "filename": "providers/animedekho2.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -442,12 +442,12 @@
       "id": "toonix",
       "name": "Toonix",
       "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Converted",
       "supportedTypes": [
         "tv"
       ],
-      "filename": "providers/toonix2.js",
+      "filename": "providers/toonix3.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
