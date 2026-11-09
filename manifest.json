@@ -1,6 +1,6 @@
 {
-  "name": "28-Provider Collection",
-  "version": "1.2.164",
+  "name": "Infinite Streams",
+  "version": "1.2.165",
   "scrapers": [
     {
       "id": "fourkdhub",
