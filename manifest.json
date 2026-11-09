@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.184",
+  "version": "1.2.185",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -307,6 +307,22 @@
       "enabled": true,
       "contentLanguage": [
         "hi"
+      ]
+    },
+    {
+      "id": "movy",
+      "name": "Movy",
+      "description": "Movy movies and shows",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movy1.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
       ]
     },
     {
