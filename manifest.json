@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.179",
+  "version": "1.2.180",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -457,13 +457,13 @@
       "id": "toonworld",
       "name": "ToonWorld",
       "description": "ToonWorld cartoons and anime",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/toonworld11.js",
+      "filename": "providers/toonworld12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -473,13 +473,13 @@
       "id": "vaplayer",
       "name": "VAPlayer",
       "description": "VAPlayer movies and shows",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/vaplayer6.js",
+      "filename": "providers/vaplayer7.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -489,13 +489,13 @@
       "id": "vegamovies",
       "name": "VegaMovies",
       "description": "VegaMovies movies and shows via V-Cloud",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "CNCVerse (ported)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/vegamovies2.js",
+      "filename": "providers/vegamovies3.js",
       "enabled": true,
       "contentLanguage": [
         "en",
