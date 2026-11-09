@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.174",
+  "version": "1.2.175",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -118,13 +118,13 @@
       "id": "cno",
       "name": "CNO",
       "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "cno.to (ported)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cno5.js",
+      "filename": "providers/cno6.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -134,12 +134,12 @@
       "id": "desiserials",
       "name": "DesiSerials",
       "description": "Indian TV serials (Star Plus, Colors, Zee TV, Sony, SAB) - dated episodes resolved to direct 720p mp4 parts",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Muse",
       "supportedTypes": [
         "tv"
       ],
-      "filename": "providers/desiserials2.js",
+      "filename": "providers/desiserials3.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
@@ -150,13 +150,13 @@
       "id": "dudefilms",
       "name": "DudeFilms",
       "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dudefilms1.js",
+      "filename": "providers/dudefilms2.js",
       "enabled": true,
       "contentLanguage": [
         "hi",
