@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.160",
+  "version": "1.2.161",
   "scrapers": [
     {
       "id": "anidisk",
@@ -554,13 +554,13 @@
       "id": "pvrplaydiag",
       "name": "PvrPlay Diag",
       "description": "PvrPlay reachability diag (temporary)",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/pvrplaydiag1.js",
+      "filename": "providers/pvrplaydiag2.js",
       "enabled": true,
       "contentLanguage": [
         "en"
