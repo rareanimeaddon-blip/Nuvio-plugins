@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.180",
+  "version": "1.2.181",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -522,13 +522,13 @@
       "id": "zxcstream",
       "name": "ZXCStream",
       "description": "ZXCStream movies and shows via VidBolt resolve",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "NuvioPlugin",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/zxcstream2.js",
+      "filename": "providers/zxcstream3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
