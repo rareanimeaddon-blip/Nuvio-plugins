@@ -1,6 +1,6 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.176",
+  "version": "1.2.177",
   "scrapers": [
     {
       "id": "fourkdhub",
@@ -313,13 +313,13 @@
       "id": "multimovies",
       "name": "MultiMovies",
       "description": "MultiMovies movies and shows",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/multimovies11.js",
+      "filename": "providers/multimovies12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -329,13 +329,13 @@
       "id": "netmirror",
       "name": "NetMirror",
       "description": "NetMirror movies and shows",
-      "version": "1.2.6",
+      "version": "1.2.7",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirror17.js",
+      "filename": "providers/netmirror18.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -345,13 +345,13 @@
       "id": "onetouchtv",
       "name": "OneTouchTV",
       "description": "OneTouchTV movies and shows",
-      "version": "1.1.9",
+      "version": "1.1.10",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/onetouchtv11.js",
+      "filename": "providers/onetouchtv12.js",
       "enabled": true,
       "contentLanguage": [
         "en"
