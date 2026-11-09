@@ -1,18 +1,18 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.175",
+  "version": "1.2.176",
   "scrapers": [
     {
       "id": "fourkdhub",
       "name": "4KHDHub",
       "description": "4KHDHub direct links",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/fourkdhub6.js",
+      "filename": "providers/fourkdhub7.js",
       "enabled": true,
       "contentLanguage": [
         "hi"
@@ -167,13 +167,13 @@
       "id": "dulo",
       "name": "Dulo",
       "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dulo2.js",
+      "filename": "providers/dulo3.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -183,13 +183,13 @@
       "id": "goojara",
       "name": "Goojara",
       "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.1: fast path - no clock chains, one server at a time, stop at 2 streams (phone bridge was choking on the old build's request volume).",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara19.js",
+      "filename": "providers/goojara20.js",
       "enabled": true,
       "contentLanguage": [
         "en"
