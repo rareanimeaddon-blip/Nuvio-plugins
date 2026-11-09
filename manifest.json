@@ -1,6 +1,6 @@
 {
   "name": "28-Provider Collection",
-  "version": "1.2.156",
+  "version": "1.2.157",
   "scrapers": [
     {
       "id": "anidisk",
@@ -531,6 +531,22 @@
       "enabled": true,
       "contentLanguage": [
         "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "pvrplay",
+      "name": "PvrPlay",
+      "description": "PvrPlay movies and shows",
+      "version": "1.0.0",
+      "author": "Converted",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pvrplay1.js",
+      "enabled": true,
+      "contentLanguage": [
         "en"
       ]
     }
