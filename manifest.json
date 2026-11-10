@@ -1,538 +1,554 @@
 {
   "name": "Infinite Streams",
-  "version": "1.2.187",
   "scrapers": [
     {
+      "author": "phisher98 (adapted)",
+      "contentLanguage": [
+        "hi"
+      ],
+      "description": "4KHDHub direct links",
+      "enabled": true,
+      "filename": "providers/fourkdhub7.js",
       "id": "fourkdhub",
       "name": "4KHDHub",
-      "description": "4KHDHub direct links",
-      "version": "1.0.6",
-      "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/fourkdhub7.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
-      ]
+      "version": "1.0.6"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "AniDisk anime streams via Hydrax",
+      "enabled": true,
+      "filename": "providers/anidisk15.js",
       "id": "anidisk",
       "name": "AniDisk",
-      "description": "AniDisk anime streams via Hydrax",
-      "version": "1.0.14",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/anidisk15.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.14"
     },
     {
+      "author": "phisher98",
+      "contentLanguage": [
+        "hi"
+      ],
+      "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
+      "enabled": true,
+      "filename": "providers/animedekho2.js",
       "id": "animedekho",
       "name": "Anime Dekho",
-      "description": "Anime Dekho (animedekho.tv) - Hindi dubbed anime, cartoons and movies. Converted 1:1 from AnimeDekhoProvider.cs3 (CloudStream3 plugin v72 by phisher98), including the DGT watch API, ad-gate bypass and all registered extractors.",
-      "version": "1.0.7",
-      "author": "phisher98",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animedekho2.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
-      ]
+      "version": "1.0.7"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "AnimeSalt anime streams",
+      "enabled": true,
+      "filename": "providers/animesalt10.js",
       "id": "animesalt",
       "name": "AnimeSalt",
-      "description": "AnimeSalt anime streams",
-      "version": "1.0.9",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animesalt10.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.9"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "AnimeWorld anime streams",
+      "enabled": true,
+      "filename": "providers/animeworld15.js",
       "id": "animeworld",
       "name": "AnimeWorld",
-      "description": "AnimeWorld anime streams",
-      "version": "1.0.14",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/animeworld15.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.14"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "CastleTV movies and shows",
+      "enabled": true,
+      "filename": "providers/castletv13.js",
       "id": "castletv",
       "name": "CastleTV",
-      "description": "CastleTV movies and shows",
-      "version": "1.1.2",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/castletv13.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.2"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "CineJoy movies and shows",
+      "enabled": true,
+      "filename": "providers/cinejoy7.js",
       "id": "cinejoy",
       "name": "CineJoy",
-      "description": "CineJoy movies and shows",
-      "version": "1.0.7",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cinejoy7.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.7"
     },
     {
+      "author": "cno.to (ported)",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
+      "enabled": true,
+      "filename": "providers/cno6.js",
       "id": "cno",
       "name": "CNO",
-      "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
-      "version": "1.0.5",
-      "author": "cno.to (ported)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/cno6.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.5"
     },
     {
+      "author": "Muse",
+      "contentLanguage": [
+        "hi",
+        "en"
+      ],
+      "description": "Indian TV serials (Star Plus, Colors, Zee TV, Sony, SAB) - dated episodes resolved to direct 720p mp4 parts",
+      "enabled": true,
+      "filename": "providers/desiserials4.js",
       "id": "desiserials",
       "name": "DesiSerials",
-      "description": "Indian TV serials (Star Plus, Colors, Zee TV, Sony, SAB) - dated episodes resolved to direct 720p mp4 parts",
-      "version": "1.0.3",
-      "author": "Muse",
       "supportedTypes": [
         "tv"
       ],
-      "filename": "providers/desiserials4.js",
-      "enabled": true,
+      "version": "1.0.3"
+    },
+    {
+      "author": "Muse",
       "contentLanguage": [
         "hi",
         "en"
-      ]
-    },
-    {
+      ],
+      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "enabled": true,
+      "filename": "providers/dudefilms2.js",
       "id": "dudefilms",
       "name": "DudeFilms",
-      "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
-      "version": "1.0.1",
-      "author": "Muse",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dudefilms2.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi",
-        "en"
-      ]
+      "version": "1.0.1"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
+      "enabled": true,
+      "filename": "providers/dulo3.js",
       "id": "dulo",
       "name": "Dulo",
-      "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
-      "version": "1.0.2",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/dulo3.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.2"
     },
     {
+      "author": "phisher98 (ported by Muse)",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.1: fast path - no clock chains, one server at a time, stop at 2 streams (phone bridge was choking on the old build's request volume).",
+      "enabled": true,
+      "filename": "providers/goojara20.js",
       "id": "goojara",
       "name": "Goojara",
-      "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.1: fast path - no clock chains, one server at a time, stop at 2 streams (phone bridge was choking on the old build's request volume).",
-      "version": "2.1.2",
-      "author": "phisher98 (ported by Muse)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/goojara20.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "2.1.2"
     },
     {
+      "author": "NuvioPlugin",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "GramCinema movies and shows via CinemaTV",
+      "enabled": true,
+      "filename": "providers/gramcinema6.js",
+      "hasSettings": true,
       "id": "gramcinema",
       "name": "GramCinema",
-      "description": "GramCinema movies and shows via CinemaTV",
-      "version": "1.1.1",
-      "author": "NuvioPlugin",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/gramcinema6.js",
-      "enabled": true,
-      "hasSettings": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.1"
     },
     {
-      "id": "hdhub4u",
-      "name": "HDHub4u",
-      "description": "HDHub4u movies and shows",
-      "version": "1.0.8",
       "author": "Converted",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/hdhub4u9.js",
-      "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
-    },
-    {
-      "id": "hindmovies",
-      "name": "HindMovies",
-      "description": "Hindi and dual-audio movies and series from v1.hindmovie.im, resolved to direct files via GDShine",
-      "version": "1.1.9",
-      "author": "Muse",
+      ],
+      "description": "HDHub4u movies and shows",
+      "enabled": true,
+      "filename": "providers/hdhub4u9.js",
+      "id": "hdhub4u",
+      "name": "HDHub4u",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/hindmovies12.js",
-      "enabled": true,
+      "version": "1.0.8"
+    },
+    {
+      "author": "Muse",
       "contentLanguage": [
         "hi",
         "en"
-      ]
+      ],
+      "description": "Hindi and dual-audio movies and series from v1.hindmovie.im, resolved to direct files via GDShine",
+      "enabled": true,
+      "filename": "providers/hindmovies12.js",
+      "id": "hindmovies",
+      "name": "HindMovies",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.1.9"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Kartoons animated content",
+      "enabled": true,
+      "filename": "providers/kartoons7.js",
       "id": "kartoons",
       "name": "Kartoons",
-      "description": "Kartoons animated content",
-      "version": "1.0.6",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/kartoons7.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.6"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "MovieBox movies and shows",
+      "enabled": true,
+      "filename": "providers/moviebox19.js",
       "id": "moviebox",
       "name": "MovieBox",
-      "description": "MovieBox movies and shows",
-      "version": "1.1.7",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviebox19.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.7"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
+      "enabled": true,
+      "filename": "providers/movielinkbd7.js",
       "id": "movielinkbd6",
       "name": "MovieLinkBD",
-      "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
-      "version": "1.0.3",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/movielinkbd7.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.3"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "hi"
+      ],
+      "description": "MoviesDrive movies and shows",
+      "enabled": true,
+      "filename": "providers/moviesdrive10.js",
       "id": "moviesdrive",
       "name": "MoviesDrive",
-      "description": "MoviesDrive movies and shows",
-      "version": "1.1.8",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/moviesdrive10.js",
-      "enabled": true,
-      "contentLanguage": [
-        "hi"
-      ]
+      "version": "1.1.8"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "MultiMovies movies and shows",
+      "enabled": true,
+      "filename": "providers/multimovies12.js",
       "id": "multimovies",
       "name": "MultiMovies",
-      "description": "MultiMovies movies and shows",
-      "version": "1.1.1",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/multimovies12.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.1"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "NetMirror movies and shows",
+      "enabled": true,
+      "filename": "providers/netmirror18.js",
       "id": "netmirror",
       "name": "NetMirror",
-      "description": "NetMirror movies and shows",
-      "version": "1.2.7",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/netmirror18.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.2.7"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "OneTouchTV movies and shows",
+      "enabled": true,
+      "filename": "providers/onetouchtv12.js",
       "id": "onetouchtv",
       "name": "OneTouchTV",
-      "description": "OneTouchTV movies and shows",
-      "version": "1.1.10",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/onetouchtv12.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.10"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "PirateXPlay movies and shows",
+      "enabled": true,
+      "filename": "providers/piratexplay23.js",
       "id": "piratexplay",
       "name": "PirateXPlay",
-      "description": "PirateXPlay movies and shows",
-      "version": "1.0.23",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/piratexplay23.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.23"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Purstream French VF/VOSTFR streams via its API",
+      "enabled": true,
+      "filename": "providers/purstream3.js",
       "id": "purstream",
       "name": "Purstream",
-      "description": "Purstream French VF/VOSTFR streams via its API",
-      "version": "1.0.2",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/purstream3.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.2"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "RareAnime anime streams",
+      "enabled": true,
+      "filename": "providers/rareanime17.js",
       "id": "rareanime",
       "name": "RareAnime",
-      "description": "RareAnime anime streams",
-      "version": "1.0.16",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/rareanime17.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.16"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "ShowBox movies and shows",
+      "enabled": true,
+      "filename": "providers/showbox7.js",
+      "hasSettings": true,
       "id": "showbox",
       "name": "ShowBox",
-      "description": "ShowBox movies and shows",
-      "version": "1.1.2",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/showbox7.js",
-      "enabled": true,
+      "version": "1.1.2"
+    },
+    {
+      "author": "Converted",
       "contentLanguage": [
         "en"
       ],
-      "hasSettings": true
-    },
-    {
+      "description": "StreamFlix movies and shows",
+      "enabled": true,
+      "filename": "providers/streamflix12.js",
       "id": "streamflix",
       "name": "StreamFlix",
-      "description": "StreamFlix movies and shows",
-      "version": "1.0.15",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/streamflix12.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.15"
     },
     {
-      "id": "toonix",
-      "name": "Toonix",
-      "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
-      "version": "1.0.3",
       "author": "Converted",
-      "supportedTypes": [
-        "tv"
-      ],
-      "filename": "providers/toonix3.js",
-      "enabled": true,
       "contentLanguage": [
         "hi"
-      ]
+      ],
+      "description": "Toonix (toonix.bond) - TV anime and cartoons via the site's own hydrax streams API (SORA server, 480p/360p MP4) plus direct archive.org MP4s (Legacy server).",
+      "enabled": true,
+      "filename": "providers/toonix3.js",
+      "id": "toonix",
+      "name": "Toonix",
+      "supportedTypes": [
+        "tv"
+      ],
+      "version": "1.0.3"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "ToonWorld cartoons and anime",
+      "enabled": true,
+      "filename": "providers/toonworld12.js",
       "id": "toonworld",
       "name": "ToonWorld",
-      "description": "ToonWorld cartoons and anime",
-      "version": "1.0.11",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/toonworld12.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.11"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "VAPlayer movies and shows",
+      "enabled": true,
+      "filename": "providers/vaplayer7.js",
       "id": "vaplayer",
       "name": "VAPlayer",
-      "description": "VAPlayer movies and shows",
-      "version": "1.0.6",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/vaplayer7.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.0.6"
     },
     {
-      "id": "vegamovies",
-      "name": "VegaMovies",
-      "description": "VegaMovies movies and shows via V-Cloud",
-      "version": "1.0.2",
       "author": "CNCVerse (ported)",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/vegamovies3.js",
-      "enabled": true,
       "contentLanguage": [
         "en",
         "hi"
-      ]
+      ],
+      "description": "VegaMovies movies and shows via V-Cloud",
+      "enabled": true,
+      "filename": "providers/vegamovies3.js",
+      "id": "vegamovies",
+      "name": "VegaMovies",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.2"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "XPass movies and shows",
+      "enabled": true,
+      "filename": "providers/xpass6.js",
       "id": "xpass",
       "name": "XPass",
-      "description": "XPass movies and shows",
-      "version": "1.1.4",
-      "author": "Converted",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/xpass6.js",
-      "enabled": true,
-      "contentLanguage": [
-        "en"
-      ]
+      "version": "1.1.4"
     },
     {
+      "author": "NuvioPlugin",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "ZXCStream movies and shows via VidBolt resolve",
+      "enabled": true,
+      "filename": "providers/zxcstream3.js",
       "id": "zxcstream",
       "name": "ZXCStream",
-      "description": "ZXCStream movies and shows via VidBolt resolve",
-      "version": "1.0.2",
-      "author": "NuvioPlugin",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/zxcstream3.js",
-      "enabled": true,
+      "version": "1.0.2"
+    },
+    {
+      "author": "Converted",
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+      "enabled": true,
+      "filename": "providers/cinecat.js",
+      "id": "cinecat",
+      "name": "CineCat",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.3"
     }
-  ]
+  ],
+  "version": "1.2.187"
 }
