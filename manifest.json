@@ -120,14 +120,14 @@
       ],
       "description": "CineJoy movies and shows",
       "enabled": true,
-      "filename": "providers/cinejoy8.js",
+      "filename": "providers/cinejoy9.js",
       "id": "cinejoy",
       "name": "CineJoy",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.8"
+      "version": "1.0.9"
     },
     {
       "author": "cno.to (ported)",
@@ -550,5 +550,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.189"
+  "version": "1.2.190"
 }
