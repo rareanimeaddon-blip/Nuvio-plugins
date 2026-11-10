@@ -102,6 +102,22 @@
       "contentLanguage": [
         "en"
       ],
+      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API — first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+      "enabled": true,
+      "filename": "providers/cinecat2.js",
+      "id": "cinecat",
+      "name": "CineCat",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.4"
+    },
+    {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
       "description": "CineJoy movies and shows",
       "enabled": true,
       "filename": "providers/cinejoy7.js",
@@ -151,7 +167,7 @@
         "hi",
         "en"
       ],
-      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
       "filename": "providers/dudefilms2.js",
       "id": "dudefilms",
@@ -532,23 +548,7 @@
         "tv"
       ],
       "version": "1.0.2"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
-      "enabled": true,
-      "filename": "providers/cinecat.js",
-      "id": "cinecat",
-      "name": "CineCat",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.3"
     }
   ],
-  "version": "1.2.187"
+  "version": "1.2.188"
 }
