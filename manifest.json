@@ -518,6 +518,22 @@
       "version": "1.0.2"
     },
     {
+      "id": "vidlink",
+      "name": "VidLink",
+      "description": "VidLink movies and shows",
+      "filename": "providers/vidlink5.js",
+      "version": "1.0.5",
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true
+    },
+    {
       "author": "Converted",
       "contentLanguage": [
         "en"
@@ -550,5 +566,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.190"
+  "version": "1.2.191"
 }
