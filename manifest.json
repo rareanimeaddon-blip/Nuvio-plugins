@@ -146,22 +146,6 @@
       "version": "1.0.3"
     },
     {
-      "author": "dexter.pw (ported)",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "Dexter (dexter.pw) — movies & TV, up to 2160p HLS",
-      "enabled": true,
-      "filename": "providers/dexter1.js",
-      "id": "dexter",
-      "name": "Dexter",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.0"
-    },
-    {
       "author": "Muse",
       "contentLanguage": [
         "hi",
@@ -485,22 +469,6 @@
       "version": "1.0.11"
     },
     {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "VAPlayer movies and shows",
-      "enabled": true,
-      "filename": "providers/vaplayer7.js",
-      "id": "vaplayer",
-      "name": "VAPlayer",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.6"
-    },
-    {
       "author": "CNCVerse (ported)",
       "contentLanguage": [
         "en",
@@ -566,5 +534,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.202"
+  "version": "1.2.203"
 }
