@@ -146,22 +146,6 @@
       "version": "1.0.7"
     },
     {
-      "author": "Diag",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "CNO playback diagnostic - temporary, remove after verdict",
-      "enabled": true,
-      "filename": "providers/cnodiag4.js",
-      "id": "cnodiag",
-      "name": "CNO Diag",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.1"
-    },
-    {
       "author": "Muse",
       "contentLanguage": [
         "hi",
@@ -582,5 +566,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.196"
+  "version": "1.2.197"
 }
