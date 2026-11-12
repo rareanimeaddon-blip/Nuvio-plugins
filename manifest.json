@@ -502,6 +502,22 @@
       ]
     },
     {
+      "author": "vidy.st (ported)",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Vidy (vidy.st) — movies & TV via 18 city servers, up to 2160p",
+      "enabled": true,
+      "filename": "providers/vidy1.js",
+      "id": "vidy",
+      "name": "Vidy",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "author": "Converted",
       "contentLanguage": [
         "en"
@@ -534,5 +550,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.203"
+  "version": "1.2.204"
 }
