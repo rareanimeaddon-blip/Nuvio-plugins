@@ -136,14 +136,14 @@
       ],
       "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
       "enabled": true,
-      "filename": "providers/cno6.js",
+      "filename": "providers/cno7.js",
       "id": "cno",
       "name": "CNO",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.5"
+      "version": "1.0.6"
     },
     {
       "author": "Muse",
@@ -566,5 +566,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.193"
+  "version": "1.2.194"
 }
