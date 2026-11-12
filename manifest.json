@@ -150,9 +150,9 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "CNO mirror-CDN diagnostic - temporary, remove after verdict",
+      "description": "CNO mobile-UA diagnostic - temporary, remove after verdict",
       "enabled": true,
-      "filename": "providers/cnodiag5.js",
+      "filename": "providers/cnodiag6.js",
       "id": "cnodiag",
       "name": "CNO Diag",
       "supportedTypes": [
@@ -582,5 +582,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.198"
+  "version": "1.2.199"
 }
