@@ -136,14 +136,14 @@
       ],
       "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
       "enabled": true,
-      "filename": "providers/cno7.js",
+      "filename": "providers/cno8.js",
       "id": "cno",
       "name": "CNO",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.6"
+      "version": "1.0.7"
     },
     {
       "author": "Diag",
@@ -152,14 +152,14 @@
       ],
       "description": "CNO playback diagnostic - temporary, remove after verdict",
       "enabled": true,
-      "filename": "providers/cnodiag3.js",
+      "filename": "providers/cnodiag4.js",
       "id": "cnodiag",
       "name": "CNO Diag",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "author": "Muse",
@@ -582,5 +582,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.195"
+  "version": "1.2.196"
 }
