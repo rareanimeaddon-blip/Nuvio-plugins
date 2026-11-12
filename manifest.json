@@ -130,22 +130,6 @@
       "version": "1.0.9"
     },
     {
-      "author": "cno.to (ported)",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "CNO (cno.to) own servers up to 4K plus VidFast player",
-      "enabled": true,
-      "filename": "providers/cno10.js",
-      "id": "cno",
-      "name": "CNO",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.9"
-    },
-    {
       "author": "Muse",
       "contentLanguage": [
         "hi",
@@ -160,6 +144,22 @@
         "tv"
       ],
       "version": "1.0.3"
+    },
+    {
+      "author": "dexter.pw (ported)",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "Dexter (dexter.pw) — movies & TV, up to 2160p HLS",
+      "enabled": true,
+      "filename": "providers/dexter1.js",
+      "id": "dexter",
+      "name": "Dexter",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
     },
     {
       "author": "Muse",
@@ -566,5 +566,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.201"
+  "version": "1.2.202"
 }
