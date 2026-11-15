@@ -395,14 +395,14 @@
    ],
    "description": "RareAnime anime streams",
    "enabled": true,
-   "filename": "providers/rareanime18.js",
+   "filename": "providers/rareanime19.js",
    "id": "rareanime",
    "name": "RareAnime",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "version": "1.0.17"
+   "version": "1.0.18"
   },
   {
    "author": "Converted",
@@ -567,5 +567,5 @@
    "version": "1.0.2"
   }
  ],
- "version": "1.2.209"
+ "version": "1.2.210"
 }
