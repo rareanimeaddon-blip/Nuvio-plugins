@@ -56,14 +56,14 @@
    ],
    "description": "AnimeSalt anime streams",
    "enabled": true,
-   "filename": "providers/animesalt10.js",
+   "filename": "providers/animesalt11.js",
    "id": "animesalt",
    "name": "AnimeSalt",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "version": "1.0.9"
+   "version": "1.1.0"
   },
   {
    "author": "Converted",
@@ -102,7 +102,7 @@
    "contentLanguage": [
     "en"
    ],
-   "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API — first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+   "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
    "enabled": true,
    "filename": "providers/cinecat2.js",
    "id": "cinecat",
@@ -151,7 +151,7 @@
     "hi",
     "en"
    ],
-   "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
+   "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
    "enabled": true,
    "filename": "providers/dudefilms2.js",
    "id": "dudefilms",
@@ -506,7 +506,7 @@
    "contentLanguage": [
     "en"
    ],
-   "description": "Vidy (vidy.st) — movies & TV via 18 city servers, up to 2160p",
+   "description": "Vidy (vidy.st) \u2014 movies & TV via 18 city servers, up to 2160p",
    "enabled": true,
    "filename": "providers/vidy1.js",
    "id": "vidy",
@@ -539,16 +539,16 @@
     "hi",
     "en"
    ],
-   "description": "Xon anime & cartoons via archive.org — Hindi/English dubs, direct mp4",
+   "description": "Xon anime & cartoons via archive.org \u2014 Hindi/English dubs, direct mp4",
    "enabled": true,
-   "filename": "providers/xon1.js",
+   "filename": "providers/xon2.js",
    "id": "xon",
    "name": "Xon",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "version": "1.0.0"
+   "version": "1.0.1"
   },
   {
    "author": "NuvioPlugin",
@@ -567,5 +567,5 @@
    "version": "1.0.2"
   }
  ],
- "version": "1.2.207"
+ "version": "1.2.208"
 }
