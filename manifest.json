@@ -459,14 +459,14 @@
       ],
       "description": "ToonWorld cartoons and anime",
       "enabled": true,
-      "filename": "providers/toonworld14.js",
+      "filename": "providers/toonworld15.js",
       "id": "toonworld",
       "name": "ToonWorld",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.13"
+      "version": "1.0.14"
     },
     {
       "author": "CNCVerse (ported)",
@@ -567,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.212"
+  "version": "1.2.213"
 }
