@@ -283,14 +283,14 @@
    ],
    "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
    "enabled": true,
-   "filename": "providers/movielinkbd7.js",
+   "filename": "providers/movielinkbd8.js",
    "id": "movielinkbd6",
    "name": "MovieLinkBD",
    "supportedTypes": [
     "movie",
     "tv"
    ],
-   "version": "1.0.3"
+   "version": "1.0.4"
   },
   {
    "author": "Converted",
@@ -567,5 +567,5 @@
    "version": "1.0.2"
   }
  ],
- "version": "1.2.206"
+ "version": "1.2.207"
 }
