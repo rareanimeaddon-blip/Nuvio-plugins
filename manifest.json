@@ -102,7 +102,7 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API — first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
       "enabled": true,
       "filename": "providers/cinecat2.js",
       "id": "cinecat",
@@ -151,7 +151,7 @@
         "hi",
         "en"
       ],
-      "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
       "filename": "providers/dudefilms2.js",
       "id": "dudefilms",
@@ -169,14 +169,14 @@
       ],
       "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
       "enabled": true,
-      "filename": "providers/dulo3.js",
+      "filename": "providers/dulo4.js",
       "id": "dulo",
       "name": "Dulo",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "author": "phisher98 (ported by Muse)",
@@ -506,7 +506,7 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Vidy (vidy.st) — movies & TV via 18 city servers, up to 2160p",
+      "description": "Vidy (vidy.st) \u2014 movies & TV via 18 city servers, up to 2160p",
       "enabled": true,
       "filename": "providers/vidy1.js",
       "id": "vidy",
@@ -539,7 +539,7 @@
         "hi",
         "en"
       ],
-      "description": "Xon anime & cartoons via the live Xon API — Hindi/English/Telugu/Tamil dubs, direct mp4",
+      "description": "Xon anime & cartoons via the live Xon API \u2014 Hindi/English/Telugu/Tamil dubs, direct mp4",
       "enabled": true,
       "filename": "providers/xon4.js",
       "id": "xon",
@@ -567,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.214"
+  "version": "1.2.215"
 }
