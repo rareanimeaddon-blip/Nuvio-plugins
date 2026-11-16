@@ -169,14 +169,14 @@
       ],
       "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
       "enabled": true,
-      "filename": "providers/dulo4.js",
+      "filename": "providers/dulo5.js",
       "id": "dulo",
       "name": "Dulo",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.3"
+      "version": "1.0.4"
     },
     {
       "author": "phisher98 (ported by Muse)",
@@ -567,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.215"
+  "version": "1.2.216"
 }
