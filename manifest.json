@@ -104,14 +104,14 @@
       ],
       "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
       "enabled": true,
-      "filename": "providers/cinecat2.js",
+      "filename": "providers/cinecat3.js",
       "id": "cinecat",
       "name": "CineCat",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.4"
+      "version": "1.0.5"
     },
     {
       "author": "Converted",
@@ -567,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.216"
+  "version": "1.2.217"
 }
