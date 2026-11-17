@@ -195,6 +195,22 @@
       "version": "1.0.0"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "TEMPORARY DIAGNOSTIC round 2 for Dulo: tests which header/host variant, if any, gets past the doolo 403 on the device, plus a CineCat probe. Remove after the device verdict.",
+      "enabled": true,
+      "filename": "providers/dulodiag2.js",
+      "id": "dulodiag2",
+      "name": "Dulo Diag 2",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "author": "phisher98 (ported by Muse)",
       "contentLanguage": [
         "en"
@@ -583,5 +599,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.218"
+  "version": "1.2.219"
 }
