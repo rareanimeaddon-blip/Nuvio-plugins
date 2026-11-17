@@ -118,22 +118,6 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "TEMPORARY DIAGNOSTIC for CineCat: reports where CineCat stalls on the device (TMDB, sources, per-source probes, ZCDN). Remove after the device verdict.",
-      "enabled": true,
-      "filename": "providers/cinediag1.js",
-      "id": "cinediag",
-      "name": "CineCat Diag",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
       "description": "CineJoy movies and shows",
       "enabled": true,
       "filename": "providers/cinejoy9.js",
@@ -193,38 +177,6 @@
         "tv"
       ],
       "version": "1.0.4"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "TEMPORARY DIAGNOSTIC for Dulo: reports where Dulo stalls on the device (TMDB, resolve, sources, per-source probes). Remove after the device verdict.",
-      "enabled": true,
-      "filename": "providers/dulodiag1.js",
-      "id": "dulodiag",
-      "name": "Dulo Diag",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.0"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "TEMPORARY DIAGNOSTIC round 2 for Dulo: tests which header/host variant, if any, gets past the doolo 403 on the device, plus a CineCat probe. Remove after the device verdict.",
-      "enabled": true,
-      "filename": "providers/dulodiag2.js",
-      "id": "dulodiag2",
-      "name": "Dulo Diag 2",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.0"
     },
     {
       "author": "phisher98 (ported by Muse)",
@@ -615,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.220"
+  "version": "1.2.221"
 }
