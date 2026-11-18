@@ -402,7 +402,7 @@ function makeStream(serverLabel, url, quality, filename, fmt) {
     var sz = formatStreamSize({ title: fmt.title, year: fmt.year, quality: q,
       season: fmt.mediaType === "tv" ? fmt.season : undefined,
       episode: fmt.mediaType === "tv" ? fmt.episode : undefined,
-      source: PROVIDER, server: serverLabel, url: url });
+      source: PROVIDER, server: serverLabel, url: url, subtitles: fmt.subtitles });
     return { name: PROVIDER, title: PROVIDER, size: sz, url: url, quality: q };
   }
   var label = PROVIDER + " • " + serverLabel;
@@ -1167,9 +1167,81 @@ function vidoutResolve(embedUrl, label, meta, mediaType, season, episode) {
     // the catalog's entries are '#'-suffixed signed URLs; keep what is
     // shaped like an HLS master either way
     if (!shape) return [];
-    var s = makeStream(label, master, qualityFromText(label), null, { title: meta.title, year: meta.year, mediaType: mediaType, season: season, episode: episode });
-    withHeaders(s, { Referer: "https://vidout.pages.dev/", "User-Agent": MM_UA });
-    return [s];
+    var buildVo = function (subs) {
+      var s = makeStream(label, master, qualityFromText(label), null, { title: meta.title, year: meta.year, mediaType: mediaType, season: season, episode: episode, subtitles: subs });
+      withHeaders(s, { Referer: "https://vidout.pages.dev/", "User-Agent": MM_UA });
+      if (subs.length) s.subtitles = subs;
+      return [s];
+    };
+    return mmResolveMasterSubtitles(master, "https://vidout.pages.dev/").then(buildVo, function () { return buildVo([]); });
+  }).catch(function () { return []; });
+}
+
+// ---------------- HLS master subtitle tracks (VidBolt / VidOut) ----------------
+// Some masters returned as rows (VidBolt's rousav masters, verified on
+// Project Hail Mary + The Matrix) carry #EXT-X-MEDIA:TYPE=SUBTITLES
+// tracks whose playlists are single-segment VOD: one .vtt file each
+// (e.g. subtitles_englishcc.m3u8 -> subtitles_englishcc/00000.vtt,
+// a real 138KB WEBVTT). The provider used to return the master URL
+// with no subtitles attached, so those tracks never showed. Fetch the
+// master once, parse the SUBTITLES lines, resolve each playlist to its
+// single .vtt segment, and attach {id, url, lang, label, language}.
+// English first, then Hindi, then master order; cap 8 unique playlists
+// per master so a 25-track master stays cheap. A playlist with anything
+// other than exactly one .vtt segment is skipped (one file cannot
+// represent a multi-segment playlist). Fail-open everywhere: any fetch
+// failure just means no subtitles on that row, never a lost stream.
+function mmSubLangCode(rawLang) {
+  var parts = String(rawLang || "").toLowerCase().split(/[^a-z]+/);
+  var code = parts[0] || "";
+  return /^[a-z]{2,3}$/.test(code) ? code : "";
+}
+function mmParseMasterSubTracks(masterText, masterUrl) {
+  var out = [], seen = {};
+  var lines = String(masterText || "").split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line.indexOf("#EXT-X-MEDIA:TYPE=SUBTITLES") !== 0) continue;
+    var uri = rx1(/URI="([^"]+)"/, line);
+    var langRaw = rx1(/LANGUAGE="([^"]+)"/, line);
+    var name = rx1(/NAME="([^"]+)"/, line) || "";
+    if (!uri || !langRaw) continue;
+    var lang = mmSubLangCode(langRaw);
+    if (!lang) continue; // unrecognised / non-ASCII-only code: skip, never emit garbage
+    var playlistUrl = resolveRel(masterUrl, deEsc(uri));
+    if (!isHttp(playlistUrl) || seen[playlistUrl]) continue;
+    seen[playlistUrl] = 1;
+    out.push({ name: name || lang, lang: lang, playlistUrl: playlistUrl });
+  }
+  out.sort(function (a, b) {
+    var rank = function (t) { return t.lang === "en" ? 0 : t.lang === "hi" ? 1 : 2; };
+    return rank(a) - rank(b);
+  });
+  return out.slice(0, 8);
+}
+function mmResolveMasterSubtitles(masterUrl, referer) {
+  if (!isHttp(masterUrl) || masterUrl.toLowerCase().indexOf(".m3u8") === -1) return Promise.resolve([]);
+  return mmGet(masterUrl, referer).then(function (r) {
+    if (!r || !r.ok || !r.text || r.text.indexOf("#EXTM3U") === -1) return [];
+    var tracks = mmParseMasterSubTracks(r.text, masterUrl);
+    if (!tracks.length) return [];
+    var jobs = tracks.map(function (track, idx) {
+      return mmGet(track.playlistUrl, referer).then(function (pr) {
+        if (!pr || !pr.ok || !pr.text) return null;
+        var segs = [];
+        pr.text.split("\n").forEach(function (ln) {
+          var t = ln.trim();
+          if (t && t.charAt(0) !== "#") segs.push(t);
+        });
+        if (segs.length !== 1 || !/\.vtt(\?.*)?$/i.test(segs[0])) return null;
+        var vttUrl = resolveRel(track.playlistUrl, segs[0]);
+        if (!isHttp(vttUrl)) return null;
+        return { id: "multimovies-" + track.lang + "-" + idx, url: vttUrl, lang: track.lang, label: track.name, language: track.name };
+      }).catch(function () { return null; });
+    });
+    return Promise.all(jobs).then(function (rs) {
+      return rs.filter(function (x) { return !!x; });
+    });
   }).catch(function () { return []; });
 }
 
@@ -1186,9 +1258,14 @@ function vidboltResolve(label, meta, mediaType, season, episode) {
       var srcObj = (j.stream && j.stream.sources && j.stream.sources[0]) || null;
       var src = (srcObj && srcObj.url) || (j && (j.streamUrl || j.url || (j.source && j.source.url)));
       if (!isHttp(src)) return [];
-      var s = makeStream(label + " • " + srv, src, qualityFromText((j.quality || "") + " " + srv), null, { title: meta.title, year: meta.year, mediaType: mediaType, season: season, episode: episode });
-      if (hostOf(src).indexOf("proxy.vidbolt.xyz") === -1) withHeaders(s, { Referer: "https://vidbolt.xyz/", "User-Agent": MM_UA });
-      return [s];
+      var buildVb = function (subs) {
+        var s = makeStream(label + " • " + srv, src, qualityFromText((j.quality || "") + " " + srv), null, { title: meta.title, year: meta.year, mediaType: mediaType, season: season, episode: episode, subtitles: subs });
+        if (hostOf(src).indexOf("proxy.vidbolt.xyz") === -1) withHeaders(s, { Referer: "https://vidbolt.xyz/", "User-Agent": MM_UA });
+        if (subs.length) s.subtitles = subs;
+        return [s];
+      };
+      if (hostOf(src).indexOf("proxy.vidbolt.xyz") !== -1) return buildVb([]);
+      return mmResolveMasterSubtitles(src, "https://vidbolt.xyz/").then(buildVb, function () { return buildVb([]); });
     }).catch(function () { return []; });
   });
   return Promise.all(jobs).then(function (rs) { var o = []; rs.forEach(function (x) { o = o.concat(x || []); }); return o; });
@@ -1639,8 +1716,11 @@ function osAttachSubtitles(rows, imdbId, isSeries, season, episode, cfg) {
           var still = [];
           for (var i = 0; i < need.length; i++) {
             var hit = osBestMatch(need[i]._rel, sdSubs);
-            if (hit) need[i].subtitles = [{ id: String(hit.id), url: hit.url, lang: 'en' }];
-            else still.push(need[i]);
+            // Rows that already carry the source's own subtitles (e.g.
+            // VidBolt HLS subtitle tracks) keep them; SubDL must not
+            // replace the source's exact-file subs with a release guess.
+            if (hit && (!need[i].subtitles || !need[i].subtitles.length)) need[i].subtitles = [{ id: String(hit.id), url: hit.url, lang: 'en' }];
+            else if (!hit && (!need[i].subtitles || !need[i].subtitles.length)) still.push(need[i]);
           }
           return still;
         }).catch(function () { return need; });
@@ -1650,7 +1730,7 @@ function osAttachSubtitles(rows, imdbId, isSeries, season, episode, cfg) {
         return osMirrorSubs(imdbId, isSeries, season, episode).then(function (mirrorSubs) {
           for (var j = 0; j < still.length; j++) {
             var hit2 = osBestMatch(still[j]._rel, mirrorSubs);
-            if (hit2) still[j].subtitles = [{ id: String(hit2.id), url: hit2.url, lang: 'en' }];
+            if (hit2 && (!still[j].subtitles || !still[j].subtitles.length)) still[j].subtitles = [{ id: String(hit2.id), url: hit2.url, lang: 'en' }];
           }
           return cleanup();
         }).catch(function () { return cleanup(); });
