@@ -212,14 +212,44 @@ function formatStreamSize(o) {
 }
 
 // v4 stream row for Vidlink.
-function makeVidlinkStream(mediaInfo, quality, url) {
+// Map a caption language NAME to an ISO code. The API gives names, not
+// codes, and the name is in the language's OWN script (اَلْعَرَبِيَّةُ,
+// বাংলা, हिन्दी, Русский, 中文, ...), not English — so the table covers
+// both the English name and the native-script name. The app's
+// SubtitleDto REQUIRES `lang`, so an unrecognised name is skipped
+// (a garbage code would mislabel the subtitle); the first-2-letters
+// fallback only applies to plain ASCII names.
+function vidlinkLangCode(name) {
+  var n = String(name || "").trim().toLowerCase();
+  var map = {
+    english: "en", arabic: "ar", bengali: "bn", spanish: "es", french: "fr", german: "de", hindi: "hi",
+    portuguese: "pt", indonesian: "id", turkish: "tr", russian: "ru", tamil: "ta", telugu: "te",
+    malayalam: "ml", urdu: "ur", filipino: "tl", malay: "ms", chinese: "zh", punjabi: "pa",
+    korean: "ko", japanese: "ja", italian: "it", dutch: "nl", swedish: "sv", polish: "pl",
+    vietnamese: "vi", thai: "th", "español": "es", "français": "fr", "português": "pt",
+    // Native-script names (as the API returns them).
+    "اَلْعَرَبِيَّةُ": "ar", "العربية": "ar", "বাংলা": "bn", "हिन्दी": "hi", "हिंदी": "hi",
+    "ਪੰਜਾਬੀ": "pa", "русский": "ru", "اُردُو": "ur", "اردو": "ur", "中文": "zh",
+    "தமிழ்": "ta", "తెలుగు": "te", "മലയാളം": "ml", "한국어": "ko", "日本語": "ja",
+    "italiano": "it", "nederlands": "nl", "svenska": "sv", "polski": "pl",
+    "tiếng việt": "vi", "ภาษาไทย": "th", "türkçe": "tr"
+  };
+  if (map[n]) return map[n];
+  if (/^[a-z]{2,3}$/.test(n)) return n;
+  if (/^[a-z]+$/.test(n)) return n.slice(0, 2);
+  return "";
+}
+
+function makeVidlinkStream(mediaInfo, quality, url, subs) {
   var q = (quality && String(quality).toLowerCase() !== "auto" && String(quality).toLowerCase() !== "unknown") ? quality : undefined;
-  var lbl = formatStreamSize({ source: "Vidlink", title: mediaInfo.title, year: mediaInfo.year, season: mediaInfo.season, episode: mediaInfo.episode, quality: q, url: url });
-  return { name: "Vidlink", title: "Vidlink", size: lbl, url: url, quality: quality };
+  var lbl = formatStreamSize({ source: "Vidlink", title: mediaInfo.title, year: mediaInfo.year, season: mediaInfo.season, episode: mediaInfo.episode, quality: q, subtitles: subs, url: url });
+  var row = { name: "Vidlink", title: "Vidlink", size: lbl, url: url, quality: quality };
+  if (subs && subs.length) row.subtitles = subs;
+  return row;
 }
 
 // Fetch and parse M3U8 playlist to extract quality variants
-function fetchAndParseM3U8(playlistUrl, mediaInfo) {
+function fetchAndParseM3U8(playlistUrl, mediaInfo, subs) {
     console.log(`[Vidlink] Fetching M3U8 playlist: ${playlistUrl.substring(0, 80)}...`);
     
     return makeRequest(playlistUrl, { headers: VIDLINK_HEADERS })
@@ -231,7 +261,7 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
             if (parsedStreams.length === 0) {
                 console.log('[Vidlink] No quality variants found, returning master playlist');
                 // Fallback: return the master playlist as Auto quality
-                return [makeVidlinkStream(mediaInfo, 'Auto', playlistUrl)];
+                return [makeVidlinkStream(mediaInfo, 'Auto', playlistUrl, subs)];
             }
             
             console.log(`[Vidlink] Found ${parsedStreams.length} quality variants`);
@@ -239,7 +269,7 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
             // Convert parsed streams to Nuvio format
             const streams = parsedStreams.map(stream => {
                 const quality = getQualityFromResolution(stream.resolution);
-                return makeVidlinkStream(mediaInfo, quality, stream.url);
+                return makeVidlinkStream(mediaInfo, quality, stream.url, subs);
             });
             
             return streams;
@@ -247,7 +277,7 @@ function fetchAndParseM3U8(playlistUrl, mediaInfo) {
         .catch(error => {
             console.error(`[Vidlink] Error fetching/parsing M3U8: ${error.message}`);
             // Fallback: return the master playlist URL
-            return [makeVidlinkStream(mediaInfo, 'Auto', playlistUrl)];
+            return [makeVidlinkStream(mediaInfo, 'Auto', playlistUrl, subs)];
         });
 }
 
@@ -339,6 +369,24 @@ function processVidlinkResponse(data, mediaInfo) {
     const streams = [];
     if (!data) return streams;
 
+    // The API returns data.stream.captions[] with real subtitle files
+    // ({id, url, language, type}) — read them and attach in the app's
+    // SubtitleDto shape {id, url, lang}. `language` is kept so
+    // formatStreamSize still shows the language in the row label.
+    // (The findUrls fallback below still SKIPS caption/subtitle objects
+    // — that is intentional, to avoid treating caption URLs as streams.)
+    const subs = [];
+    if (data.stream && Array.isArray(data.stream.captions)) {
+        for (let i = 0; i < data.stream.captions.length; i++) {
+            const cap = data.stream.captions[i];
+            if (!cap || typeof cap.url !== "string" || !cap.url) continue;
+            const cname = String(cap.language || "English");
+            const code = vidlinkLangCode(cname);
+            if (!code) continue;
+            subs.push({ id: "vidlink-" + code + "-" + i, url: cap.url, lang: code, label: cname, language: cname });
+        }
+    }
+
     try {
         console.log(`[Vidlink] Processing response data:`, JSON.stringify(data, null, 2));
         
@@ -350,7 +398,7 @@ function processVidlinkResponse(data, mediaInfo) {
             Object.entries(data.stream.qualities).forEach(([qualityKey, qualityData]) => {
                 if (qualityData.url) {
                     const quality = extractQuality({ quality: qualityKey });
-                    streams.push(makeVidlinkStream(mediaInfo, quality, qualityData.url));
+                    streams.push(makeVidlinkStream(mediaInfo, quality, qualityData.url, subs));
                 }
             });
             
@@ -360,7 +408,8 @@ function processVidlinkResponse(data, mediaInfo) {
                 streams.push({
                     _isPlaylist: true,
                     url: data.stream.playlist,
-                    mediaInfo: mediaInfo
+                    mediaInfo: mediaInfo,
+                    subtitles: subs
                 });
             }
         }
@@ -372,20 +421,21 @@ function processVidlinkResponse(data, mediaInfo) {
             streams.push({
                 _isPlaylist: true,
                 url: data.stream.playlist,
-                mediaInfo: mediaInfo
+                mediaInfo: mediaInfo,
+                subtitles: subs
             });
         }
         // Handle single stream URL
         else if (data.url) {
             const quality = extractQuality(data);
-            streams.push(makeVidlinkStream(mediaInfo, quality, data.url));
+            streams.push(makeVidlinkStream(mediaInfo, quality, data.url, subs));
         }
         // Handle multiple streams array
         else if (data.streams && Array.isArray(data.streams)) {
             data.streams.forEach((stream, index) => {
                 if (stream.url) {
                     const quality = extractQuality(stream);
-                    streams.push(makeVidlinkStream(mediaInfo, quality, stream.url));
+                    streams.push(makeVidlinkStream(mediaInfo, quality, stream.url, subs));
                 }
             });
         }
@@ -394,7 +444,7 @@ function processVidlinkResponse(data, mediaInfo) {
             data.links.forEach((link, index) => {
                 if (link.url) {
                     const quality = extractQuality(link);
-                    streams.push(makeVidlinkStream(mediaInfo, quality, link.url));
+                    streams.push(makeVidlinkStream(mediaInfo, quality, link.url, subs));
                 }
             });
         }
@@ -487,8 +537,8 @@ function getStreams(tmdbId, mediaType = 'movie', seasonNum = null, episodeNum = 
                     console.log(`[Vidlink] Processing ${playlistStreams.length} M3U8 playlists`);
                     
                     // Fetch and parse each M3U8 playlist
-                    const playlistPromises = playlistStreams.map(ps => 
-                        fetchAndParseM3U8(ps.url, ps.mediaInfo)
+                    const playlistPromises = playlistStreams.map(ps =>
+                        fetchAndParseM3U8(ps.url, ps.mediaInfo, ps.subtitles)
                     );
                     
                     return Promise.all(playlistPromises)

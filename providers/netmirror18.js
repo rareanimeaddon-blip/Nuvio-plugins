@@ -365,6 +365,23 @@ function nmEmbed(tmdbId, mediaType, season, episode, title) {
     if (!d || d.ok !== true) return [];
     var headers = { "Referer": NM_STREAM_REFERER, "User-Agent": nmNextUA() };
     var disp = title || "NetMirror";
+    // The embed API returns d.captions[] with real subtitle files
+    // ({lang, name, url, source}) — the URL is relative
+    // (/api/proxy/video?url=...), so prepend NM_EMBED_BASE. Attach in
+    // the app's SubtitleDto shape {id, url, lang}. `language` is kept
+    // so formatStreamSize still shows the language in the row label.
+    var subs = [];
+    if (Array.isArray(d.captions)) {
+      for (var ci = 0; ci < d.captions.length; ci++) {
+        var c = d.captions[ci];
+        if (!c || typeof c.url !== "string" || !c.url) continue;
+        var curl = c.url;
+        if (curl.charAt(0) === "/") curl = NM_EMBED_BASE + curl;
+        if (!/^https?:\/\//i.test(curl)) continue;
+        var clang = String(c.lang || "en").toLowerCase();
+        subs.push({ id: "netmirror-" + clang + "-" + ci, url: curl, lang: clang, label: c.name || c.lang || "Subtitle", language: clang });
+      }
+    }
     var out = [];
     (d.streams || []).forEach(function (st) {
       if (!st || !st.url) return;
@@ -374,8 +391,10 @@ function nmEmbed(tmdbId, mediaType, season, episode, title) {
         server: "Netflix", url: st.url });
       var sz = formatStreamSize({ source: "NetMirror", title: title, quality: q,
         season: mediaType === "tv" ? season : undefined, episode: mediaType === "tv" ? episode : undefined,
-        server: "Netflix", url: st.url });
-      out.push({ name: "NetMirror", title: "NetMirror", size: sz, url: st.url, quality: q, headers: headers });
+        server: "Netflix", subtitles: subs, url: st.url });
+      var row = { name: "NetMirror", title: "NetMirror", size: sz, url: st.url, quality: q, headers: headers };
+      if (subs.length) row.subtitles = subs;
+      out.push(row);
     });
     if (out.length) return out;
     if (d.mp4) {
@@ -384,8 +403,10 @@ function nmEmbed(tmdbId, mediaType, season, episode, title) {
         server: "Netflix", url: d.mp4 });
       var msz = formatStreamSize({ source: "NetMirror", title: title, quality: "Auto",
         season: mediaType === "tv" ? season : undefined, episode: mediaType === "tv" ? episode : undefined,
-        server: "Netflix", url: d.mp4 });
-      return [{ name: "NetMirror", title: "NetMirror", size: msz, url: d.mp4, quality: "Auto", headers: headers }];
+        server: "Netflix", subtitles: subs, url: d.mp4 });
+      var mrow = { name: "NetMirror", title: "NetMirror", size: msz, url: d.mp4, quality: "Auto", headers: headers };
+      if (subs.length) mrow.subtitles = subs;
+      return [mrow];
     }
     return [];
   });
