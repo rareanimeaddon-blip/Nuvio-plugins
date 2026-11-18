@@ -494,7 +494,12 @@ async function getStreams(tmdbId, mediaType, season, episode) {
                 for (var k = 0; k < src.captions.length; k++) {
                     var c = src.captions[k];
                     if (c && typeof c.url === "string" && c.url) {
-                        subs.push({ url: c.url, language: c.display || c.language || "Unknown" });
+                        // The app's SubtitleDto REQUIRES `lang` (not
+                        // `language`) and reads `label`; without `lang`
+                        // the whole subtitle is dropped, so Dulo's own
+                        // captions never showed in the player.
+                        var dlang = String(c.display || c.language || "Unknown").toLowerCase();
+                        subs.push({ id: "dulo-" + dlang + "-" + k, url: c.url, lang: dlang, label: c.display || c.language || "Unknown" });
                     }
                 }
             }

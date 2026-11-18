@@ -354,11 +354,14 @@ function isHighValueQuality(rawValue) {
 
 function normalizeSubtitleTracks(rawTracks) {
   if (!Array.isArray(rawTracks)) return [];
-  return rawTracks.map(track => ({
-    url: typeof track?.url === "string" ? track.url.trim() : "",
-    language: String(track?.language || track?.id || "en").toLowerCase(),
-    name: String(track?.language || track?.id || "Subtitle")
-  })).filter(track => track.url);
+  // The app's SubtitleDto REQUIRES `lang` (not `language`) and reads
+  // `label` (not `name`); without `lang` the whole subtitle is dropped,
+  // so CineJoy's own captions never showed in the player.
+  return rawTracks.map((track, idx) => {
+    var url = typeof track?.url === "string" ? track.url.trim() : "";
+    var lang = String(track?.language || track?.id || "en").toLowerCase();
+    return { id: "cinejoy-" + lang + "-" + idx, url: url, lang: lang, label: String(track?.language || track?.id || "Subtitle") };
+  }).filter(track => track.url);
 }
 
 function deduplicateAndCleanStreams(streamList) {
