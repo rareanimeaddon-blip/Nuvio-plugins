@@ -242,17 +242,65 @@ function parseQuality(_0x11d4c6) {
   }
   return "HD";
 }
+// __PURSTREAM_MASTER_SUBTITLES__: the HLS master playlists carry
+// #EXT-X-MEDIA:TYPE=SUBTITLES tracks (real .vtt files) that the API
+// never lists. Fetch each .m3u8 master, parse the SUBTITLES tracks and
+// attach them as {id, url, lang, label} so the app shows them.
+// Fails open to no subtitles on any error.
+function purIso3To2(code) {
+  var c = String(code || "").toLowerCase().trim();
+  var map = { eng: "en", fre: "fr", fra: "fr", spa: "es", ger: "de", deu: "de", ita: "it", por: "pt", rus: "ru", ara: "ar", ben: "bn", chi: "zh", zho: "zh", jpn: "ja", kor: "ko", tam: "ta", tel: "te", mal: "ml", mar: "mr", pan: "pa", urd: "ur", ind: "id", msa: "ms", vie: "vi", tha: "th", fil: "tl", nld: "nl", swe: "sv", dan: "da", fin: "fi", nor: "no", pol: "pl", tur: "tr", ukr: "uk", ces: "cs", cze: "cs", ell: "el", heb: "he", ron: "ro", rum: "ro", hun: "hu", hin: "hi" };
+  if (map[c]) return map[c];
+  if (/^[a-z]{2}$/.test(c)) return c;
+  return "";
+}
+function purSubLabel(code) {
+  var names = { en: "English", fr: "French", es: "Spanish", de: "German", it: "Italian", pt: "Portuguese", ru: "Russian", ar: "Arabic", bn: "Bengali", zh: "Chinese", ja: "Japanese", ko: "Korean", ta: "Tamil", te: "Telugu", ml: "Malayalam", mr: "Marathi", pa: "Punjabi", ur: "Urdu", id: "Indonesian", ms: "Malay", vi: "Vietnamese", th: "Thai", tl: "Filipino", nl: "Dutch", sv: "Swedish", da: "Danish", fi: "Finnish", no: "Norwegian", pl: "Polish", tr: "Turkish", uk: "Ukrainian", cs: "Czech", el: "Greek", he: "Hebrew", ro: "Romanian", hu: "Hungarian", hi: "Hindi" };
+  return names[code] || code;
+}
+function purParseMasterSubTracks(masterText, masterUrl) {
+  var out = [];
+  var seen = {};
+  try {
+    var lines = String(masterText || "").split("\n");
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line.indexOf("#EXT-X-MEDIA") !== 0 || line.indexOf("TYPE=SUBTITLES") === -1) continue;
+      var langM = line.match(/LANGUAGE="([^"]+)"/i);
+      var uriM = line.match(/URI="([^"]+)"/i);
+      if (!langM || !uriM) continue;
+      var code = purIso3To2(langM[1]);
+      if (!code) continue;
+      var full = uriM[1];
+      try { full = new URL(uriM[1], masterUrl).toString(); } catch (e) { full = uriM[1]; }
+      if (!/^https?:\/\//i.test(full)) continue;
+      if (seen[full]) continue;
+      seen[full] = true;
+      out.push({ id: "purstream-" + code + "-" + out.length, url: full, lang: code, label: purSubLabel(code), language: code });
+    }
+  } catch (e) {}
+  return out;
+}
+function purFetchMasterSubtitles(masterUrl) {
+  return fetch(masterUrl, { headers: { "User-Agent": PURSTREAM_UA, Referer: PURSTREAM_REFERER } }).then(function (r) {
+    if (!r.ok) return [];
+    return r.text();
+  }).then(function (text) {
+    return purParseMasterSubTracks(text, masterUrl);
+  }).catch(function () { return []; });
+}
 function normalizeMovieSources(_0x29ba99, _0x22ed47) {
-  return _0x29ba99.filter(function (_0x4fc8fa) {
+  var filtered = _0x29ba99.filter(function (_0x4fc8fa) {
     return _0x4fc8fa.url && (_0x4fc8fa.url.match(/\.m3u8/i) || _0x4fc8fa.url.match(/\.mp4/i));
-  }).map(function (_0x1e197e) {
+  });
+  return Promise.all(filtered.map(function (_0x1e197e) {
     var _0x56fac8 = parseQuality(_0x1e197e.name);
     var _0x168dce = _0x1e197e.url.match(/\.mp4/i) ? "mp4" : "m3u8";
     var _0x53c8d3 = parseLang(_0x1e197e.name);
     var _0x217d9a = buildPurstreamTitle(_0x22ed47, _0x56fac8, _0x53c8d3, _0x168dce, null, null, null, _0x1e197e.name);
     var _0xlbl = formatStreamLabel({ source: "Purstream", title: _0x22ed47.enName, quality: _0x56fac8, audio: _0x53c8d3, url: _0x1e197e.url });
     var _0xsz = formatStreamSize({ source: "Purstream", title: _0x22ed47.enName, year: _0x22ed47.year, quality: _0x56fac8, audio: _0x53c8d3, url: _0x1e197e.url });
-    return {
+    var row = {
       name: "Purstream",
       title: "Purstream",
       size: _0xsz,
@@ -266,17 +314,25 @@ function normalizeMovieSources(_0x29ba99, _0x22ed47) {
         Referer: PURSTREAM_REFERER
       }
     };
-  });
+    if (_0x168dce !== "m3u8") return row;
+    return purFetchMasterSubtitles(_0x1e197e.url).then(function (subs) {
+      if (subs.length) {
+        row.subtitles = subs;
+        row.size = formatStreamSize({ source: "Purstream", title: _0x22ed47.enName, year: _0x22ed47.year, quality: _0x56fac8, audio: _0x53c8d3, subtitles: subs, url: _0x1e197e.url });
+      }
+      return row;
+    }).catch(function () { return row; });
+  }));
 }
 function normalizeEpisodeSources(_0x3ffa77, _0x296e79, _0x46ea42, _0x42f2bb, _0x38e282) {
-  return _0x3ffa77.map(function (_0x533f4c) {
+  return Promise.all(_0x3ffa77.map(function (_0x533f4c) {
     var _0xcb09c0 = parseQuality(_0x533f4c.source_name);
     var _0x40dc85 = _0x533f4c.format || "m3u8";
     var _0xa6c753 = parseLang(_0x533f4c.source_name);
     var _0x2f09cb = buildPurstreamTitle(_0x296e79, _0xcb09c0, _0xa6c753, _0x40dc85, _0x46ea42, _0x42f2bb, _0x38e282, _0x533f4c.source_name);
     var _0xlbl = formatStreamLabel({ source: "Purstream", title: _0x296e79.enName, quality: _0xcb09c0, season: _0x46ea42, episode: _0x42f2bb, audio: _0xa6c753, url: _0x533f4c.stream_url });
     var _0xsz = formatStreamSize({ source: "Purstream", title: _0x296e79.enName, year: _0x296e79.year, quality: _0xcb09c0, season: _0x46ea42, episode: _0x42f2bb, audio: _0xa6c753, url: _0x533f4c.stream_url });
-    return {
+    var row = {
       name: "Purstream",
       title: "Purstream",
       size: _0xsz,
@@ -290,7 +346,15 @@ function normalizeEpisodeSources(_0x3ffa77, _0x296e79, _0x46ea42, _0x42f2bb, _0x
         Referer: PURSTREAM_REFERER
       }
     };
-  });
+    if (_0x40dc85 !== "m3u8") return row;
+    return purFetchMasterSubtitles(_0x533f4c.stream_url).then(function (subs) {
+      if (subs.length) {
+        row.subtitles = subs;
+        row.size = formatStreamSize({ source: "Purstream", title: _0x296e79.enName, year: _0x296e79.year, quality: _0xcb09c0, season: _0x46ea42, episode: _0x42f2bb, audio: _0xa6c753, subtitles: subs, url: _0x533f4c.stream_url });
+      }
+      return row;
+    }).catch(function () { return row; });
+  }));
 }
 // __STREAM_LABEL_FORMATTER__ v2: one-line emoji label for every stream.
 // Movie:  🎬 <Title> • 📺 <Quality> • 🔊 <Audio> • 💬 <Subs> • 🖥️ <Provider> • 🗄️ <Server>

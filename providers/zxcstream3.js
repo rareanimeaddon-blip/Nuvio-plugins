@@ -50,7 +50,16 @@
      unsigned CloudFront) - always skipped.
    The site's main VidStuck backend is Cloudflare-walled (403) from
    datacenter IPs, so it is not used. No timers, no TextEncoder /
-   WebCrypto - TV guest safe. */
+   WebCrypto - TV guest safe.
+   Subtitles (v1.0.3): the resolve API carries them two ways and both
+   are now attached as {id, url, lang, language, label} — the .srt
+   file list in stream.subtitles (callisto; labels in native script,
+   mapped to ISO codes, unrecognised names skipped) preferred, else
+   the #EXT-X-MEDIA:TYPE=SUBTITLES renditions in source.master
+   (orion/rousav; relative URIs resolved against the master URL).
+   The same set goes on every emitted row: the subtitles belong to
+   the title, not to one server. stream.vidbolt.xyz masters carry
+   audio tracks only, no subtitles of their own. */
 var VIDBOLT_BASE = "https://vidbolt.xyz";
 var ZXC_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36";
 var ZXC_FALLBACK_SERVERS = ["orion", "callisto", "fastva", "vega", "quantum", "quasar"];
@@ -82,20 +91,217 @@ function zxcServers(mediaType, tmdbId, seasonNum, episodeNum) {
   });
 }
 
+// ---------- subtitle helpers ----------
+// VidBolt's resolve API drops subtitle files in two places, and the
+// provider used to ignore both:
+//   1. `stream.subtitles[]` (callisto family): real .srt files on
+//      cacdn.hakunaymatata.com, CloudFront-signed (~8h). `label`/`lang`
+//      are language NAMES, often in native script (اَلْعَرَبِيَّةُ,
+//      বাংলা, Español) — mapped to ISO codes with the table below;
+//      an unrecognised non-ASCII name is SKIPPED, never guessed
+//      (the VidLink lesson: a naive first-2-letters fallback made
+//      garbage codes).
+//   2. `source.master` (orion/rousav family): the embedded master
+//      playlist carries #EXT-X-MEDIA:TYPE=SUBTITLES renditions
+//      (English for movies, up to 32 languages for TV). The URI is
+//      relative to the master URL and fetches 200 bare (no api_key
+//      needed); it resolves to a .vtt segment playlist.
+// The .srt list is preferred when present; the master renditions
+// are the fallback. Either way the same set is attached to every
+// emitted row (the subtitles belong to the title, not to one server).
+var ZXC_LANG_NAMES = {
+  "english": "en", "british english": "en", "english [cc]": "en",
+  "arabic": "ar", "اَلْعَرَبِيَّةُ": "ar", "arabic (egyptian)": "ar",
+  "bengali": "bn", "বাংলা": "bn",
+  "spanish": "es", "español": "es", "european spanish": "es", "latin american spanish": "es",
+  "french": "fr", "français": "fr",
+  "german": "de", "deutsch": "de",
+  "italian": "it", "italiano": "it",
+  "portuguese": "pt", "português": "pt", "brazilian portuguese": "pt", "português (brasil)": "pt",
+  "russian": "ru", "русский": "ru",
+  "hindi": "hi", "हिन्दी": "hi", "हिंदी": "hi",
+  "chinese": "zh", "chinese (simplified)": "zh", "chinese (traditional)": "zh", "中文": "zh",
+  "japanese": "ja", "日本語": "ja",
+  "korean": "ko", "한국어": "ko",
+  "tamil": "ta", "தமிழ்": "ta",
+  "telugu": "te", "తెలుగు": "te",
+  "malayalam": "ml", "മലയാളം": "ml",
+  "marathi": "mr", "मराठी": "mr",
+  "punjabi": "pa", "ਪੰਜਾਬੀ": "pa",
+  "urdu": "ur", "اُردُو": "ur",
+  "indonesian": "id", "bahasa indonesia": "id",
+  "malay": "ms", "bahasa melayu": "ms",
+  "vietnamese": "vi", "tiếng việt": "vi",
+  "thai": "th", "ไทย": "th",
+  "filipino": "tl",
+  "dutch": "nl", "nederlands": "nl",
+  "swedish": "sv", "svenska": "sv",
+  "danish": "da", "dansk": "da",
+  "finnish": "fi", "suomi": "fi",
+  "norwegian": "no", "norsk": "no", "norwegian bokmål": "no",
+  "polish": "pl", "polski": "pl",
+  "turkish": "tr", "türkçe": "tr",
+  "ukrainian": "uk", "українська": "uk",
+  "czech": "cs", "čeština": "cs",
+  "greek": "el", "ελληνικά": "el",
+  "hebrew": "he", "עברית": "he",
+  "romanian": "ro", "română": "ro",
+  "hungarian": "hu", "magyar": "hu",
+  "icelandic": "is", "íslenska": "is",
+  "croatian": "hr", "hrvatski": "hr",
+  "serbian": "sr", "српски": "sr",
+  "bulgarian": "bg", "български": "bg",
+  "catalan": "ca", "català": "ca",
+  "persian": "fa", "فارسی": "fa",
+  "turkmen": "tk"
+};
+var ZXC_LANG_CODES3 = {
+  eng: "en", ara: "ar", ben: "bn", spa: "es", fre: "fr", fra: "fr",
+  ger: "de", deu: "de", ita: "it", por: "pt", rus: "ru", hin: "hi",
+  chi: "zh", zho: "zh", jpn: "ja", kor: "ko", tam: "ta", tel: "te",
+  mal: "ml", mar: "mr", pan: "pa", urd: "ur", ind: "id", msa: "ms",
+  vie: "vi", tha: "th", fil: "tl", nld: "nl", swe: "sv", dan: "da",
+  fin: "fi", nor: "no", nob: "no", pol: "pl", tur: "tr", ukr: "uk",
+  ces: "cs", cze: "cs", ell: "el", heb: "he", ron: "ro", rum: "ro",
+  hun: "hu", isl: "is", hrv: "sr", srp: "sr", bul: "bg", cat: "ca",
+  fas: "fa", per: "fa", tuk: "tk"
+};
+var ZXC_LANG_CODES2 = {
+  en: 1, ar: 1, bn: 1, es: 1, fr: 1, de: 1, it: 1, pt: 1, ru: 1, hi: 1,
+  zh: 1, ja: 1, ko: 1, ta: 1, te: 1, ml: 1, mr: 1, pa: 1, ur: 1, id: 1,
+  ms: 1, vi: 1, th: 1, tl: 1, nl: 1, sv: 1, da: 1, fi: 1, no: 1, nb: 1,
+  pl: 1, tr: 1, uk: 1, cs: 1, el: 1, he: 1, ro: 1, hu: 1, is: 1, hr: 1,
+  sr: 1, bg: 1, ca: 1, fa: 1, tk: 1, af: 1, sq: 1, am: 1, az: 1, be: 1,
+  cy: 1, et: 1, eu: 1, ga: 1, gl: 1, gu: 1, ha: 1, hy: 1, ka: 1, kk: 1,
+  km: 1, kn: 1, ku: 1, ky: 1, la: 1, lb: 1, lo: 1, lt: 1, lv: 1, mk: 1,
+  mn: 1, ne: 1, ps: 1, sa: 1, si: 1, sk: 1, sl: 1, so: 1, st: 1, su: 1,
+  sw: 1, tg: 1, ug: 1, uz: 1, yi: 1, yo: 1, zu: 1
+};
+// Language name or playlist LANGUAGE tag -> ISO 639-1 code, or "" to skip.
+// Handles "English", "Español", native-script names, and tags like
+// "en-GB.[CC]", "pt-BR", "zh-Hans" (primary subtag wins; nb -> no).
+function zxcNormLang(raw) {
+  var s = String(raw || "").toLowerCase().trim();
+  if (!s) return "";
+  s = s.replace(/\[cc\]/g, "").replace(/\s+/g, " ").trim();
+  if (ZXC_LANG_NAMES[s]) return ZXC_LANG_NAMES[s];
+  var noParen = s.replace(/\s*\([^)]*\)/g, "").trim();
+  if (noParen !== s && ZXC_LANG_NAMES[noParen]) return ZXC_LANG_NAMES[noParen];
+  var head = s.split(/[-. ]/)[0];
+  if (ZXC_LANG_CODES2[head]) return head === "nb" ? "no" : head;
+  if (ZXC_LANG_CODES3[head]) return ZXC_LANG_CODES3[head];
+  return "";
+}
+
+var ZXC_LANG_DISPLAY = {
+  en: "English", ar: "Arabic", bn: "Bengali", es: "Spanish", fr: "French",
+  de: "German", it: "Italian", pt: "Portuguese", ru: "Russian", hi: "Hindi",
+  zh: "Chinese", ja: "Japanese", ko: "Korean", ta: "Tamil", te: "Telugu",
+  ml: "Malayalam", mr: "Marathi", pa: "Punjabi", ur: "Urdu",
+  id: "Indonesian", ms: "Malay", vi: "Vietnamese", th: "Thai",
+  tl: "Filipino", nl: "Dutch", sv: "Swedish", da: "Danish",
+  fi: "Finnish", no: "Norwegian", pl: "Polish", tr: "Turkish",
+  uk: "Ukrainian", cs: "Czech", el: "Greek", he: "Hebrew",
+  ro: "Romanian", hu: "Hungarian", is: "Icelandic", hr: "Croatian",
+  sr: "Serbian", bg: "Bulgarian", ca: "Catalan", fa: "Persian",
+  tk: "Turkmen", af: "Afrikaans", sq: "Albanian", am: "Amharic",
+  az: "Azerbaijani", be: "Belarusian", cy: "Welsh", et: "Estonian",
+  eu: "Basque", ga: "Irish", gl: "Galician", gu: "Gujarati",
+  ha: "Hausa", hy: "Armenian", ka: "Georgian", kk: "Kazakh",
+  km: "Khmer", kn: "Kannada", ku: "Kurdish", ky: "Kyrgyz",
+  la: "Latin", lb: "Luxembourgish", lo: "Lao", lt: "Lithuanian",
+  lv: "Latvian", mk: "Macedonian", mn: "Mongolian", ne: "Nepali",
+  ps: "Pashto", sa: "Sanskrit", si: "Sinhala", sk: "Slovak",
+  sl: "Slovenian", so: "Somali", st: "Sesotho", su: "Sundanese",
+  sw: "Swahili", tg: "Tajik", ug: "Uyghur", uz: "Uzbek",
+  yi: "Yiddish", yo: "Yoruba", zu: "Zulu"
+};
+
+function zxcSubsFromApi(list) {
+  var out = [], seen = {};
+  (Array.isArray(list) ? list : []).forEach(function (entry, idx) {
+    if (!entry || typeof entry !== "object") return;
+    var url = typeof entry.url === "string" ? entry.url.trim() : "";
+    if (!url || !/^https?:\/\//i.test(url)) return;
+    var display = String(entry.label || entry.lang || "").trim();
+    var lang = zxcNormLang(entry.lang || entry.label || "");
+    if (!lang || seen[lang]) return;
+    seen[lang] = 1;
+    // `language` is what formatStreamSize shows in the 💬 line, so it
+    // carries the plain English name; `label` keeps the source's own
+    // name (often native script) for fidelity.
+    out.push({ id: "zxc-" + lang + "-" + idx, url: url, lang: lang, language: ZXC_LANG_DISPLAY[lang] || display || lang, label: display || lang });
+  });
+  return out;
+}
+
+function zxcSubsFromMaster(masterText, baseUrl) {
+  var out = [], seen = {};
+  if (!masterText || !baseUrl) return out;
+  var re = /#EXT-X-MEDIA:TYPE=SUBTITLES[^\n]*/gi, m, idx = 0;
+  var dir = "";
+  try { var u = new URL(baseUrl); dir = u.origin + u.pathname.replace(/[^/]*$/, ""); } catch (e) { return out; }
+  while ((m = re.exec(masterText)) !== null) {
+    var line = m[0];
+    var uri = /URI="([^"]+)"/i.exec(line);
+    if (!uri || !uri[1]) continue;
+    var url = uri[1];
+    if (!/^https?:\/\//i.test(url)) {
+      try { url = new URL(url, dir).href; } catch (e) { continue; }
+    }
+    var langRaw = /LANGUAGE="([^"]+)"/i.exec(line);
+    var name = /NAME="([^"]+)"/i.exec(line);
+    var display = name ? name[1] : "";
+    var lang = zxcNormLang(langRaw ? langRaw[1] : display);
+    if (!lang) continue;
+    if (seen[lang]) {
+      // Prefer a plain "English" rendition over a "[CC]" one when the
+      // master lists both (it lists en-GB.[CC], en.[CC], then en).
+      var prev = out[seen[lang]];
+      if (prev && /\[cc\]/i.test(prev.label || "") && !/\[cc\]/i.test(display)) {
+        out[seen[lang]] = { id: prev.id, url: url, lang: lang, language: ZXC_LANG_DISPLAY[lang] || display || lang, label: display || lang };
+      }
+      continue;
+    }
+    seen[lang] = out.length;
+    out.push({ id: "zxc-" + lang + "-m" + (idx++), url: url, lang: lang, language: ZXC_LANG_DISPLAY[lang] || display || lang, label: display || lang });
+  }
+  return out;
+}
+
+// English first (stable) so the row label's first 💬 languages are the
+// ones most viewers want; the rest keep the source's order.
+function zxcSortSubs(subs) {
+  var en = [], rest = [];
+  subs.forEach(function (s) { if (s.lang === "en") en.push(s); else rest.push(s); });
+  return en.concat(rest);
+}
+
 function zxcResolve(server, mediaType, tmdbId, seasonNum, episodeNum) {
   var q = "type=" + mediaType + "&id=" + tmdbId;
   if (mediaType === "tv") q += "&season=" + (seasonNum || 1) + "&episode=" + (episodeNum || 1);
   q += "&prefer=" + encodeURIComponent(server.id);
   return zxcFetchText(VIDBOLT_BASE + "/api/resolve?" + q, zxcEmbedUrl(mediaType, tmdbId, seasonNum, episodeNum)).then(function (txt) {
-    var out = [];
+    var out = { sources: [], subtitles: [], masterSubs: [] };
     var j = null;
     try { j = JSON.parse(txt || ""); } catch (e) {}
     var sources = (j && j.stream && j.stream.sources) || [];
     sources.forEach(function (src) {
-      if (src && src.url) out.push({ url: src.url, quality: src.quality || "", server: server.name });
+      if (src && src.url) {
+        out.sources.push({ url: src.url, quality: src.quality || "", server: server.name });
+        // Fallback subtitles live in the source's own embedded master
+        // playlist (orion/rousav family); parse them per source.
+        if (typeof src.master === "string" && src.master) {
+          out.masterSubs = out.masterSubs.concat(zxcSubsFromMaster(src.master, src.url));
+        }
+      }
     });
+    // Primary subtitles: the resolve response's own .srt file list
+    // (callisto family). Collected even when this server's sources
+    // are all dead (dash-hls-bridge) — they belong to the title.
+    out.subtitles = zxcSubsFromApi(j && j.stream && j.stream.subtitles);
     return out;
-  }).catch(function () { return []; });
+  }).catch(function () { return { sources: [], subtitles: [], masterSubs: [] }; });
 }
 
 // __STREAM_LABEL_FORMATTER__ v2: one-line emoji label for every stream.
@@ -245,13 +451,28 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
     return Promise.all(servers.map(function (s) { return zxcResolve(s, type, tmdbId, seasonNum, episodeNum); })).then(function (perServer) {
       var seen = {};
       var proxied = [], referred = [], lastResort = [];
-      perServer.forEach(function (list) {
+      // Subtitles belong to the title, not to one server: prefer the
+      // resolve API's .srt file list (any server), else the master
+      // playlist renditions parsed from the sources themselves.
+      var apiSubs = [], masterSubs = [], seenLang = {};
+      perServer.forEach(function (res) {
+        (res.subtitles || []).forEach(function (s) { if (!seenLang["a" + s.lang]) { seenLang["a" + s.lang] = 1; apiSubs.push(s); } });
+      });
+      if (!apiSubs.length) {
+        var seenM = {};
+        perServer.forEach(function (res) {
+          (res.masterSubs || []).forEach(function (s) { if (!seenM["m" + s.lang]) { seenM["m" + s.lang] = 1; masterSubs.push(s); } });
+        });
+      }
+      var subs = zxcSortSubs(apiSubs.length ? apiSubs : masterSubs);
+      perServer.forEach(function (res) {
+        var list = res.sources || [];
         list.forEach(function (s) {
           if (seen[s.url]) return;
           seen[s.url] = 1;
           if (s.url.indexOf("dash-hls-bridge") !== -1) return;
           var q = /\b(2160p|1080p|720p|480p|360p)\b/i.exec(s.quality || "") ? s.quality : "HD";
-          var body = formatStreamSize({ source: "ZXCStream", quality: q, season: type === "tv" ? seasonNum : undefined, episode: type === "tv" ? episodeNum : undefined, server: s.server, url: s.url });
+          var body = formatStreamSize({ source: "ZXCStream", quality: q, season: type === "tv" ? seasonNum : undefined, episode: type === "tv" ? episodeNum : undefined, server: s.server, url: s.url, subtitles: subs });
           var stream = {
             name: "ZXCStream",
             title: "ZXCStream",
@@ -260,6 +481,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
             size: body,
             type: "direct"
           };
+          if (subs.length) stream.subtitles = subs;
           if (s.url.indexOf("proxy.vidbolt.xyz") !== -1) { proxied.push(stream); return; }
           if (s.url.indexOf("img.rousav.tech") !== -1) { lastResort.push(stream); return; }
           var hdrs = { "Referer": VIDBOLT_BASE + "/", "User-Agent": ZXC_UA };
