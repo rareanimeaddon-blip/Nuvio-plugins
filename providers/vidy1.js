@@ -335,8 +335,15 @@ function _vdStreamsFromLane(data, lane, meta, season, episode) {
   if (Array.isArray(data.subtitles)) {
     for (var i = 0; i < data.subtitles.length; i++) {
       var sb = data.subtitles[i];
-      var lang = (sb && typeof sb === "object") ? (sb.language || sb.lang || sb.label || "") : String(sb || "");
-      if (lang) subs.push(lang);
+      if (!sb || typeof sb !== "object") continue;
+      var surl = (typeof sb.url === "string" && sb.url) ? sb.url.trim() : "";
+      if (!surl || !/^https?:\/\//i.test(surl)) continue;
+      var slang = String(sb.lang || sb.language || sb.label || "en").toLowerCase();
+      // The API returns real subtitle files ({lang, language, url}).
+      // Attach them in the app's SubtitleDto shape {id, url, lang};
+      // `language` is kept so formatStreamSize still shows the
+      // language in the row label.
+      subs.push({ id: "vidy-" + slang + "-" + i, url: surl, lang: slang, language: slang });
     }
   }
   data.sources.forEach(function (src) {
@@ -349,12 +356,14 @@ function _vdStreamsFromLane(data, lane, meta, season, episode) {
       quality: quality, season: season, episode: episode,
       source: "Vidy", server: lane, subtitles: subs, url: url
     });
-    out.push({
+    var row = {
       name: "Vidy", title: "Vidy", size: size,
       url: url, quality: quality, type: "direct",
       headers: { Referer: VIDY_ORIGIN + "/", "User-Agent": VIDY_UA },
       behaviorHints: { notWebReady: true, proxyHeaders: { request: { Referer: VIDY_ORIGIN + "/", "User-Agent": VIDY_UA } } }
-    });
+    };
+    if (subs.length) row.subtitles = subs;
+    out.push(row);
   });
   return out;
 }
