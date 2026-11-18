@@ -532,6 +532,20 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
         return fetchEncrypted("/vod/" + match.id + "/episode/" + target.playId, false)
           .then(function (sd) {
             var sources = (sd && sd.sources) || [];
+            // The episode API returns sd.track[] with real subtitle
+            // files ({file, kind, name, code, format}) — read them and
+            // attach in the app's SubtitleDto shape {id, url, lang}.
+            // `language` is kept so formatStreamSize still shows the
+            // language in the row label.
+            var subs = [];
+            if (sd && Array.isArray(sd.track)) {
+              for (var ti = 0; ti < sd.track.length; ti++) {
+                var t = sd.track[ti];
+                if (!t || typeof t.file !== "string" || !t.file) continue;
+                var code = String(t.code || "en").toLowerCase();
+                subs.push({ id: "onetouch-" + code + "-" + ti, url: t.file, lang: code, label: t.name || t.code || "Subtitle", language: code });
+              }
+            }
             var seen = {}, out = [];
             sources.forEach(function (src) {
               if (!src.url || seen[src.url]) return;
@@ -539,15 +553,17 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
               var olbl = formatStreamLabel({ source: "OneTouchTV", title: meta.title, quality: qualityLabel(src.quality),
                 season: isTv ? s : undefined, episode: isTv ? ep : undefined, url: src.url });
               var osz = formatStreamSize({ source: "OneTouchTV", title: meta.title, year: meta.year, quality: qualityLabel(src.quality),
-                season: isTv ? s : undefined, episode: isTv ? ep : undefined, url: src.url });
-              out.push({
+                season: isTv ? s : undefined, episode: isTv ? ep : undefined, subtitles: subs, url: src.url });
+              var row = {
                 name: "OneTouchTV",
                 title: "OneTouchTV",
                 size: osz,
                 url: src.url,
                 quality: qualityLabel(src.quality),
                 type: /\.m3u8(\?|$)/i.test(src.url) ? "hls" : "direct",
-              });
+              };
+              if (subs.length) row.subtitles = subs;
+              out.push(row);
             });
             return out;
           })

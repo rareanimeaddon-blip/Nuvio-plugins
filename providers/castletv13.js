@@ -646,20 +646,22 @@ function collectStreams(secKey, details, activeId, meta, titleLine, type, episod
 
   var streams = [];
   var seen = {};
-  function pushStream(url, qual, langLabel) {
+  function pushStream(url, qual, langLabel, subs) {
     if (!url || seen[url]) return;
     seen[url] = true;
     var label = formatStreamSize({ source: "CastleTV", title: meta.title, year: meta.year, quality: qual,
       season: type === "series" ? season : undefined, episode: type === "series" ? episode : undefined,
-      audio: langLabel ? langLabel.replace(/[\[\]]/g, "") : undefined, url: url });
-    streams.push({
+      audio: langLabel ? langLabel.replace(/[\[\]]/g, "") : undefined, subtitles: subs, url: url });
+    var row = {
       name: "CastleTV",
       title: "CastleTV",
       size: label,
       url: url,
       quality: /^\d{3,4}p$/.test(qual) ? qual : "Unknown",
       type: "direct",
-    });
+    };
+    if (subs && subs.length) row.subtitles = subs;
+    streams.push(row);
   }
   // VIP preview unlock: for VIP-gated titles the API returns a 10-min
   // preview playlist on the SIGNED host (img1.hscow.com,
@@ -689,6 +691,20 @@ function collectStreams(secKey, details, activeId, meta, titleLine, type, episod
     var data = unwrap(raw);
     var vids = data.videos || [];
     var defQual = resolutionLabel(resolution);
+    // The getVideo2 response carries data.subtitles[] with real
+    // subtitle files ({languageId, abbreviate, title, url, isDefault})
+    // — read them and attach in the app's SubtitleDto shape
+    // {id, url, lang}. `language` is kept so formatStreamSize still
+    // shows the language in the row label.
+    var subs = [];
+    if (Array.isArray(data.subtitles)) {
+      for (var i = 0; i < data.subtitles.length; i++) {
+        var sb = data.subtitles[i];
+        if (!sb || typeof sb.url !== "string" || !sb.url) continue;
+        var abbr = String(sb.abbreviate || "en").toLowerCase();
+        subs.push({ id: "castletv-" + abbr + "-" + i, url: sb.url, lang: abbr, label: sb.title || sb.abbreviate || "Subtitle", language: abbr });
+      }
+    }
     var urls = [];
     if (vids.length) {
       vids.forEach(function (v) {
@@ -700,7 +716,7 @@ function collectStreams(secKey, details, activeId, meta, titleLine, type, episod
     }
     urls.forEach(function (url) {
       var full = unlockPreviewUrl(url);
-      pushStream(full, qualityFromUrl(full, defQual), langLabel);
+      pushStream(full, qualityFromUrl(full, defQual), langLabel, subs);
     });
   }
 
