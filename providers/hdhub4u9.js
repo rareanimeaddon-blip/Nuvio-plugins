@@ -1041,6 +1041,218 @@ function formatStreamSize(o) {
 }
 
 
+var OS_MIRROR = 'https://opensubtitles-v3.strem.io';
+var SD_API = 'https://api.subdl.com/api/v2/subtitles/search';
+var SD_DL = 'https://dl.subdl.com';
+// Secret gist holding the user's tokens (same file the showbox/gramcinema
+// tokens live in). SCRAPER_SETTINGS always wins; the gist is only read when
+// a key is missing from settings. The keys are never in the repo.
+var TOKEN_FILE_URL = 'https://gist.githubusercontent.com/rareanimeaddon-blip/6fc363ac74cb8921d61c07a2c6bb59d6/raw/gistfile1.txt';
+var _fileTokens = null;
+var _fileTokensPromise = null;
+function loadTokenFile() {
+  if (_fileTokens) return Promise.resolve(_fileTokens);
+  if (_fileTokensPromise) return _fileTokensPromise;
+  if (!TOKEN_FILE_URL) { _fileTokens = {}; return Promise.resolve(_fileTokens); }
+  try {
+    _fileTokensPromise = fetch(TOKEN_FILE_URL).then(function (r) { return r && r.ok ? r.json() : null; }).then(function (j) { _fileTokens = j || {}; return _fileTokens; }).catch(function () { _fileTokens = {}; return _fileTokens; });
+  } catch (e) { _fileTokens = {}; return Promise.resolve(_fileTokens); }
+  return _fileTokensPromise;
+}
+function _setting(cfg, key) {
+  try {
+    if (cfg && cfg[key]) return String(cfg[key]).trim();
+  } catch (e) {}
+  return '';
+}
+function getSubdlKeys(cfg) {
+  var k1 = _setting(cfg, 'subdlApiKey');
+  var k2 = _setting(cfg, 'subdlApiKey2');
+  if (k1 && k2) return Promise.resolve([k1, k2]);
+  return loadTokenFile().then(function (t) {
+    if (!k1) { try { if (t && t.subdlApiKey) k1 = String(t.subdlApiKey).trim(); } catch (e) {} }
+    if (!k2) { try { if (t && t.subdlApiKey2) k2 = String(t.subdlApiKey2).trim(); } catch (e) {} }
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  }).catch(function () {
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  });
+}
+function osTokens(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (t) { return t.length > 0; });
+}
+function osGroup(name) {
+  var s = String(name || '');
+  // Last parenthesised chunk that is NOT just a year (e.g. "(2026)") — the
+  // year is not a release group, and treating it as one makes every
+  // same-year release "match" (+4). Skip pure years / pure numbers.
+  var groups = s.match(/\(([^)]+)\)/g) || [];
+  for (var gi = groups.length - 1; gi >= 0; gi--) {
+    var g = groups[gi].replace(/[()]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s*4khdhub\s*$/, '').trim();
+    if (!g) continue;
+    if (/^\d{4}$/.test(g) || /^\d+$/.test(g)) continue;
+    return g;
+  }
+  var m = s.match(/[-.]([A-Za-z][A-Za-z0-9]{1,})\s*$/);
+  if (m) return m[1].toLowerCase();
+  return '';
+}
+function osReleaseFeatures(name) {
+  var toks = osTokens(name);
+  var set = {};
+  for (var i = 0; i < toks.length; i++) set[toks[i]] = true;
+  var squashed = String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  var source = '';
+  if (squashed.indexOf('bluray') !== -1) source = 'bluray';
+  else if (squashed.indexOf('webdl') !== -1) source = 'webdl';
+  else if (squashed.indexOf('webrip') !== -1) source = 'webrip';
+  else if (squashed.indexOf('hdtv') !== -1) source = 'hdtv';
+  else if (squashed.indexOf('dvdrip') !== -1) source = 'dvdrip';
+  else if (set['ts'] || set['telesync']) source = 'ts';
+  return {
+    group: osGroup(name),
+    source: source,
+    res: set['2160p'] ? '2160p' : set['1080p'] ? '1080p' : set['720p'] ? '720p' : set['480p'] ? '480p' : '',
+    codec: (set['x265'] || set['hevc'] || squashed.indexOf('h265') !== -1) ? 'hevc' : (set['x264'] || set['avc'] || squashed.indexOf('h264') !== -1) ? 'avc' : '',
+    imax: !!set['imax'],
+    remux: !!set['remux']
+  };
+}
+function osScore(fileF, subF) {
+  var s = 0;
+  if (fileF.group && subF.group && fileF.group === subF.group) s += 4;
+  else if (fileF.group && subF.group) {
+    var fg = fileF.group.split(' '), sg = subF.group.split(' ');
+    for (var i = 0; i < fg.length; i++) { if (sg.indexOf(fg[i]) !== -1) { s += 2; break; } }
+  }
+  if (fileF.source && fileF.source === subF.source) s += 2;
+  if (fileF.res && fileF.res === subF.res) s += 1;
+  if (fileF.codec && fileF.codec === subF.codec) s += 1;
+  if (fileF.imax && subF.imax) s += 1;
+  if (fileF.remux && subF.remux) s += 1;
+  return s;
+}
+function osBestMatch(releaseTitle, subs) {
+  if (!releaseTitle || !subs || !subs.length) return null;
+  var ff = osReleaseFeatures(releaseTitle);
+  var best = null, bestScore = 0;
+  for (var k = 0; k < subs.length; k++) {
+    var sc = osScore(ff, osReleaseFeatures(subs[k].release));
+    if (sc > bestScore) { bestScore = sc; best = subs[k]; }
+  }
+  return (best && bestScore >= 4) ? best : null;
+}
+function osMirrorSubs(imdbId, isSeries, season, episode) {
+  var path = isSeries
+    ? '/subtitles/series/' + imdbId + ':' + season + ':' + episode + '.json'
+    : '/subtitles/movie/' + imdbId + '.json';
+  return fetch(OS_MIRROR + path).then(function (r) {
+    if (!r.ok) return [];
+    return r.json();
+  }).then(function (j) {
+    var list = (j && j.subtitles) || [];
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var it = list[i] || {};
+      var lang = String(it.lang || '').toLowerCase();
+      if (lang !== 'eng' && lang !== 'en') continue;
+      var url = it.url || '';
+      if (url.indexOf('https://') !== 0) continue;
+      var host = '';
+      try { host = new URL(url).hostname; } catch (e) {}
+      if (host.indexOf('strem.io') === -1) continue;
+      var rel = it.movieReleaseName || it.subtitleFileName || '';
+      if (!rel) continue;
+      out.push({ id: it.id, url: url, release: rel });
+    }
+    return out;
+  }).catch(function () { return []; });
+}
+// Try each SubDL key in order; the first key that returns a usable list wins.
+// A 401/429/non-ok response falls through to the next key. Returns [] if all fail.
+// NOTE: the JSON parse is nested INSIDE the r.ok branch — a failed key's
+// attempt() must return directly, not flow into the JSON-parsing .then()
+// (that swallowed the good key's result: the array has no .subtitles).
+function sdSearchSubs(imdbId, year, keys) {
+  if (!keys || !keys.length) return Promise.resolve([]);
+  var u = SD_API + '?imdb_id=' + encodeURIComponent(imdbId) + '&year=' + year + '&languages=en&type=movie';
+  var idx = 0;
+  var attempt = function () {
+    if (idx >= keys.length) return Promise.resolve([]);
+    var key = keys[idx++];
+    return fetch(u, { headers: { 'Authorization': 'Bearer ' + key } }).then(function (r) {
+      if (!r.ok) return attempt();
+      return r.json().then(function (j) {
+        var list = (j && j.subtitles) || [];
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+          var it = list[i] || {};
+          if (String(it.language || '').toLowerCase() !== 'en') continue;
+          var rel = it.release_name || '';
+          var url = it.url || '';
+          if (!rel || !url) continue;
+          out.push({ id: it.id, url: SD_DL + url, release: rel });
+        }
+        if (!out.length) return attempt();
+        return out;
+      }).catch(function () { return attempt(); });
+    }).catch(function () { return attempt(); });
+  };
+  return attempt();
+}
+function osAttachSubtitles(rows, imdbId, isSeries, season, episode, cfg) {
+  try {
+    if (cfg && cfg.osSubtitles === false) return Promise.resolve(rows);
+    if (!imdbId || !rows || !rows.length) return Promise.resolve(rows);
+    var year = cfg && cfg.year ? cfg.year : 0;
+    var cleanup = function () {
+      for (var c = 0; c < rows.length; c++) { try { delete rows[c]._rel; delete rows[c]._releaseTitle; } catch (e) {} }
+      return rows;
+    };
+    var prep = function () {
+      for (var i = 0; i < rows.length; i++) {
+        var rel = rows[i]._releaseTitle || '';
+        if (!rel && rows[i].url) {
+          try { rel = decodeURIComponent(String(rows[i].url).split('/').pop() || '').replace(/\.[^.]+$/, ''); } catch (e) {}
+        }
+        rows[i]._rel = rel;
+      }
+    };
+    // 1. SubDL FIRST (primary). 2. Mirror as BACKUP for rows SubDL missed.
+    return getSubdlKeys(cfg).then(function (keys) {
+      prep();
+      var need = rows.slice();
+      var useSubdl = function () {
+        if (!keys.length) return Promise.resolve(need);
+        return sdSearchSubs(imdbId, year, keys).then(function (sdSubs) {
+          var still = [];
+          for (var i = 0; i < need.length; i++) {
+            var hit = osBestMatch(need[i]._rel, sdSubs);
+            if (hit) need[i].subtitles = [{ id: String(hit.id), url: hit.url, lang: 'en' }];
+            else still.push(need[i]);
+          }
+          return still;
+        }).catch(function () { return need; });
+      };
+      return useSubdl().then(function (still) {
+        if (!still.length) return cleanup();
+        return osMirrorSubs(imdbId, isSeries, season, episode).then(function (mirrorSubs) {
+          for (var j = 0; j < still.length; j++) {
+            var hit2 = osBestMatch(still[j]._rel, mirrorSubs);
+            if (hit2) still[j].subtitles = [{ id: String(hit2.id), url: hit2.url, lang: 'en' }];
+          }
+          return cleanup();
+        }).catch(function () { return cleanup(); });
+      });
+    }).catch(function () { return cleanup(); });
+  } catch (e) { return Promise.resolve(rows); }
+}
+
 function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
   return Promise.all([tmdbTitle(tmdbId, mediaType), tmdbImdb(tmdbId, mediaType)]).then(function (vals) {
     var title = vals[0];
@@ -1051,7 +1263,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
       var best = pickBest(items, title);
       if (!best) return [];
       return extractStreams(best.url, seasonNum, episodeNum, imdbId).then(function (streams) {
-        return streams.map(function (s) {
+        var rows = streams.map(function (s) {
           var hostM = /\[(.*?)\]/.exec(s.label || "");
           var streamBody = formatStreamSize({
             source: "HDHub4U", title: title,
@@ -1067,6 +1279,12 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
             quality: /^\d+p$/.test(s.quality) ? s.quality : "Unknown",
             type: "direct",
           };
+        });
+        return osAttachSubtitles(rows, imdbId, mediaType === "tv", seasonNum, episodeNum, {
+          osSubtitles: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.osSubtitles : undefined,
+          subdlApiKey: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey : undefined,
+          subdlApiKey2: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey2 : undefined,
+          year: 0
         });
       });
     });
