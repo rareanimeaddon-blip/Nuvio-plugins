@@ -281,6 +281,21 @@
       "contentLanguage": [
         "en"
       ],
+      "description": "Prmovies movies via speedostream embeds (1080p/720p/480p)",
+      "enabled": true,
+      "filename": "providers/prmovies1.js",
+      "id": "prmovies",
+      "name": "Prmovies",
+      "supportedTypes": [
+        "movie"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
       "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
       "enabled": true,
       "filename": "providers/movielinkbd9.js",
@@ -567,5 +582,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.224"
+  "version": "1.2.225"
 }
