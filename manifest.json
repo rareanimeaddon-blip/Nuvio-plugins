@@ -127,7 +127,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.0.9"
+      "version": "1.1.0"
     },
     {
       "author": "Muse",
@@ -176,7 +176,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.0.4"
+      "version": "1.0.5"
     },
     {
       "author": "phisher98 (ported by Muse)",
@@ -567,5 +567,5 @@
       "version": "1.0.2"
     }
   ],
-  "version": "1.2.232"
+  "version": "1.2.233"
 }
