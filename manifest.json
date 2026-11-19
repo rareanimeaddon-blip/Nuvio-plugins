@@ -8,14 +8,14 @@
       ],
       "description": "4KHDHub direct links",
       "enabled": true,
-      "filename": "providers/fourkdhub11.js",
+      "filename": "providers/fourkdhub12.js",
       "id": "fourkdhub",
       "name": "4KHDHub",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.0"
+      "version": "1.2.0"
     },
     {
       "author": "Converted",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.237"
+  "version": "1.2.238"
 }
