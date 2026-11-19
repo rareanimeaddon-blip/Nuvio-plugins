@@ -8,14 +8,14 @@
       ],
       "description": "4KHDHub direct links",
       "enabled": true,
-      "filename": "providers/fourkdhub12.js",
+      "filename": "providers/fourkdhub13.js",
       "id": "fourkdhub",
       "name": "4KHDHub",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "author": "Converted",
@@ -153,14 +153,14 @@
       ],
       "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
-      "filename": "providers/dudefilms2.js",
+      "filename": "providers/dudefilms3.js",
       "id": "dudefilms",
       "name": "DudeFilms",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "author": "Converted",
@@ -218,14 +218,14 @@
       ],
       "description": "HDHub4u movies and shows",
       "enabled": true,
-      "filename": "providers/hdhub4u10.js",
+      "filename": "providers/hdhub4u11.js",
       "id": "hdhub4u",
       "name": "HDHub4u",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.0"
+      "version": "1.1.1"
     },
     {
       "author": "Muse",
@@ -235,14 +235,14 @@
       ],
       "description": "Hindi and dual-audio movies and series from v1.hindmovie.im, resolved to direct files via GDShine",
       "enabled": true,
-      "filename": "providers/hindmovies12.js",
+      "filename": "providers/hindmovies13.js",
       "id": "hindmovies",
       "name": "HindMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.10"
+      "version": "1.1.11"
     },
     {
       "author": "Converted",
@@ -267,14 +267,14 @@
       ],
       "description": "MovieBox movies and shows",
       "enabled": true,
-      "filename": "providers/moviebox20.js",
+      "filename": "providers/moviebox21.js",
       "id": "moviebox",
       "name": "MovieBox",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.9"
+      "version": "1.1.10"
     },
     {
       "author": "Converted",
@@ -283,14 +283,14 @@
       ],
       "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
       "enabled": true,
-      "filename": "providers/movielinkbd9.js",
+      "filename": "providers/movielinkbd10.js",
       "id": "movielinkbd6",
       "name": "MovieLinkBD",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.6"
+      "version": "1.0.7"
     },
     {
       "author": "Converted",
@@ -299,14 +299,14 @@
       ],
       "description": "MoviesDrive movies and shows",
       "enabled": true,
-      "filename": "providers/moviesdrive10.js",
+      "filename": "providers/moviesdrive11.js",
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.9"
+      "version": "1.1.10"
     },
     {
       "author": "Converted",
@@ -315,14 +315,14 @@
       ],
       "description": "MultiMovies movies and shows",
       "enabled": true,
-      "filename": "providers/multimovies12.js",
+      "filename": "providers/multimovies13.js",
       "id": "multimovies",
       "name": "MultiMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "author": "Converted",
@@ -411,7 +411,7 @@
       ],
       "description": "ShowBox movies and shows",
       "enabled": true,
-      "filename": "providers/showbox7.js",
+      "filename": "providers/showbox8.js",
       "hasSettings": true,
       "id": "showbox",
       "name": "ShowBox",
@@ -419,7 +419,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "author": "Converted",
@@ -476,14 +476,14 @@
       ],
       "description": "VegaMovies movies and shows via V-Cloud",
       "enabled": true,
-      "filename": "providers/vegamovies3.js",
+      "filename": "providers/vegamovies4.js",
       "id": "vegamovies",
       "name": "VegaMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.3"
+      "version": "1.0.4"
     },
     {
       "id": "vidlink",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.240"
+  "version": "1.2.241"
 }
