@@ -88,21 +88,21 @@
       ],
       "description": "CastleTV movies and shows",
       "enabled": true,
-      "filename": "providers/castletv13.js",
+      "filename": "providers/castletv14.js",
       "id": "castletv",
       "name": "CastleTV",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "author": "Converted",
       "contentLanguage": [
         "en"
       ],
-      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API — first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
       "enabled": true,
       "filename": "providers/cinecat3.js",
       "id": "cinecat",
@@ -120,14 +120,14 @@
       ],
       "description": "CineJoy movies and shows",
       "enabled": true,
-      "filename": "providers/cinejoy9.js",
+      "filename": "providers/cinejoy10.js",
       "id": "cinejoy",
       "name": "CineJoy",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.0"
+      "version": "1.1.1"
     },
     {
       "author": "Muse",
@@ -151,7 +151,7 @@
         "hi",
         "en"
       ],
-      "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
       "filename": "providers/dudefilms3.js",
       "id": "dudefilms",
@@ -506,7 +506,7 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Vidy (vidy.st) — movies & TV via 18 city servers, up to 2160p",
+      "description": "Vidy (vidy.st) \u2014 movies & TV via 18 city servers, up to 2160p",
       "enabled": true,
       "filename": "providers/vidy1.js",
       "id": "vidy",
@@ -524,14 +524,14 @@
       ],
       "description": "XPass movies and shows",
       "enabled": true,
-      "filename": "providers/xpass8.js",
+      "filename": "providers/xpass9.js",
       "id": "xpass",
       "name": "XPass",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.6"
+      "version": "1.1.7"
     },
     {
       "author": "phisher98 (ported)",
@@ -539,7 +539,7 @@
         "hi",
         "en"
       ],
-      "description": "Xon anime & cartoons via the live Xon API — Hindi/English/Telugu/Tamil dubs, direct mp4",
+      "description": "Xon anime & cartoons via the live Xon API \u2014 Hindi/English/Telugu/Tamil dubs, direct mp4",
       "enabled": true,
       "filename": "providers/xon4.js",
       "id": "xon",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.243"
+  "version": "1.2.244"
 }
