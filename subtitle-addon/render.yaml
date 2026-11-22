@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: infinite-streams-subtitles
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: SUBDL_API_KEY
+        sync: false
+      - key: SUBDL_API_KEY2
+        sync: false
+      - key: WYZIE_API_KEY
+        sync: false
+      - key: WYZIE_API_KEY2
+        sync: false
