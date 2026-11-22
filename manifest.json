@@ -476,14 +476,14 @@
       ],
       "description": "VegaMovies movies and shows via V-Cloud",
       "enabled": true,
-      "filename": "providers/vegamovies4.js",
+      "filename": "providers/vegamovies5.js",
       "id": "vegamovies",
       "name": "VegaMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.4"
+      "version": "1.0.5"
     },
     {
       "id": "vidlink",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.249"
+  "version": "1.2.250"
 }
