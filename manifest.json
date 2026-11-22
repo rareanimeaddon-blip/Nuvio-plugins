@@ -267,14 +267,14 @@
       ],
       "description": "MovieBox movies and shows",
       "enabled": true,
-      "filename": "providers/moviebox22.js",
+      "filename": "providers/moviebox23.js",
       "id": "moviebox",
       "name": "MovieBox",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.11"
+      "version": "1.1.12"
     },
     {
       "author": "Converted",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.251"
+  "version": "1.2.252"
 }
