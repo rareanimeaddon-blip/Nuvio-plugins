@@ -1,0 +1,972 @@
+/* __FETCH_RETRY_PRELUDE__ v5 (webOS TV): the TV plugin fetch service
+   intermittently returns status-0 transport failures, sometimes in
+   host-specific dead windows lasting tens of seconds. Wrap the global
+   fetch: retry a rejection or status-0 up to 4 attempts with SHORT
+   spin pauses (0.3/0.9/2s, ~3.2s span, no timers exist in the guest).
+   Longer window-spanning is left to the chain-retry postlude, which
+   re-runs the whole provider chain seconds later. v3's ~31s ladder
+   blew the per-provider budget on long chains; v4's instant retries
+   all landed inside dead windows and regressed medium chains. */
+(function () {
+  try {
+    var cur = (typeof fetch !== "undefined") ? fetch : null;
+    if (!cur || cur.__nuvioRetry) return;
+    var raw = cur;
+    var PAUSES = [300, 900, 2000];
+    function spin(ms) { var t = Date.now(); while (Date.now() - t < ms) {} }
+    var wrapped = function (url, opts) {
+      var tries = 0;
+      var attempt = function () {
+        tries++;
+        return raw(url, opts).then(function (r) {
+          if (r && r.status === 0 && tries < 4) { spin(PAUSES[tries - 1]); return attempt(); }
+          return r;
+        }, function (e) {
+          if (tries < 4) { spin(PAUSES[tries - 1]); return attempt(); }
+          throw e;
+        });
+      };
+      return attempt();
+    };
+    wrapped.__nuvioRetry = true;
+    try { fetch = wrapped; } catch (e) {}
+    if (typeof globalThis !== "undefined") { try { globalThis.fetch = wrapped; } catch (e) {} }
+  } catch (e) {}
+})();
+
+/* VegaMovies - ported 2026-10-23 from the user-supplied CNCVerse
+   CloudStream plugin (VegaMoviesProvider_0_ajmy.cs3, logic recovered
+   from its DEX). Chain:
+   1. Site base: urls.json (SaurabhKaperwan/Utils) key "vegamovies",
+      then GET {base}/?re=vg&t=2 and adopt the redirect's origin.
+      2026-11-22: the map domain (1vegamovies.shop) stopped serving
+      /search.php (404), so when its search matches nothing the chain
+      retries the search on VEGA_FALLBACK_BASE (new1.vegamovies.lease
+      -> vegamovies.latino), which still serves search.php and carries
+      the titles. The fallback is search-only: vcloud/hubcloud links
+      still resolve through the map's current origins.
+   2. Search: GET {base}/search.php?q=<title>&page=1 (Typesense-style
+      JSON). Match EXACTLY on the hit's imdb_id vs TMDB external ids;
+      title+year gate only as fallback when no hit carries an imdb_id.
+   3. Post page: movies take anchors wrapping a dwd-button (nexdrive
+      intermediates) -> each nexdrive page lists V-Cloud links.
+      Series take per-(season, quality) sections' "Episode Links"
+      nexdrive anchors (Batch/Zip skipped) -> the nexdrive page lists
+      one V-Cloud link per episode, in order.
+   4. VCloud extractor: swap the link's origin for the current one
+      from urls.json (key vcloud/hubcloud), GET the page, take the
+      download URL from var url = atob(atob('..')) (double base64) or
+      var url = '..', GET that page, and map its server buttons:
+      FSL / FSLv2 / Mega / Download File -> href as-is; BuzzServer ->
+      GET href + "/download", read hx-redirect; "10Gbps" -> follow
+      the redirect (resolveFinalUrl); Pixeldrain -> var pxl in the
+      page -> /api/file/<id>?download; "link=" hrefs -> the embedded
+      target. Gofile buttons are skipped (needs its own API flow).
+   Sandbox note: vcloud.* is Cloudflare-challenged from datacenter
+   IPs, so the last hop cannot complete from the test sandbox; the
+   chain is verified up to the V-Cloud link and runs as-is on-device.
+   No timers, no TextEncoder/WebCrypto - TV guest safe. */
+var VEGA_URLS_JSON = "https://raw.githubusercontent.com/SaurabhKaperwan/Utils/refs/heads/main/urls.json";
+var VEGA_FALLBACK_BASE = "https://new1.vegamovies.lease";
+var VEGA_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36";
+var _vegaBase = null;
+var _vegaFallbackBase = null;
+var _vegaUrlMap = null;
+
+function vegaHeaders(referer) {
+  var h = { "User-Agent": VEGA_UA, "Accept": "text/html,application/json,*/*", "Accept-Language": "en-US,en;q=0.9" };
+  if (referer) h.Referer = referer;
+  return h;
+}
+function vegaText(url, referer) {
+  return fetch(url, { headers: vegaHeaders(referer) }).then(function (r) { return r.text(); }).catch(function () { return ""; });
+}
+function vegaOrigin(url) {
+  var m = /^(https?:\/\/[^\/]+)/i.exec(url || "");
+  return m ? m[1] : "";
+}
+function vegaDecodeEntities(s) {
+  return String(s || "").replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;|&apos;/g, "'")
+    .replace(/&#(\d+);/g, function (_, n) { return String.fromCharCode(parseInt(n, 10)); })
+    .replace(/&#x([0-9a-fA-F]+);/g, function (_, n) { return String.fromCharCode(parseInt(n, 16)); });
+}
+function vegaStripTags(s) {
+  return vegaDecodeEntities(String(s || "").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+}
+function vegaAnchors(html) {
+  var out = [];
+  var re = /<a\b[^>]*\bhref="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+  var m;
+  while ((m = re.exec(html || "")) !== null) {
+    out.push({ href: vegaDecodeEntities(m[1]), inner: m[2], text: vegaStripTags(m[2]), index: m.index });
+  }
+  return out;
+}
+function vegaHeadings(html) {
+  var out = [];
+  var re = /<h[235]\b[^>]*>([\s\S]*?)<\/h[235]>/gi;
+  var m;
+  while ((m = re.exec(html || "")) !== null) {
+    out.push({ text: vegaStripTags(m[1]), index: m.index, end: m.index + m[0].length });
+  }
+  return out;
+}
+function vegaQualityOf(text) {
+  var m = /\b(2160p|1080p|720p|480p|360p)\b/i.exec(text || "");
+  if (m) return m[1].toLowerCase();
+  if (/4k/i.test(text || "")) return "2160p";
+  return "HD";
+}
+function vegaIndexQuality(text) {
+  var m = /(\d{3,4})[pP]/.exec(text || "");
+  if (m) return m[1] + "p";
+  var low = String(text || "").toLowerCase();
+  if (low.indexOf("8k") !== -1) return "4320p";
+  if (low.indexOf("4k") !== -1) return "2160p";
+  if (low.indexOf("2k") !== -1) return "1440p";
+  return null;
+}
+
+function vegaTmdbMeta(tmdbId, mediaType) {
+  var kind = mediaType === "tv" ? "tv" : "movie";
+  return fetch("https://api.themoviedb.org/3/" + kind + "/" + tmdbId + "?api_key=" + TMDB_API_KEY + "&append_to_response=external_ids",
+    { headers: { Accept: "application/json" } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (!j) return null;
+      var title = j.title || j.name || null;
+      var date = j.release_date || j.first_air_date || "";
+      var year = /^\d{4}/.test(date) ? parseInt(date.substring(0, 4), 10) : null;
+      var imdb = (j.external_ids && j.external_ids.imdb_id) || j.imdb_id || null;
+      return title ? { title: title, year: year, imdb: imdb } : null;
+    }).catch(function () { return null; });
+}
+
+function vegaUrlMap() {
+  if (_vegaUrlMap) return Promise.resolve(_vegaUrlMap);
+  return vegaText(VEGA_URLS_JSON).then(function (txt) {
+    var map = {};
+    try { map = JSON.parse(txt || "{}") || {}; } catch (e) {}
+    _vegaUrlMap = map;
+    return map;
+  });
+}
+
+function vegaSiteBase() {
+  if (_vegaBase) return Promise.resolve(_vegaBase);
+  return vegaUrlMap().then(function (map) {
+    var start = map.vegamovies || VEGA_FALLBACK_BASE;
+    start = start.replace(/\/+$/, "");
+    return fetch(start + "/?re=vg&t=2", { headers: vegaHeaders(), redirect: "manual" }).then(function (r) {
+      var loc = "";
+      try { loc = r.headers.get("location") || ""; } catch (e) {}
+      var base = start;
+      if (/^https?:\/\//i.test(loc)) base = vegaOrigin(loc);
+      else if (r.url && vegaOrigin(r.url) && vegaOrigin(r.url) !== vegaOrigin(start)) base = vegaOrigin(r.url);
+      _vegaBase = base;
+      return base;
+    }).catch(function () { _vegaBase = start; return start; });
+  });
+}
+
+/* Fallback base (2026-11-22): the map domain's search.php 404s, so the
+   search retries here. Same redirect adoption as vegaSiteBase; cached
+   separately so a recovered map domain is still tried first. */
+function vegaFallbackBase() {
+  if (_vegaFallbackBase) return Promise.resolve(_vegaFallbackBase);
+  var start = VEGA_FALLBACK_BASE.replace(/\/+$/, "");
+  return fetch(start + "/?re=vg&t=2", { headers: vegaHeaders(), redirect: "manual" }).then(function (r) {
+    var loc = "";
+    try { loc = r.headers.get("location") || ""; } catch (e) {}
+    var base = start;
+    if (/^https?:\/\//i.test(loc)) base = vegaOrigin(loc);
+    else if (r.url && vegaOrigin(r.url) && vegaOrigin(r.url) !== vegaOrigin(start)) base = vegaOrigin(r.url);
+    _vegaFallbackBase = base;
+    return base;
+  }).catch(function () { _vegaFallbackBase = start; return start; });
+}
+
+function vegaNormTitle(s) {
+  return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function vegaSearch(base, meta) {
+  var url = base + "/search.php?q=" + encodeURIComponent(meta.title) + "&page=1";
+  return vegaText(url, base + "/").then(function (txt) {
+    var hits = [];
+    try {
+      var j = JSON.parse(txt || "{}");
+      hits = (j && j.hits) || [];
+    } catch (e) {}
+    var docs = hits.map(function (h) { return h && h.document; }).filter(function (d) { return d && d.permalink; });
+    var matched = [];
+    if (meta.imdb) {
+      matched = docs.filter(function (d) { return d.imdb_id && d.imdb_id === meta.imdb; });
+    }
+    if (!matched.length && !docs.some(function (d) { return d.imdb_id; })) {
+      var want = vegaNormTitle(meta.title);
+      matched = docs.filter(function (d) {
+        var t = String(d.post_title || "").replace(/^Download\s+/i, "").replace(/^\[18\+\]\s*/, "");
+        var ym = /\((\d{4})\)/.exec(t);
+        var candTitle = vegaNormTitle(t.replace(/\(\d{4}\)[\s\S]*$/, ""));
+        if (candTitle !== want) return false;
+        if (meta.year && ym && parseInt(ym[1], 10) !== meta.year) return false;
+        return true;
+      });
+    }
+    return matched.map(function (d) {
+      return d.permalink.charAt(0) === "/" ? base + d.permalink : d.permalink;
+    });
+  }).catch(function () { return []; });
+}
+
+function vegaVcloudLinksOnPage(html) {
+  return vegaAnchors(html).filter(function (a) { return /vcloud/i.test(a.href); })
+    .map(function (a) { return a.href; });
+}
+
+/* Resolve one nexdrive intermediate page to its V-Cloud links. */
+function vegaNexdrive(url, referer) {
+  return vegaText(url, referer).then(function (html) { return vegaVcloudLinksOnPage(html); })
+    .catch(function () { return []; });
+}
+
+/* VCloud extractor (see header comment). Returns [{url, label}]. */
+function vegaResolveVCloud(link, referer) {
+  return vegaUrlMap().then(function (map) {
+    var key = /hubcloud/i.test(link) ? "hubcloud" : "vcloud";
+    var latest = map[key];
+    var url = link;
+    if (latest && vegaOrigin(latest) && vegaOrigin(latest) !== vegaOrigin(link)) {
+      url = vegaOrigin(latest) + link.substring(vegaOrigin(link).length);
+    }
+    return vegaText(url, referer).then(function (html) {
+      if (!html) return [];
+      var dl = null;
+      if (url.indexOf("/video/") !== -1) {
+        var vd = /<div class="vd">[\s\S]*?<a\b[^>]*\bhref="([^"]+)"/i.exec(html);
+        if (vd) dl = vegaDecodeEntities(vd[1]);
+      }
+      if (!dl) {
+        var atobM = /var\s+url\s*=\s*atob\s*\(\s*atob\s*\(\s*['"]([^'"]+)['"]\s*\)\s*\)/.exec(html);
+        if (atobM) {
+          try { dl = atob(atob(atobM[1])); } catch (e) { dl = null; }
+        }
+      }
+      if (!dl) {
+        var plainM = /var url = '([^']*)'/.exec(html);
+        if (plainM) dl = plainM[1];
+      }
+      if (!dl) return [];
+      if (!/^https?:\/\//i.test(dl)) {
+        dl = dl.charAt(0) === "/" ? vegaOrigin(url) + dl : vegaOrigin(url) + "/" + dl;
+      }
+      return vegaText(dl, url).then(function (page) {
+        if (!page) return [];
+        var headerM = /<div class="card-header"[^>]*>([\s\S]*?)<\/div>/i.exec(page);
+        var quality = (headerM && vegaIndexQuality(vegaStripTags(headerM[1]))) || null;
+        var sizeM = /<i id="size"[^>]*>([\s\S]*?)<\/i>/i.exec(page);
+        var size = sizeM ? vegaStripTags(sizeM[1]) : "";
+        var buttons = vegaAnchors(page).filter(function (a) {
+          return a.href && /^https?:\/\//i.test(a.href) && a.text;
+        });
+        return Promise.all(buttons.map(function (b) {
+          return vegaMapButton(b, page, dl).catch(function () { return null; });
+        })).then(function (mapped) {
+          return mapped.filter(Boolean).map(function (s) {
+            s.quality = quality || s.quality || "HD";
+            s.size = size;
+            return s;
+          });
+        });
+      });
+    }).catch(function () { return []; });
+  }).catch(function () { return []; });
+}
+
+function vegaResolveFinalUrl(u) {
+  if (!u) return Promise.resolve(null);
+  if (u.indexOf("link=") !== -1) {
+    var after = u.substring(u.indexOf("link=") + 5);
+    try { after = decodeURIComponent(after); } catch (e) {}
+    if (/^https?:\/\//i.test(after)) return Promise.resolve(after);
+  }
+  return fetch(u, { headers: vegaHeaders(), redirect: "manual" }).then(function (r) {
+    var loc = "";
+    try { loc = r.headers.get("location") || ""; } catch (e) {}
+    if (loc && r.status >= 300 && r.status < 400) {
+      try { return new URL(loc, u).toString(); } catch (e) { return loc; }
+    }
+    if (r.url && r.url !== u) return r.url;
+    return u;
+  }).catch(function () { return u; });
+}
+
+function vegaMapButton(b, page, referer) {
+  var text = b.text || "";
+  var href = b.href;
+  function simple(label) { return Promise.resolve({ url: href, label: label }); }
+  if (/FSL Server/i.test(text)) return simple("FSL Server");
+  if (/FSLv2/i.test(text)) return simple("FSLv2 Server");
+  if (/Mega Server/i.test(text)) return simple("Mega Server");
+  if (/Download File/i.test(text)) return simple("Download");
+  if (/BuzzServer/i.test(text)) {
+    return fetch(href.replace(/\/+$/, "") + "/download", { headers: vegaHeaders(referer), redirect: "manual" })
+      .then(function (r) {
+        var hx = "";
+        try { hx = r.headers.get("hx-redirect") || ""; } catch (e) {}
+        if (!hx) return null;
+        var fin = /^https?:\/\//i.test(hx) ? hx : vegaOrigin(href) + (hx.charAt(0) === "/" ? hx : "/" + hx);
+        return { url: fin, label: "BuzzServer" };
+      }).catch(function () { return null; });
+  }
+  if (/pixeldra/i.test(text) || /pixeldrain/i.test(href)) {
+    var pxlM = /var\s+pxl\s*=\s*["']([^"']+)["']/.exec(page || "");
+    if (!pxlM) return Promise.resolve(null);
+    var pxl = pxlM[1];
+    if (pxl.indexOf("download") === -1) return Promise.resolve(null);
+    var fid = pxl.substring(pxl.lastIndexOf("/") + 1);
+    if (!fid) return Promise.resolve(null);
+    return Promise.resolve({ url: vegaOrigin(pxl) + "/api/file/" + fid + "?download", label: "Pixeldrain" });
+  }
+  if (/10Gbps/i.test(text)) {
+    return vegaResolveFinalUrl(href).then(function (fin) { return fin ? { url: fin, label: "10Gbps" } : null; });
+  }
+  if (href.indexOf("link=") !== -1) {
+    return vegaResolveFinalUrl(href).then(function (fin) { return fin ? { url: fin, label: "Download" } : null; });
+  }
+  if (/workers\.dev/i.test(href)) return simple("Server");
+  return Promise.resolve(null);
+}
+
+function vegaStreamsFromVClouds(links, qualityHint, referer, mediaTitle, season, episode) {
+  var seen = {};
+  return Promise.all(links.map(function (l) {
+    return vegaResolveVCloud(l, referer).catch(function () { return []; });
+  })).then(function (perLink) {
+    var out = [];
+    perLink.forEach(function (list) {
+      list.forEach(function (s) {
+        if (seen[s.url]) return;
+        seen[s.url] = 1;
+        var q = s.quality && s.quality !== "HD" ? s.quality : (qualityHint || "HD");
+        var streamBody = formatStreamSize({
+          source: "VegaMovies", title: mediaTitle, quality: q,
+          season: season, episode: episode,
+          size: s.size, server: s.label, url: s.url
+        });
+        out.push({
+          name: "VegaMovies",
+          title: "VegaMovies",
+          url: s.url,
+          quality: q,
+          size: streamBody,
+          type: "direct"
+        });
+      });
+    });
+    return out;
+  });
+}
+
+// __STREAM_LABEL_FORMATTER__ v2: one-line emoji label for every stream.
+// Movie:  🎬 <Title> • 📺 <Quality> • 🔊 <Audio> • 💬 <Subs> • 🖥️ <Provider> • 🗄️ <Server>
+// Series: 🎬 <Title> • 📺 <Quality> • 📂 Season <N> • 🎞️ Episode <N> • 🔊 <Audio> • 💬 <Subs> • 🖥️ <Provider> • 🗄️ <Server>
+// Segments with no data are omitted, except Quality (always shown, "Unknown" fallback).
+// Server = explicit server label when the provider knows one, else the stream URL's hostname.
+// Pure string work, no timers, no TextEncoder, no fetch. Never throws.
+function formatStreamLabel(o) {
+  try {
+    o = o || {};
+    var parts = [];
+    function str(v) { return (v === undefined || v === null) ? "" : String(v).trim(); }
+    function langName(v) {
+      var k = str(v).toLowerCase();
+      var map = { en: "English", eng: "English", english: "English", hi: "Hindi", hin: "Hindi", hindi: "Hindi",
+        es: "Spanish", spa: "Spanish", fr: "French", fre: "French", fra: "French", de: "German", ger: "German", deu: "German",
+        it: "Italian", ita: "Italian", pt: "Portuguese", por: "Portuguese", ru: "Russian", rus: "Russian",
+        ar: "Arabic", ara: "Arabic", bn: "Bengali", ben: "Bengali", zh: "Chinese", chi: "Chinese", zho: "Chinese",
+        ja: "Japanese", jpn: "Japanese", ko: "Korean", kor: "Korean", ta: "Tamil", tam: "Tamil", te: "Telugu", tel: "Telugu",
+        ml: "Malayalam", mal: "Malayalam", mr: "Marathi", mar: "Marathi", pa: "Punjabi", pan: "Punjabi",
+        ur: "Urdu", urd: "Urdu", id: "Indonesian", ind: "Indonesian", ms: "Malay", msa: "Malay", vi: "Vietnamese",
+        vie: "Vietnamese", th: "Thai", tha: "Thai", tl: "Filipino", fil: "Filipino", nl: "Dutch", nld: "Dutch",
+        sv: "Swedish", swe: "Swedish", da: "Danish", dan: "Danish", fi: "Finnish", fin: "Finnish",
+        no: "Norwegian", nor: "Norwegian", pl: "Polish", pol: "Polish", tr: "Turkish", tur: "Turkish",
+        uk: "Ukrainian", ukr: "Ukrainian", cs: "Czech", ces: "Czech", cze: "Czech", el: "Greek", ell: "Greek",
+        he: "Hebrew", heb: "Hebrew", ro: "Romanian", ron: "Romanian", rum: "Romanian", hu: "Hungarian", hun: "Hungarian", arabic: "Arabic", bengali: "Bengali", chinese: "Chinese", filipino: "Filipino", indonesian: "Indonesian", portuguese: "Portuguese", russian: "Russian", urdu: "Urdu", spanish: "Spanish", french: "French", german: "German", italian: "Italian", japanese: "Japanese", korean: "Korean", tamil: "Tamil", telugu: "Telugu", malayalam: "Malayalam", marathi: "Marathi", punjabi: "Punjabi", vietnamese: "Vietnamese", thai: "Thai", dutch: "Dutch", swedish: "Swedish", danish: "Danish", finnish: "Finnish", norwegian: "Norwegian", polish: "Polish", turkish: "Turkish", ukrainian: "Ukrainian", czech: "Czech", greek: "Greek", hebrew: "Hebrew", romanian: "Romanian", malay: "Malay" };
+      if (map[k]) return map[k];
+      return str(v);
+    }
+    var title = str(o.title);
+    if (title) parts.push("🎬 " + title);
+    var q = str(o.quality);
+    if (!q || q.toLowerCase() === "unknown") q = "Unknown";
+    parts.push("📺 " + q);
+    if (o.season !== undefined && o.season !== null && String(o.season) !== "") parts.push("📂 Season " + o.season);
+    if (o.episode !== undefined && o.episode !== null && String(o.episode) !== "") parts.push("🎞️ Episode " + o.episode);
+    var audio = o.audio;
+    if (Array.isArray(audio)) audio = audio.filter(function (a) { return str(a); }).join(" / ");
+    audio = str(audio);
+    if (audio && audio.toLowerCase() !== "unknown") parts.push("🔊 " + audio);
+    var subs = o.subtitles;
+    var langs = [];
+    if (Array.isArray(subs)) {
+      for (var i = 0; i < subs.length; i++) {
+        var lg = (subs[i] && typeof subs[i] === "object") ? (subs[i].language || subs[i].name) : subs[i];
+        lg = langName(lg);
+        if (lg && langs.indexOf(lg) === -1) langs.push(lg);
+      }
+    } else if (typeof subs === "string" && str(subs)) { langs = [langName(subs)]; }
+    if (langs.length) {
+      var shown = langs.slice(0, 3).join(", ");
+      if (langs.length > 3) shown += " +" + (langs.length - 3) + " more";
+      parts.push("💬 " + shown);
+    }
+    var size = str(o.size);
+    if (size) parts.push("📦 " + size);
+    var extra = str(o.extra);
+    if (extra) parts.push(extra);
+    var src = str(o.source) || str(o.provider);
+    if (src) parts.push("🖥️ " + src);
+    var server = str(o.server);
+    if (!server && str(o.url)) {
+      var h = str(o.url).split("/")[2] || "";
+      server = h.replace(/^www\./, "");
+    }
+    if (server) parts.push("🗄️ " + server);
+    return parts.join(" • ");
+  } catch (e) {
+    try { return (o && (o.source || o.provider) ? String(o.source || o.provider) : "Stream") + " • " + (o && o.quality ? String(o.quality) : "Unknown"); } catch (e2) { return "Stream"; }
+  }
+}
+
+// __STREAM_LABEL_FORMATTER__ v4 (size): user-spec body — heading is the provider name (in `name`), body is the essential info.
+// Body lines: 🎬 Title [(Year)] | 📂 Season N • 🎞️ Episode N (series only) | 💎 Quality | ⏱️ Runtime | 🔊 Audio | 💾 File size | 🗄️ Server | 💬 Subtitles.
+// Only lines with data are shown. Pure string work, no timers, no TextEncoder, no fetch. Never throws.
+function formatStreamSize(o) {
+  try {
+    o = o || {};
+    function str(v) { return (v === undefined || v === null) ? "" : String(v).trim(); }
+    function langName(v) {
+      var k = str(v).toLowerCase();
+      var map = { en: "English", eng: "English", english: "English", hi: "Hindi", hin: "Hindi", hindi: "Hindi",
+        es: "Spanish", fr: "French", de: "German", it: "Italian", pt: "Portuguese", ru: "Russian",
+        ar: "Arabic", bn: "Bengali", zh: "Chinese", ja: "Japanese", ko: "Korean", ta: "Tamil", te: "Telugu",
+        ml: "Malayalam", mr: "Marathi", pa: "Punjabi", ur: "Urdu", id: "Indonesian", ms: "Malay",
+        vi: "Vietnamese", th: "Thai", tl: "Filipino", nl: "Dutch", sv: "Swedish", da: "Danish",
+        fi: "Finnish", no: "Norwegian", pl: "Polish", tr: "Turkish", uk: "Ukrainian", cs: "Czech",
+        el: "Greek", he: "Hebrew", ro: "Romanian", hu: "Hungarian" };
+      if (map[k]) return map[k];
+      return str(v);
+    }
+    var lines = [];
+    var title = str(o.title);
+    if (title) {
+      var t = "🎬 " + title;
+      var year = str(o.year);
+      if (year) t += " (" + year + ")";
+      lines.push(t);
+    }
+    if (o.season !== undefined && o.season !== null && String(o.season) !== "" &&
+        o.episode !== undefined && o.episode !== null && String(o.episode) !== "")
+      lines.push("📂 Season " + o.season + " • 🎞️ Episode " + o.episode);
+    var q = str(o.quality);
+    if (q && q.toLowerCase() !== "unknown") lines.push("💎 " + q);
+    var rt = o.runtime;
+    var rtMin = 0;
+    if (typeof rt === "number" && rt > 0) rtMin = Math.round(rt);
+    else if (typeof rt === "string" && /^\d+$/.test(rt.trim())) rtMin = parseInt(rt.trim(), 10);
+    if (rtMin > 0) {
+      var rh = Math.floor(rtMin / 60), rm = rtMin % 60;
+      lines.push("⏱️ " + (rh > 0 ? rh + "h " + (rm < 10 ? "0" : "") + rm + "m" : rm + "m"));
+    }
+    var audio = o.audio;
+    if (Array.isArray(audio)) audio = audio.filter(function (a) { return str(a); }).join(" / ");
+    audio = str(audio);
+    if (audio && audio.toLowerCase() !== "unknown") lines.push("🔊 " + audio);
+    var size = str(o.size);
+    if (size) lines.push("💾 " + size);
+    var server = str(o.server);
+    if (!server && str(o.url)) {
+      var h = str(o.url).split("/")[2] || "";
+      server = h.replace(/^www\./, "");
+    }
+    if (server) lines.push("🗄️ " + server);
+    var subs = o.subtitles;
+    var langs = [];
+    if (Array.isArray(subs)) {
+      for (var i = 0; i < subs.length; i++) {
+        var lg = (subs[i] && typeof subs[i] === "object") ? (subs[i].language || subs[i].name) : subs[i];
+        lg = langName(lg);
+        if (lg && langs.indexOf(lg) === -1) langs.push(lg);
+      }
+    } else if (typeof subs === "string" && str(subs)) { langs = [langName(subs)]; }
+    if (langs.length) {
+      var shown = langs.slice(0, 3).join(", ");
+      if (langs.length > 3) shown += " +" + (langs.length - 3) + " more";
+      lines.push("💬 " + shown);
+    }
+    return lines.join("\n");
+  } catch (e) { return ""; }
+}
+
+var OS_MIRROR = 'https://opensubtitles-v3.strem.io';
+var SD_API = 'https://api.subdl.com/api/v2/subtitles/search';
+var SD_DL = 'https://dl.subdl.com';
+var WZ_API = 'https://sub.wyzie.io/search';
+// Secret gist holding the user's tokens (same file the showbox/gramcinema
+// tokens live in). SCRAPER_SETTINGS always wins; the gist is only read when
+// a key is missing from settings. The keys are never in the repo.
+var TOKEN_FILE_URL = 'https://gist.githubusercontent.com/rareanimeaddon-blip/6fc363ac74cb8921d61c07a2c6bb59d6/raw/gistfile1.txt';
+var _fileTokens = null;
+var _fileTokensPromise = null;
+function loadTokenFile() {
+  if (_fileTokens) return Promise.resolve(_fileTokens);
+  if (_fileTokensPromise) return _fileTokensPromise;
+  if (!TOKEN_FILE_URL) { _fileTokens = {}; return Promise.resolve(_fileTokens); }
+  try {
+    _fileTokensPromise = fetch(TOKEN_FILE_URL).then(function (r) { return r && r.ok ? r.json() : null; }).then(function (j) { _fileTokens = j || {}; return _fileTokens; }).catch(function () { _fileTokens = {}; return _fileTokens; });
+  } catch (e) { _fileTokens = {}; return Promise.resolve(_fileTokens); }
+  return _fileTokensPromise;
+}
+function _setting(cfg, key) {
+  try {
+    if (cfg && cfg[key]) return String(cfg[key]).trim();
+  } catch (e) {}
+  return '';
+}
+function getSubdlKeys(cfg) {
+  var k1 = _setting(cfg, 'subdlApiKey');
+  var k2 = _setting(cfg, 'subdlApiKey2');
+  if (k1 && k2) return Promise.resolve([k1, k2]);
+  return loadTokenFile().then(function (t) {
+    if (!k1) { try { if (t && t.subdlApiKey) k1 = String(t.subdlApiKey).trim(); } catch (e) {} }
+    if (!k2) { try { if (t && t.subdlApiKey2) k2 = String(t.subdlApiKey2).trim(); } catch (e) {} }
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  }).catch(function () {
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  });
+}
+function getWyzieKeys(cfg) {
+  var k1 = _setting(cfg, 'wyzieApiKey');
+  var k2 = _setting(cfg, 'wyzieApiKey2');
+  if (k1 && k2) return Promise.resolve([k1, k2]);
+  return loadTokenFile().then(function (t) {
+    if (!k1) { try { if (t && t.wyzieApiKey) k1 = String(t.wyzieApiKey).trim(); } catch (e) {} }
+    if (!k2) { try { if (t && t.wyzieApiKey2) k2 = String(t.wyzieApiKey2).trim(); } catch (e) {} }
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  }).catch(function () {
+    var out = [];
+    if (k1) out.push(k1);
+    if (k2 && k2 !== k1) out.push(k2);
+    return out;
+  });
+}
+function osTokens(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function (t) { return t.length > 0; });
+}
+function osGroup(name) {
+  var s = String(name || '');
+  // Last parenthesised chunk that is NOT just a year (e.g. "(2026)") — the
+  // year is not a release group, and treating it as one makes every
+  // same-year release "match" (+4). Skip pure years / pure numbers.
+  var groups = s.match(/\(([^)]+)\)/g) || [];
+  for (var gi = groups.length - 1; gi >= 0; gi--) {
+    var g = groups[gi].replace(/[()]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s*4khdhub\s*$/, '').trim();
+    if (!g) continue;
+    if (/^\d{4}$/.test(g) || /^\d+$/.test(g)) continue;
+    return g;
+  }
+  var m = s.match(/[-.]([A-Za-z][A-Za-z0-9]{1,})\s*$/);
+  if (m) return m[1].toLowerCase();
+  return '';
+}
+function osReleaseFeatures(name) {
+  var toks = osTokens(name);
+  var set = {};
+  for (var i = 0; i < toks.length; i++) set[toks[i]] = true;
+  var squashed = String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  var source = '';
+  if (squashed.indexOf('bluray') !== -1) source = 'bluray';
+  else if (squashed.indexOf('webdl') !== -1) source = 'webdl';
+  else if (squashed.indexOf('webrip') !== -1) source = 'webrip';
+  else if (squashed.indexOf('hdtv') !== -1) source = 'hdtv';
+  else if (squashed.indexOf('dvdrip') !== -1) source = 'dvdrip';
+  else if (set['ts'] || set['telesync']) source = 'ts';
+  return {
+    group: osGroup(name),
+    source: source,
+    res: set['2160p'] ? '2160p' : set['1080p'] ? '1080p' : set['720p'] ? '720p' : set['480p'] ? '480p' : '',
+    codec: (set['x265'] || set['hevc'] || squashed.indexOf('h265') !== -1) ? 'hevc' : (set['x264'] || set['avc'] || squashed.indexOf('h264') !== -1) ? 'avc' : '',
+    imax: !!set['imax'],
+    remux: !!set['remux']
+  };
+}
+function osScore(fileF, subF) {
+  var s = 0;
+  if (fileF.group && subF.group && fileF.group === subF.group) s += 4;
+  else if (fileF.group && subF.group) {
+    var fg = fileF.group.split(' '), sg = subF.group.split(' ');
+    for (var i = 0; i < fg.length; i++) { if (sg.indexOf(fg[i]) !== -1) { s += 2; break; } }
+  }
+  if (fileF.source && fileF.source === subF.source) s += 2;
+  if (fileF.res && fileF.res === subF.res) s += 1;
+  if (fileF.codec && fileF.codec === subF.codec) s += 1;
+  if (fileF.imax && subF.imax) s += 1;
+  if (fileF.remux && subF.remux) s += 1;
+  return s;
+}
+function osBestMatch(releaseTitle, subs) {
+  if (!releaseTitle || !subs || !subs.length) return null;
+  var ff = osReleaseFeatures(releaseTitle);
+  var best = null, bestScore = 0;
+  for (var k = 0; k < subs.length; k++) {
+    var sc = osScore(ff, osReleaseFeatures(subs[k].release));
+    if (sc > bestScore) { bestScore = sc; best = subs[k]; }
+  }
+  return (best && bestScore >= 4) ? best : null;
+}
+function osMirrorSubs(imdbId, isSeries, season, episode) {
+  var path = isSeries
+    ? '/subtitles/series/' + imdbId + ':' + season + ':' + episode + '.json'
+    : '/subtitles/movie/' + imdbId + '.json';
+  return fetch(OS_MIRROR + path).then(function (r) {
+    if (!r.ok) return [];
+    return r.json();
+  }).then(function (j) {
+    var list = (j && j.subtitles) || [];
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var it = list[i] || {};
+      var lang = String(it.lang || '').toLowerCase();
+      if (lang !== 'eng' && lang !== 'en') continue;
+      var url = it.url || '';
+      if (url.indexOf('https://') !== 0) continue;
+      var host = '';
+      try { host = new URL(url).hostname; } catch (e) {}
+      if (host.indexOf('strem.io') === -1) continue;
+      var rel = it.movieReleaseName || it.subtitleFileName || '';
+      if (!rel) continue;
+      out.push({ id: it.id, url: url, release: rel });
+    }
+    return out;
+  }).catch(function () { return []; });
+}
+// Try each SubDL key in order; the first key that returns a usable list wins.
+// A 401/429/non-ok response falls through to the next key. Returns [] if all fail.
+// NOTE: the JSON parse is nested INSIDE the r.ok branch — a failed key's
+// attempt() must return directly, not flow into the JSON-parsing .then()
+// (that swallowed the good key's result: the array has no .subtitles).
+function sdSearchSubs(imdbId, year, keys) {
+  if (!keys || !keys.length) return Promise.resolve([]);
+  var u = SD_API + '?imdb_id=' + encodeURIComponent(imdbId) + '&year=' + year + '&languages=en&type=movie';
+  var idx = 0;
+  var attempt = function () {
+    if (idx >= keys.length) return Promise.resolve([]);
+    var key = keys[idx++];
+    return fetch(u, { headers: { 'Authorization': 'Bearer ' + key } }).then(function (r) {
+      if (!r.ok) return attempt();
+      return r.json().then(function (j) {
+        var list = (j && j.subtitles) || [];
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+          var it = list[i] || {};
+          if (String(it.language || '').toLowerCase() !== 'en') continue;
+          var rel = it.release_name || '';
+          var url = it.url || '';
+          if (!rel || !url) continue;
+          out.push({ id: it.id, url: SD_DL + url, release: rel });
+        }
+        if (!out.length) return attempt();
+        return out;
+      }).catch(function () { return attempt(); });
+    }).catch(function () { return attempt(); });
+  };
+  return attempt();
+}
+// Wyzie search — ONE call per title (not per row); the result is reused
+// across rows. The first still-needing row's release filename is passed via
+// video= so Wyzie returns a match score (0-100) for that release. The key
+// is a QUERY parameter, never a header. AI-translated rows are skipped.
+// A 401/429/non-ok response falls through to the next key. Returns [] if all fail.
+// The emitted url is a sub.wyzie.io/c/... link (tok param) — it does NOT
+// reveal the API key, so it is safe to attach to a stream row.
+function wzSearchSubs(imdbId, isSeries, season, episode, videoName, keys) {
+  if (!keys || !keys.length) return Promise.resolve([]);
+  var u = WZ_API + '?id=' + encodeURIComponent(imdbId) + '&language=en';
+  if (isSeries) u += '&season=' + season + '&episode=' + episode;
+  if (videoName) u += '&video=' + encodeURIComponent(videoName);
+  var idx = 0;
+  var attempt = function () {
+    if (idx >= keys.length) return Promise.resolve([]);
+    var key = keys[idx++];
+    return fetch(u + '&key=' + encodeURIComponent(key)).then(function (r) {
+      if (!r.ok) return attempt();
+      return r.json().then(function (j) {
+        var list = Array.isArray(j) ? j : [];
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+          var it = list[i] || {};
+          if (it.ai) continue;
+          var lang = String(it.language || '').toLowerCase();
+          if (lang !== 'en' && lang !== 'eng') continue;
+          var url = it.url || '';
+          if (url.indexOf('https://sub.wyzie.io/') !== 0) continue;
+          var rel = it.release || '';
+          var rels = Array.isArray(it.releases) ? it.releases : [];
+          if (!rel && !rels.length) continue;
+          var ms = 0;
+          try { if (it.match && typeof it.match.score === 'number') ms = it.match.score; } catch (e) {}
+          out.push({ id: it.id, url: url, release: rel, releases: rels, hi: !!it.isHearingImpaired, format: String(it.format || '').toLowerCase(), matchScore: ms });
+        }
+        if (!out.length) return attempt();
+        return out;
+      }).catch(function () { return attempt(); });
+    }).catch(function () { return attempt(); });
+  };
+  return attempt();
+}
+// Wyzie best match: score the release name AND every releases entry with the
+// existing scorer, take the best. NOTE: Wyzie's own match.score is NOT used
+// to force a match — it is too lenient for generic video filenames (a bare
+// "Title Year 1080p h264" with no group/source scores 100 against many
+// unrelated releases, which would attach the wrong subtitle). The
+// release/releases token scorer is the matcher; video= only sorts results
+// best-first. Prefer srt/vtt over other formats and non-HI over HI.
+// Attach at >=4.
+function wzBestMatch(releaseTitle, subs) {
+  if (!releaseTitle || !subs || !subs.length) return null;
+  var ff = osReleaseFeatures(releaseTitle);
+  var best = null, bestScore = 0, bestPref = -1;
+  for (var k = 0; k < subs.length; k++) {
+    var sub = subs[k];
+    var sc = osScore(ff, osReleaseFeatures(sub.release || ''));
+    var rels = sub.releases || [];
+    for (var r = 0; r < rels.length; r++) {
+      var s2 = osScore(ff, osReleaseFeatures(rels[r]));
+      if (s2 > sc) sc = s2;
+    }
+    var pref = 0;
+    if (sub.format === 'srt' || sub.format === 'vtt') pref += 2;
+    if (!sub.hi) pref += 1;
+    if (sc > bestScore || (sc === bestScore && sc >= 4 && pref > bestPref)) {
+      bestScore = sc; best = sub; bestPref = pref;
+    }
+  }
+  return (best && bestScore >= 4) ? best : null;
+}
+function osAttachSubtitles(rows, imdbId, isSeries, season, episode, cfg) {
+  try {
+    if (cfg && cfg.osSubtitles === false) return Promise.resolve(rows);
+    if (!imdbId || !rows || !rows.length) return Promise.resolve(rows);
+    var year = cfg && cfg.year ? cfg.year : 0;
+    var cleanup = function () {
+      for (var c = 0; c < rows.length; c++) { try { delete rows[c]._rel; delete rows[c]._releaseTitle; } catch (e) {} }
+      return rows;
+    };
+    var prep = function () {
+      for (var i = 0; i < rows.length; i++) {
+        var rel = rows[i]._releaseTitle || '';
+        if (!rel && rows[i].url) {
+          try { rel = decodeURIComponent(String(rows[i].url).split('/').pop() || '').replace(/\.[^.]+$/, ''); } catch (e) {}
+        }
+        rows[i]._rel = rel;
+      }
+    };
+    // 1. SubDL FIRST (primary). 2. Wyzie SECOND for rows SubDL missed.
+    // 3. Mirror as BACKUP for rows SubDL and Wyzie missed.
+    return getSubdlKeys(cfg).then(function (keys) {
+      prep();
+      var need = rows.slice();
+      var useSubdl = function () {
+        if (!keys.length) return Promise.resolve(need);
+        return sdSearchSubs(imdbId, year, keys).then(function (sdSubs) {
+          var still = [];
+          for (var i = 0; i < need.length; i++) {
+            var hit = osBestMatch(need[i]._rel, sdSubs);
+            if (hit) need[i].subtitles = [{ id: String(hit.id), url: hit.url, lang: 'en' }];
+            else still.push(need[i]);
+          }
+          return still;
+        }).catch(function () { return need; });
+      };
+      var useWyzie = function (still) {
+        if (!still.length) return Promise.resolve(still);
+        return getWyzieKeys(cfg).then(function (wzKeys) {
+          if (!wzKeys.length) return still;
+          var videoName = '';
+          for (var v = 0; v < still.length; v++) { if (still[v]._rel) { videoName = still[v]._rel; break; } }
+          return wzSearchSubs(imdbId, isSeries, season, episode, videoName, wzKeys).then(function (wzSubs) {
+            var rest = [];
+            for (var i = 0; i < still.length; i++) {
+              var hit = wzBestMatch(still[i]._rel, wzSubs);
+              if (hit) still[i].subtitles = [{ id: String(hit.id), url: hit.url, lang: 'en' }];
+              else rest.push(still[i]);
+            }
+            return rest;
+          }).catch(function () { return still; });
+        }).catch(function () { return still; });
+      };
+      return useSubdl().then(function (still) {
+        return useWyzie(still);
+      }).then(function (still) {
+        if (!still.length) return cleanup();
+        return osMirrorSubs(imdbId, isSeries, season, episode).then(function (mirrorSubs) {
+          for (var j = 0; j < still.length; j++) {
+            var hit2 = osBestMatch(still[j]._rel, mirrorSubs);
+            if (hit2) still[j].subtitles = [{ id: String(hit2.id), url: hit2.url, lang: 'en' }];
+          }
+          return cleanup();
+        }).catch(function () { return cleanup(); });
+      });
+    }).catch(function () { return cleanup(); });
+  } catch (e) { return Promise.resolve(rows); }
+}
+
+function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
+  var type = mediaType === "tv" ? "tv" : "movie";
+  return vegaTmdbMeta(tmdbId, type).then(function (meta) {
+    if (!meta) return [];
+    return vegaSiteBase().then(function (base) {
+      return vegaSearch(base, meta).then(function (posts) {
+        if (!posts.length) {
+          return vegaFallbackBase().then(function (fb) {
+            if (!fb || fb === base) return [];
+            return vegaSearch(fb, meta).then(function (posts2) {
+              if (!posts2.length) return [];
+              return vegaRowsForPosts(posts2, fb, meta, type, seasonNum, episodeNum);
+            });
+          });
+        }
+        return vegaRowsForPosts(posts, base, meta, type, seasonNum, episodeNum);
+      });
+    });
+  }).catch(function () { return []; });
+}
+
+function vegaRowsForPosts(posts, base, meta, type, seasonNum, episodeNum) {
+  var postUrl = posts[0];
+  return vegaText(postUrl, base + "/").then(function (html) {
+          if (!html) return [];
+          if (type === "movie") {
+            var headings = vegaHeadings(html);
+            var dwd = vegaAnchors(html).filter(function (a) { return a.inner.indexOf("dwd-button") !== -1; }).slice(0, 5);
+            if (!dwd.length) return [];
+            return Promise.all(dwd.map(function (a) {
+              var hint = "HD";
+              for (var i = headings.length - 1; i >= 0; i--) {
+                if (headings[i].index < a.index) { hint = vegaQualityOf(headings[i].text); break; }
+              }
+              return vegaNexdrive(a.href, postUrl).then(function (links) {
+                return { links: links.slice(0, 2), hint: hint };
+              });
+            })).then(function (groups) {
+              var jobs = [];
+              groups.forEach(function (g) {
+                g.links.forEach(function (l) { jobs.push({ link: l, hint: g.hint }); });
+              });
+              return vegaStreamsFromVClouds(jobs.map(function (j) { return j.link; }),
+                jobs.length ? jobs[0].hint : "HD", postUrl, meta.title, undefined, undefined).then(function (rows) {
+              return osAttachSubtitles(rows, meta.imdb, false, null, null, {
+                osSubtitles: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.osSubtitles : undefined,
+                subdlApiKey: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey : undefined,
+                subdlApiKey2: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey2 : undefined,
+                year: meta.year || 0
+              });
+            });
+            });
+          }
+          /* TV: walk sections in document order; a section starts at a
+             heading carrying a season number; its Episode Links anchor
+             (not Batch/Zip) opens a nexdrive page with one V-Cloud
+             link per episode. */
+          var wantSeason = seasonNum || 1;
+          var wantEpisode = episodeNum || 1;
+          var heads = vegaHeadings(html);
+          var anchors = vegaAnchors(html);
+          var sections = [];
+          heads.forEach(function (h, i) {
+            var sm = /(?:Season |S)(\d+)/i.exec(h.text);
+            if (!sm) return;
+            var start = h.end;
+            var stop = i + 1 < heads.length ? heads[i + 1].index : html.length;
+            var ep = null;
+            anchors.forEach(function (a) {
+              if (a.index < start || a.index >= stop || ep) return;
+              if (/nexdrive/i.test(a.href) && /episode/i.test(a.text) && !/zip|batch/i.test(a.text)) ep = a;
+            });
+            if (ep) sections.push({ season: parseInt(sm[1], 10), quality: vegaQualityOf(h.text), nex: ep.href });
+          });
+          var mine = sections.filter(function (s) { return s.season === wantSeason; }).slice(0, 3);
+          if (!mine.length) return [];
+          return Promise.all(mine.map(function (s) {
+            return vegaNexdrive(s.nex, postUrl).then(function (links) {
+              var link = links[wantEpisode - 1] || null;
+              return link ? { link: link, hint: s.quality } : null;
+            });
+          })).then(function (picked) {
+            var valid = picked.filter(Boolean);
+            if (!valid.length) return [];
+            return vegaStreamsFromVClouds(valid.map(function (v) { return v.link; }), valid[0].hint, postUrl, meta.title, wantSeason, wantEpisode).then(function (rows) {
+              return osAttachSubtitles(rows, meta.imdb, true, wantSeason, wantEpisode, {
+                osSubtitles: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.osSubtitles : undefined,
+                subdlApiKey: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey : undefined,
+                subdlApiKey2: (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) ? SCRAPER_SETTINGS.subdlApiKey2 : undefined,
+                year: meta.year || 0
+              });
+            });
+          });
+        });
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { getStreams: getStreams };
+} else {
+  global.VegaMoviesScraperModule = { getStreams: getStreams };
+}
+
+/* __CHAIN_RETRY_POSTLUDE__ v2: in a full TV search, providers die when
+   the fetch service drops a hop or sits in a dead window. If a chain
+   comes back empty, re-run it - the re-run is naturally spaced by the
+   first attempt's own duration, which spans the short windows. Up to
+   3 attempts, gated on total elapsed (<20s for #2, <38s for #3) so a
+   slow provider never overruns the app budget. */
+(function () {
+  try {
+    var g = (typeof globalThis !== "undefined") ? globalThis : null;
+    var orig = null;
+    if (typeof module !== "undefined" && module.exports && typeof module.exports.getStreams === "function") orig = module.exports.getStreams;
+    else if (g && typeof g.getStreams === "function") orig = g.getStreams;
+    if (!orig || orig.__chainRetry) return;
+    var wrapped = function () {
+      var args = arguments;
+      var t0 = Date.now();
+      var tries = 0;
+      var run = function () {
+        tries++;
+        return Promise.resolve().then(function () { return orig.apply(null, args); }).then(function (res) {
+          var el = Date.now() - t0;
+          if (Array.isArray(res) && res.length === 0 && ((tries === 1 && el < 20000) || (tries === 2 && el < 38000))) return run();
+          return res;
+        }, function () {
+          var el = Date.now() - t0;
+          if ((tries === 1 && el < 20000) || (tries === 2 && el < 38000)) return run();
+          return [];
+        });
+      };
+      return run();
+    };
+    wrapped.__chainRetry = true;
+    if (typeof module !== "undefined" && module.exports) module.exports.getStreams = wrapped;
+    if (g) { try { g.getStreams = wrapped; } catch (e) {} }
+  } catch (e) {}
+})();
