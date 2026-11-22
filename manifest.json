@@ -524,14 +524,14 @@
       ],
       "description": "XPass movies and shows",
       "enabled": true,
-      "filename": "providers/xpass10.js",
+      "filename": "providers/xpass11.js",
       "id": "xpass",
       "name": "XPass",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.8"
+      "version": "1.1.9"
     },
     {
       "author": "phisher98 (ported)",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.245"
+  "version": "1.2.246"
 }
