@@ -102,22 +102,6 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
-      "enabled": true,
-      "filename": "providers/cinecat3.js",
-      "id": "cinecat",
-      "name": "CineCat",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.5"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
       "description": "CineJoy movies and shows",
       "enabled": true,
       "filename": "providers/cinejoy12.js",
@@ -161,22 +145,6 @@
         "tv"
       ],
       "version": "1.0.4"
-    },
-    {
-      "author": "Converted",
-      "contentLanguage": [
-        "en"
-      ],
-      "description": "Dulo (dulo.mov) streams via its own TMDB-keyed API: movies, TV and anime, proxy HLS with subtitles",
-      "enabled": true,
-      "filename": "providers/dulo5.js",
-      "id": "dulo",
-      "name": "Dulo",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "version": "1.0.5"
     },
     {
       "author": "phisher98 (ported by Muse)",
@@ -567,5 +535,5 @@
       "version": "1.0.4"
     }
   ],
-  "version": "1.2.259"
+  "version": "1.2.260"
 }
