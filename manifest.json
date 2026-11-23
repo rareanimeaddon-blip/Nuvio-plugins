@@ -102,7 +102,7 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API — first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
+      "description": "Streams from CineCat (cinecat.eu): movies and TV via the site's own sources API \u2014 first-party HLS streams (servers abyssinia, calico, zanzibar) plus ZCDN.",
       "enabled": true,
       "filename": "providers/cinecat3.js",
       "id": "cinecat",
@@ -151,7 +151,7 @@
         "hi",
         "en"
       ],
-      "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
+      "description": "Hindi/dual-audio movies & web series \u2014 IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
       "filename": "providers/dudefilms4.js",
       "id": "dudefilms",
@@ -218,14 +218,14 @@
       ],
       "description": "HDHub4u movies and shows",
       "enabled": true,
-      "filename": "providers/hdhub4u12.js",
+      "filename": "providers/hdhub4u13.js",
       "id": "hdhub4u",
       "name": "HDHub4u",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.2"
+      "version": "1.1.3"
     },
     {
       "author": "Muse",
@@ -299,14 +299,14 @@
       ],
       "description": "MoviesDrive movies and shows",
       "enabled": true,
-      "filename": "providers/moviesdrive12.js",
+      "filename": "providers/moviesdrive13.js",
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.11"
+      "version": "1.1.12"
     },
     {
       "author": "Converted",
@@ -315,14 +315,14 @@
       ],
       "description": "MultiMovies movies and shows",
       "enabled": true,
-      "filename": "providers/multimovies14.js",
+      "filename": "providers/multimovies15.js",
       "id": "multimovies",
       "name": "MultiMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.5"
+      "version": "1.1.6"
     },
     {
       "author": "Converted",
@@ -411,7 +411,7 @@
       ],
       "description": "ShowBox movies and shows",
       "enabled": true,
-      "filename": "providers/showbox9.js",
+      "filename": "providers/showbox10.js",
       "hasSettings": true,
       "id": "showbox",
       "name": "ShowBox",
@@ -419,7 +419,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.1.5"
+      "version": "1.1.6"
     },
     {
       "author": "Converted",
@@ -506,7 +506,7 @@
       "contentLanguage": [
         "en"
       ],
-      "description": "Vidy (vidy.st) — movies & TV via 18 city servers, up to 2160p",
+      "description": "Vidy (vidy.st) \u2014 movies & TV via 18 city servers, up to 2160p",
       "enabled": true,
       "filename": "providers/vidy1.js",
       "id": "vidy",
@@ -539,7 +539,7 @@
         "hi",
         "en"
       ],
-      "description": "Xon anime & cartoons via the live Xon API — Hindi/English/Telugu/Tamil dubs, direct mp4",
+      "description": "Xon anime & cartoons via the live Xon API \u2014 Hindi/English/Telugu/Tamil dubs, direct mp4",
       "enabled": true,
       "filename": "providers/xon4.js",
       "id": "xon",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.255"
+  "version": "1.2.256"
 }
