@@ -218,14 +218,14 @@
       ],
       "description": "HDHub4u movies and shows",
       "enabled": true,
-      "filename": "providers/hdhub4u11.js",
+      "filename": "providers/hdhub4u12.js",
       "id": "hdhub4u",
       "name": "HDHub4u",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.1"
+      "version": "1.1.2"
     },
     {
       "author": "Muse",
@@ -235,14 +235,14 @@
       ],
       "description": "Hindi and dual-audio movies and series from v1.hindmovie.im, resolved to direct files via GDShine",
       "enabled": true,
-      "filename": "providers/hindmovies13.js",
+      "filename": "providers/hindmovies14.js",
       "id": "hindmovies",
       "name": "HindMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.11"
+      "version": "1.1.12"
     },
     {
       "author": "Converted",
@@ -283,14 +283,14 @@
       ],
       "description": "MovieLinkBD movies and series in Hindi (broad extraction + browser-header refetch fallback; subtitle passthrough)",
       "enabled": true,
-      "filename": "providers/movielinkbd10.js",
+      "filename": "providers/movielinkbd11.js",
       "id": "movielinkbd6",
       "name": "MovieLinkBD",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.7"
+      "version": "1.0.8"
     },
     {
       "author": "Converted",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.253"
+  "version": "1.2.254"
 }
