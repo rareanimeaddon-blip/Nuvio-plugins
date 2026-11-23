@@ -88,14 +88,14 @@
       ],
       "description": "CastleTV movies and shows",
       "enabled": true,
-      "filename": "providers/castletv14.js",
+      "filename": "providers/castletv15.js",
       "id": "castletv",
       "name": "CastleTV",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.4"
+      "version": "1.1.5"
     },
     {
       "author": "Converted",
@@ -185,14 +185,14 @@
       ],
       "description": "Movies and series from goojara.to - port of phisher98's CloudStream Goojara plugin. v2.1.1: fast path - no clock chains, one server at a time, stop at 2 streams (phone bridge was choking on the old build's request volume).",
       "enabled": true,
-      "filename": "providers/goojara21.js",
+      "filename": "providers/goojara22.js",
       "id": "goojara",
       "name": "Goojara",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "2.1.3"
+      "version": "2.1.4"
     },
     {
       "author": "NuvioPlugin",
@@ -331,14 +331,14 @@
       ],
       "description": "NetMirror movies and shows",
       "enabled": true,
-      "filename": "providers/netmirror18.js",
+      "filename": "providers/netmirror19.js",
       "id": "netmirror",
       "name": "NetMirror",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.2.8"
+      "version": "1.2.9"
     },
     {
       "author": "Converted",
@@ -347,14 +347,14 @@
       ],
       "description": "OneTouchTV movies and shows",
       "enabled": true,
-      "filename": "providers/onetouchtv12.js",
+      "filename": "providers/onetouchtv13.js",
       "id": "onetouchtv",
       "name": "OneTouchTV",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.11"
+      "version": "1.1.12"
     },
     {
       "author": "Converted",
@@ -379,14 +379,14 @@
       ],
       "description": "Purstream French VF/VOSTFR streams via its API",
       "enabled": true,
-      "filename": "providers/purstream3.js",
+      "filename": "providers/purstream4.js",
       "id": "purstream",
       "name": "Purstream",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.3"
+      "version": "1.0.4"
     },
     {
       "author": "Converted",
@@ -428,14 +428,14 @@
       ],
       "description": "StreamFlix movies and shows",
       "enabled": true,
-      "filename": "providers/streamflix12.js",
+      "filename": "providers/streamflix13.js",
       "id": "streamflix",
       "name": "StreamFlix",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.15"
+      "version": "1.0.16"
     },
     {
       "author": "Converted",
@@ -489,13 +489,13 @@
       "id": "vidlink",
       "name": "VidLink",
       "description": "VidLink movies and shows",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "author": "phisher98 (adapted)",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "filename": "providers/vidlink7.js",
+      "filename": "providers/vidlink8.js",
       "enabled": true,
       "contentLanguage": [
         "en"
@@ -508,14 +508,14 @@
       ],
       "description": "Vidy (vidy.st) \u2014 movies & TV via 18 city servers, up to 2160p",
       "enabled": true,
-      "filename": "providers/vidy1.js",
+      "filename": "providers/vidy2.js",
       "id": "vidy",
       "name": "Vidy",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "author": "Converted",
@@ -524,14 +524,14 @@
       ],
       "description": "XPass movies and shows",
       "enabled": true,
-      "filename": "providers/xpass14.js",
+      "filename": "providers/xpass15.js",
       "id": "xpass",
       "name": "XPass",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.4.0"
+      "version": "1.4.1"
     },
     {
       "author": "phisher98 (ported)",
@@ -557,15 +557,15 @@
       ],
       "description": "ZXCStream movies and shows via VidBolt resolve",
       "enabled": true,
-      "filename": "providers/zxcstream3.js",
+      "filename": "providers/zxcstream4.js",
       "id": "zxcstream",
       "name": "ZXCStream",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.3"
+      "version": "1.0.4"
     }
   ],
-  "version": "1.2.258"
+  "version": "1.2.259"
 }
