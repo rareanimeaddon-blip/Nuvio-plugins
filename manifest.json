@@ -153,14 +153,14 @@
       ],
       "description": "Hindi/dual-audio movies & web series — IMDb-keyed, HubCloud/PixelDrain + direct files",
       "enabled": true,
-      "filename": "providers/dudefilms3.js",
+      "filename": "providers/dudefilms4.js",
       "id": "dudefilms",
       "name": "DudeFilms",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.3"
+      "version": "1.0.4"
     },
     {
       "author": "Converted",
@@ -299,14 +299,14 @@
       ],
       "description": "MoviesDrive movies and shows",
       "enabled": true,
-      "filename": "providers/moviesdrive11.js",
+      "filename": "providers/moviesdrive12.js",
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.10"
+      "version": "1.1.11"
     },
     {
       "author": "Converted",
@@ -315,14 +315,14 @@
       ],
       "description": "MultiMovies movies and shows",
       "enabled": true,
-      "filename": "providers/multimovies13.js",
+      "filename": "providers/multimovies14.js",
       "id": "multimovies",
       "name": "MultiMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.4"
+      "version": "1.1.5"
     },
     {
       "author": "Converted",
@@ -411,7 +411,7 @@
       ],
       "description": "ShowBox movies and shows",
       "enabled": true,
-      "filename": "providers/showbox8.js",
+      "filename": "providers/showbox9.js",
       "hasSettings": true,
       "id": "showbox",
       "name": "ShowBox",
@@ -419,7 +419,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.1.4"
+      "version": "1.1.5"
     },
     {
       "author": "Converted",
@@ -476,14 +476,14 @@
       ],
       "description": "VegaMovies movies and shows via V-Cloud",
       "enabled": true,
-      "filename": "providers/vegamovies5.js",
+      "filename": "providers/vegamovies6.js",
       "id": "vegamovies",
       "name": "VegaMovies",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.5"
+      "version": "1.0.6"
     },
     {
       "id": "vidlink",
@@ -567,5 +567,5 @@
       "version": "1.0.3"
     }
   ],
-  "version": "1.2.254"
+  "version": "1.2.255"
 }
