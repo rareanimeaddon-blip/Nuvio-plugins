@@ -370,7 +370,7 @@
         "movie",
         "tv"
       ],
-      "version": "1.0.18"
+      "version": "1.0.19"
     },
     {
       "author": "Converted",
@@ -551,5 +551,5 @@
       "version": "1.0.4"
     }
   ],
-  "version": "1.2.263"
+  "version": "1.2.264"
 }
