@@ -72,14 +72,14 @@
       ],
       "description": "AnimeWorld anime streams",
       "enabled": true,
-      "filename": "providers/animeworld15.js",
+      "filename": "providers/animeworld16.js",
       "id": "animeworld",
       "name": "AnimeWorld",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.14"
+      "version": "1.0.15"
     },
     {
       "author": "Converted",
@@ -583,5 +583,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.269"
+  "version": "1.2.270"
 }
