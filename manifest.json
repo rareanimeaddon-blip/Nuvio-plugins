@@ -86,6 +86,22 @@
       "contentLanguage": [
         "en"
       ],
+      "description": "BingeBang movies and TV (bingebang.sx): ticket-signed player API, Arabic subs + addon English subs",
+      "enabled": true,
+      "filename": "providers/bingebang1.js",
+      "id": "bingebang",
+      "name": "BingeBang",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
       "description": "CastleTV movies and shows",
       "enabled": true,
       "filename": "providers/castletv15.js",
@@ -551,5 +567,5 @@
       "version": "1.0.4"
     }
   ],
-  "version": "1.2.264"
+  "version": "1.2.265"
 }
