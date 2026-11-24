@@ -120,14 +120,14 @@
       ],
       "description": "CineJoy movies and shows",
       "enabled": true,
-      "filename": "providers/cinejoy12.js",
+      "filename": "providers/cinejoy13.js",
       "id": "cinejoy",
       "name": "CineJoy",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "author": "Muse",
@@ -583,5 +583,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.270"
+  "version": "1.2.271"
 }
