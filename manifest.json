@@ -412,14 +412,14 @@
       ],
       "description": "StreamFlix movies and shows",
       "enabled": true,
-      "filename": "providers/streamflix13.js",
+      "filename": "providers/streamflix14.js",
       "id": "streamflix",
       "name": "StreamFlix",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.16"
+      "version": "1.0.17"
     },
     {
       "author": "Converted",
@@ -583,5 +583,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.268"
+  "version": "1.2.269"
 }
