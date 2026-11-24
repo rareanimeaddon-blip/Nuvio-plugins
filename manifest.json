@@ -202,14 +202,14 @@
       ],
       "description": "HDHub4u movies and shows",
       "enabled": true,
-      "filename": "providers/hdhub4u13.js",
+      "filename": "providers/hdhub4u14.js",
       "id": "hdhub4u",
       "name": "HDHub4u",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "author": "Muse",
@@ -583,5 +583,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.267"
+  "version": "1.2.268"
 }
