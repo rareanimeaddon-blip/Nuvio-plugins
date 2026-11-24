@@ -149,7 +149,7 @@ function hmacSha256Hex(messageBytes) {
 }
 
 function signRequest(method, pathAndQuery, timestamp, nonce) {
-  const message = method.toUpperCase() + '\n' + pathAndQuery + '\n' + timestamp + (nonce ? '\n' + nonce : '') + '\n' + '51e87f5e8e951aa213fe48de7478cc0bf0e06b4eaa53cd948f97afd1b5f2b596';
+  const message = method.toUpperCase() + '\n' + pathAndQuery + '\n' + timestamp + (nonce ? '\n' + nonce : '') + '\n' + 'b3a84e4309799289bdf0f67cfc385e1c3bef9262debbbfe72183f117cc22c354';
   return hmacSha256Hex(encodeUtf8(message));
 }
 
@@ -179,7 +179,7 @@ function getSigned(path, nonce) {
   const timestamp = String(Math.floor((Date.now() + serverClockOffsetMs) / 1000));
   const headers = defaultHeaders();
   headers['x-ts'] = timestamp;
-  headers['x-cv'] = '94092f52501e';
+  headers['x-cv'] = 'ec12fe0c007d';
   if (nonce) headers['x-nonce'] = nonce;
   headers['x-sig'] = signRequest('GET', path, timestamp, nonce || '');
   return fetch(BASE_URL + path, { headers: headers });
