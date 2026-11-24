@@ -323,12 +323,95 @@ function buildSortTag(tier, maxTier) {
   return bits.split('').map(function (bit) { return bit === '1' ? '\uFEFF' : '\u200B'; }).join('');
 }
 
-function buildStream(candidate, label, subtitles, langLabel) {
+// v4 stream formatter (same as the other providers): heading = provider
+// name, multi-line body in the `size` field (title/year, season/episode,
+// quality, runtime, audio, file size, server, subtitles). Only fields
+// that exist are shown; Vivarium has no runtime/file-size data.
+function formatStreamSize(o) {
+  try {
+    o = o || {};
+    function str(v) { return (v === undefined || v === null) ? "" : String(v).trim(); }
+    function langName(v) {
+      var k = str(v).toLowerCase();
+      var map = { en: "English", eng: "English", english: "English", hi: "Hindi", hin: "Hindi", hindi: "Hindi",
+        es: "Spanish", fr: "French", de: "German", it: "Italian", pt: "Portuguese", ru: "Russian",
+        ar: "Arabic", bn: "Bengali", zh: "Chinese", ja: "Japanese", ko: "Korean", ta: "Tamil", te: "Telugu",
+        ml: "Malayalam", mr: "Marathi", pa: "Punjabi", ur: "Urdu", id: "Indonesian", ms: "Malay",
+        vi: "Vietnamese", th: "Thai", tl: "Filipino", nl: "Dutch", sv: "Swedish", da: "Danish",
+        fi: "Finnish", no: "Norwegian", pl: "Polish", tr: "Turkish", uk: "Ukrainian", cs: "Czech",
+        el: "Greek", he: "Hebrew", ro: "Romanian", hu: "Hungarian" };
+      if (map[k]) return map[k];
+      return str(v);
+    }
+    var lines = [];
+    var title = str(o.title);
+    if (title) {
+      var t = "🎬 " + title;
+      var year = str(o.year);
+      if (year) t += " (" + year + ")";
+      lines.push(t);
+    }
+    if (o.season !== undefined && o.season !== null && String(o.season) !== "" &&
+        o.episode !== undefined && o.episode !== null && String(o.episode) !== "")
+      lines.push("📂 Season " + o.season + " • 🎞️ Episode " + o.episode);
+    var q = str(o.quality);
+    if (q && q.toLowerCase() !== "unknown") lines.push("💎 " + q);
+    var rt = o.runtime;
+    var rtMin = 0;
+    if (typeof rt === "number" && rt > 0) rtMin = Math.round(rt);
+    else if (typeof rt === "string" && /^\d+$/.test(rt.trim())) rtMin = parseInt(rt.trim(), 10);
+    if (rtMin > 0) {
+      var rh = Math.floor(rtMin / 60), rm = rtMin % 60;
+      lines.push("⏱️ " + (rh > 0 ? rh + "h " + (rm < 10 ? "0" : "") + rm + "m" : rm + "m"));
+    }
+    var audio = o.audio;
+    if (Array.isArray(audio)) audio = audio.filter(function (a) { return str(a); }).join(" / ");
+    audio = str(audio);
+    if (audio && audio.toLowerCase() !== "unknown") lines.push("🔊 " + audio);
+    var size = str(o.size);
+    if (size) lines.push("💾 " + size);
+    var server = str(o.server);
+    if (!server && str(o.url)) {
+      var h = str(o.url).split("/")[2] || "";
+      server = h.replace(/^www\./, "");
+    }
+    if (server) lines.push("🗄️ " + server);
+    var subs = o.subtitles;
+    var langs = [];
+    if (Array.isArray(subs)) {
+      for (var i = 0; i < subs.length; i++) {
+        var lg = (subs[i] && typeof subs[i] === "object") ? (subs[i].language || subs[i].name) : subs[i];
+        lg = langName(lg);
+        if (lg && langs.indexOf(lg) === -1) langs.push(lg);
+      }
+    } else if (typeof subs === "string" && str(subs)) { langs = [langName(subs)]; }
+    if (langs.length) {
+      var shown = langs.slice(0, 3).join(", ");
+      if (langs.length > 3) shown += " +" + (langs.length - 3) + " more";
+      lines.push("💬 " + shown);
+    }
+    return lines.join("\n");
+  } catch (e) { return ""; }
+}
+
+function buildStream(candidate, label, subtitles, langLabel, ctx) {
   const sortTag = buildSortTag(resolutionTier(candidate), 6);
-  const displayName = 'Vivarium \u2022 ' + (langLabel || label || candidate.provider);
+  const body = formatStreamSize({
+    source: 'Vivarium',
+    title: ctx && ctx.title,
+    year: ctx && ctx.year,
+    season: ctx && ctx.season,
+    episode: ctx && ctx.episode,
+    quality: resolutionLabel(candidate),
+    audio: langName(candidate.lang),
+    server: candidate.provider,
+    subtitles: subtitles,
+    url: candidate.url
+  });
   return {
-    name: sortTag + displayName,
-    title: sortTag + displayName,
+    name: sortTag + 'Vivarium',
+    title: sortTag + 'Vivarium',
+    size: body,
     url: candidate.url,
     quality: resolutionLabel(candidate),
     headers: { 'Referer': BASE_URL + '/', 'User-Agent': USER_AGENT },
@@ -336,7 +419,7 @@ function buildStream(candidate, label, subtitles, langLabel) {
   };
 }
 
-function pushGroup(streams, seenUrls, candidates, subtitles, langLabel) {
+function pushGroup(streams, seenUrls, candidates, subtitles, langLabel, ctx) {
   const fresh = [];
   for (let i = 0; i < candidates.length; i++) {
     if (seenUrls[candidates[i].url]) continue;
@@ -354,7 +437,7 @@ function pushGroup(streams, seenUrls, candidates, subtitles, langLabel) {
     return (resolutionHeight(b) - resolutionHeight(a)) || (scoreCandidate(b) - scoreCandidate(a));
   });
   for (let i = 0; i < fresh.length; i++) {
-    streams.push(buildStream(fresh[i], fresh[i] === best ? 'Auto' : null, subtitles, langLabel));
+    streams.push(buildStream(fresh[i], fresh[i] === best ? 'Auto' : null, subtitles, langLabel, ctx));
   }
   return true;
 }
@@ -369,9 +452,17 @@ async function fetchEventStream(queryString, nonce) {
   }
 }
 
-async function resolveStreams(tmdbId, mediaType, season, episode) {
+async function resolveStreams(tmdbId, mediaType, season, episode, meta) {
   const isTv = mediaType === 'tv';
   if (isTv && (season == null || episode == null)) return [];
+
+  // Display context for the v4 formatter: title/year from TMDB, S/E for TV.
+  const ctx = {
+    title: (meta && meta.title) || '',
+    year: (meta && meta.year) || null,
+    season: isTv ? season : undefined,
+    episode: isTv ? episode : undefined
+  };
 
   const allowedProviders = enabledProviders();
   const allowedLangs = enabledLanguages();
@@ -399,7 +490,7 @@ async function resolveStreams(tmdbId, mediaType, season, episode) {
     if (engCandidates.length > 0) {
       engCandidates.sort(function (a, b) { return scoreCandidate(b) - scoreCandidate(a); });
       englishSubs = engCandidates[0].inlineSubs;
-      pushGroup(streams, seenUrls, engCandidates, englishSubs, null);
+      pushGroup(streams, seenUrls, engCandidates, englishSubs, null, ctx);
     }
   }
 
@@ -415,7 +506,7 @@ async function resolveStreams(tmdbId, mediaType, season, episode) {
   const baseDubLangs = Object.keys(dubGroups);
   for (let i = 0; i < baseDubLangs.length; i++) {
     const lang = baseDubLangs[i];
-    if (pushGroup(streams, seenUrls, dubGroups[lang], englishSubs, langName(lang))) {
+    if (pushGroup(streams, seenUrls, dubGroups[lang], englishSubs, langName(lang), ctx)) {
       coveredDubLangs.add(lang);
     }
   }
@@ -433,7 +524,7 @@ async function resolveStreams(tmdbId, mediaType, season, episode) {
       const lang = missingDubLangs[d];
       const dubCandidates = extractCandidates(parseServerSentEvents(dubEventTexts[d]))
         .filter(function (c) { return c.dub && c.lang === lang; });
-      pushGroup(streams, seenUrls, dubCandidates, englishSubs, langName(lang));
+      pushGroup(streams, seenUrls, dubCandidates, englishSubs, langName(lang), ctx);
     }
   }
 
@@ -717,7 +808,7 @@ async function getStreams(tmdbId, mediaType, season, episode) {
     if (!/^\d+$/.test(String(tmdbId))) return [];
     var isTv = mediaType === 'tv';
     var meta = await tmdbMetaViv(tmdbId, mediaType);
-    var rows = await resolveStreams(tmdbId, mediaType, season, episode);
+    var rows = await resolveStreams(tmdbId, mediaType, season, episode, meta);
     if (!rows || !rows.length) return [];
     var title = (meta && meta.title) || '';
     for (var i = 0; i < rows.length; i++) {
