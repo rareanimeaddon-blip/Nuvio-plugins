@@ -39,13 +39,13 @@
 // RareAnime scraper for Nuvio (Hindi-dubbed anime)
 // Standalone, sandbox-compatible (no Node APIs, no external deps).
 // Source: RareAnime provider — rareanimes.foo search → episode page →
-// v1.0.18: posts that list no per-episode links (e.g. Shinchan S3) link
-// out to an external Linker archive (store.animetoonhindi.com/archives/N)
-// whose page holds one codedew link per episode ("Shinchan S03E01" ..);
-// getEpisodeLinks now follows that one archive link when the post itself
-// yields nothing, and parseEpisodes recognises SxxExx labels. Generic:
-// any show/season whose episode list lives on a linker archive is fixed,
-// not just Shinchan S3.
+// v1.0.19: the site's per-episode links moved from codedew.com to
+// animetoonhindi.com/zipper/?url=<enc> (WatchMultQuality buttons).
+// parseEpisodes now captures those per-episode zipper links, and a new
+// resolver follows them: zipper 302 -> /multiquality/?url=<token>, and
+// the argon embed ID is that token (the multiquality page embeds
+// argon.razorshell.space/embed/<token>). Old codedew links still work.
+// (v1.0.18: linker-archive follow-through for posts with no episode links.)
 // (site moved rareanimes.fans -> rareanimes.foo; .fans 301-redirects.
 //  The old .fans domain broke the result parser: its regexes hardcoded
 //  .fans while the served pages link .foo, so every search returned 0.)
@@ -277,6 +277,22 @@ function parseEpisodes(html) {
     pick = pick || streamAnchors[0];
     if (pick && !links.some(function (l) { return l.episodeNumber === epNum; })) {
       links.push({ episodeNumber: epNum, codedewUrl: pick.url });
+      return;
+    }
+    // v1.0.19: per-episode WatchMultQuality links now point to
+    // animetoonhindi.com/zipper/?url=<enc> instead of codedew.com.
+    var zare = /href="([^"]*animetoonhindi\.com\/zipper\/[^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, zm;
+    var zAnchors = [];
+    while ((zm = zare.exec(section)) !== null) {
+      zAnchors.push({ url: zm[1], label: zm[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() });
+    }
+    var zPick = null;
+    for (var k = 0; k < zAnchors.length; k++) {
+      if (/watch|multi/i.test(zAnchors[k].label) && !isBatchLabel(zAnchors[k].label)) { zPick = zAnchors[k]; break; }
+    }
+    if (!zPick && zAnchors.length && !isBatchLabel(zAnchors[0].label)) zPick = zAnchors[0];
+    if (zPick && !links.some(function (l) { return l.episodeNumber === epNum; })) {
+      links.push({ episodeNumber: epNum, zipperUrl: zPick.url });
     }
   });
   if (!links.length) {
@@ -291,6 +307,20 @@ function parseEpisodes(html) {
       if (!epNum || epNum <= 0 || epNum > 9999) continue;
       if (!links.some(function (l) { return l.episodeNumber === epNum; })) {
         links.push({ episodeNumber: epNum, codedewUrl: m2[1] });
+      }
+    }
+    // v1.0.19: fallback for animetoonhindi zipper links (labels carrying
+    // an episode number, e.g. linker-archive pages with "S03E01" labels).
+    var zre = /href="(https?:\/\/animetoonhindi\.com\/zipper\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi, m3;
+    while ((m3 = zre.exec(html)) !== null) {
+      var zlabel = m3[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (isBatchLabel(zlabel)) continue;
+      var zem = zlabel.match(/Episode\s*(\d+)/i) || zlabel.match(/Ep\.?\s*(\d+)/i) ||
+               zlabel.match(/S\d{1,2}E(\d+)/i) || zlabel.match(/\bE(\d{1,4})\b/);
+      var zepNum = zem ? parseInt(zem[1], 10) : 0;
+      if (!zepNum || zepNum <= 0 || zepNum > 9999) continue;
+      if (!links.some(function (l) { return l.episodeNumber === zepNum; })) {
+        links.push({ episodeNumber: zepNum, zipperUrl: m3[1] });
       }
     }
   }
@@ -340,8 +370,8 @@ function noRedirectFetch(url, timeoutMs) {
   });
 }
 
-function extractArgonIdFromMultiquality(multiqUrl) {
-  return fetchHtml(multiqUrl, BASE_URL + "/", 20000).then(function (html) {
+function extractArgonIdFromMultiquality(multiqUrl, referer) {
+  return fetchHtml(multiqUrl, referer || BASE_URL + "/", 20000).then(function (html) {
     var m = /<iframe[^>]*src=['"]([^'"]*argon\.razorshell\.space[^'"]*)['"]/i.exec(html) ||
             /argon\.razorshell\.space\/embed\/([^"'&\s/]+)/.exec(html);
     if (m) {
@@ -378,6 +408,24 @@ function resolveCodedewToArgonId(codedewUrl) {
     }).catch(function () { return null; });
   }
   return Promise.resolve(null);
+}
+
+// v1.0.19: resolve an animetoonhindi.com/zipper/?url=<enc> link to an
+// argon embed ID. The zipper 302-redirects to /multiquality/?url=<token>
+// and the multiquality page embeds argon.razorshell.space/embed/<token>,
+// so the token IS the argon ID; the page fetch verifies it (and falls
+// back to the token itself if the page cannot be read).
+function resolveZipperToArgonId(zipperUrl) {
+  return noRedirectFetch(zipperUrl, 12000).then(function (r) {
+    var loc = r.location || "";
+    var tm = /[?&]url=([^&#]+)/.exec(loc);
+    var token = tm ? decodeURIComponent(tm[1]) : null;
+    var mqUrl = loc.indexOf("http") === 0 ? loc : (loc ? "https://animetoonhindi.com" + loc : null);
+    if (!mqUrl) return token;
+    return extractArgonIdFromMultiquality(mqUrl, zipperUrl).then(function (id) {
+      return id || token;
+    }).catch(function () { return token; });
+  }).catch(function () { return null; });
 }
 
 // ---------- argon embed → m3u8 (direct regex strategies only) ----------
@@ -717,7 +765,8 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
           if (episodes[i].episodeNumber === (episodeNum || 1)) { ep = episodes[i]; break; }
         }
         if (!ep) return [];
-        return resolveCodedewToArgonId(ep.codedewUrl).then(function (argonId) {
+        var argonP = ep.zipperUrl ? resolveZipperToArgonId(ep.zipperUrl) : resolveCodedewToArgonId(ep.codedewUrl);
+        return argonP.then(function (argonId) {
           if (!argonId) return [];
           return extractArgonStream(argonId).then(function (streamUrl) {
             if (!streamUrl) return [];
