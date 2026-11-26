@@ -508,14 +508,14 @@
       ],
       "description": "Streams from Vivarium (vivarium.st): movies and TV via HMAC-signed API — servers Hades, Hemera, Hyperion, Nyx, Orion, Poseidon, Tethys, Theia, Tyche, plus dub languages.",
       "enabled": true,
-      "filename": "providers/vivarium1.js",
+      "filename": "providers/vivarium2.js",
       "id": "vivarium",
       "name": "Vivarium",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "author": "Converted",
@@ -583,5 +583,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.271"
+  "version": "1.2.272"
 }
