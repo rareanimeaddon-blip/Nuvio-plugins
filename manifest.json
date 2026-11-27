@@ -8,14 +8,14 @@
       ],
       "description": "111477 direct .mkv file index",
       "enabled": true,
-      "filename": "providers/1114772.js",
+      "filename": "providers/1114773.js",
       "id": "111477",
       "name": "111477",
       "supportedTypes": [
         "movie",
         "tv"
       ],
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "author": "phisher98 (adapted)",
@@ -599,5 +599,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.274"
+  "version": "1.2.275"
 }
