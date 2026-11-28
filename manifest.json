@@ -146,6 +146,22 @@
       "version": "1.1.4"
     },
     {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
+      "description": "CNO movies and shows via cno.to (HLS)",
+      "enabled": true,
+      "filename": "providers/cno11.js",
+      "id": "cno",
+      "name": "CNO",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "author": "Muse",
       "contentLanguage": [
         "hi",
@@ -599,5 +615,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.276"
+  "version": "1.2.277"
 }
