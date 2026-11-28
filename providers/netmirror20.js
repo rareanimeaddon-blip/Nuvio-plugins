@@ -358,7 +358,15 @@ function bypass(mainUrl) {
    the device press-play verdict is the playback proof, as always. */
 var NM_EMBED_BASE = "https://net78.cc";
 var NM_STREAM_REFERER = "https://videodownloader.site/";
-var NM_NEWTV_DOMAINS = ["https://mobiledetects.com", "https://mobiledetect.app", "https://mobidetect.art", "https://mobidetect.cc", "https://mobidetect.click", "https://mobidetect.ink", "https://mobidetect.live", "https://mobidetect.pro", "https://mobidetect.shop", "https://mobidetect.site", "https://mobidetect.space", "https://mobidetect.store", "https://mobidetect.vip", "https://mobidetect.wiki", "https://mobidetect.xyz"];
+var NM_NEWTV_DOMAINS = ["https://mobiledetects.com", "https://mobiledetect.app", "https://mobidetect.art", "https://mobidetect.cc", "https://mobidetect.click", "https://mobidetect.ink", "https://mobidetect.live", "https://mobidetect.pro", "https://mobidetect.shop", "https://mobidetect.site", "https://mobidetect.space", "https://mobidetect.store", "https://mobidetect.vip", "https://mobidetect.wiki", "https://mobidetect.xyz", "https://mobidetects.art", "https://mobidetects.cc", "https://mobidetects.info", "https://mobidetects.ink", "https://mobidetects.live", "https://mobidetects.pro", "https://mobidetects.store", "https://mobidetects.top", "https://mobidetects.xyz"];
+// netmirror20 (2026-11-28): the 9 "mobidetects.*" domains are the app's
+// own discovery list (from the NetMirrorTV APK, base64 in its bundle).
+// They sit AFTER the 15 known-good ones, so they cost nothing normally
+// (nmNewTvApi stops at the first domain that answers) and only get
+// tried when all 15 are down — the app's "never down" list. Note: the
+// 9 are unconfirmed from the sandbox (DNS resolves, HTTPS times out);
+// they may answer on a real device, or be dead — either way they are
+// harmless here because they are only reached as a last resort.
 var nmResolvedApi = "";
 var nmUaIndex = 0;
 var nmUaPool = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0", "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15", "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"];
@@ -1041,54 +1049,43 @@ function getStreams(tmdbId, mediaType, season, episode) {
       // netmirror20 (2026-11-28): the verify loop usually fails now
       // (verify2 "Waiting for your ads click"), and unverified the HLS
       // chains return 0 kept rows while the whole chain runs 59-78s,
-      // past the 60s device budget. Two changes: (1) MOVIES try the
-      // embed FIRST (net78, 1 fetch, no session) and return its rows
-      // at once — only Matrix (embed noSource) falls through to
-      // verify -> HLS. (2) When verification fails, skip the HLS
-      // chains outright and go straight to the embed (TV) or return
-      // [] (movies, embed already tried). TV keeps HLS-first: the TV
-      // player stalls on embed MP4s.
-      // Verify FIRST (netmirror16, 2026-11-01): a verified session is what
-      // turns NewTV/net52 playlists from the STOP slideshow into real
-      // video. Proven live: userver answers again, verify2 says "All Done"
-      // on attempt 2 and mints t_hash_t, and player.php with that token
-      // as Usertoken mints a verified video_link. net52 reuses the cached
-      // cookie via its own bypass() call, so verification is paid once.
-      // When verification fails the chain continues unverified and the
-      // guard drops any slideshow/removed results instead of serving them.
-      if (mediaType !== "tv") {
-        return nmEmbed(tmdbId, mediaType, season, episode, effTitle).then(function (emb) {
-          if (emb && emb.length) return emb;
-          return bypass("https://net52.cc").then(function (verified) {
-            // The t_hash_t cookie arrives URL-encoded (%3A); player.php only
-            // accepts the decoded (::) form as Usertoken - the encoded form
-            // silently returns an unverified ("otp") link. Proven live
-            // 2026-11-01: decoded -> "ok" + verified video_link, encoded ->
-            // "otp" + plain link. The raw form stays correct for the Cookie
-            // header net52 uses, so decode only here, for NewTV.
-            try { verified = decodeURIComponent(verified || ""); } catch (e) {}
-            if (!verified) return [];
-            return nmNewTvAll(effTitle, mediaType, season, episode, preferred, verified).then(function (ntv) {
-              if (ntv && ntv.length) return ntv;
-              return nmNet52Mobile(effTitle, mediaType, season, episode, preferred).then(function (m) { return nmReal(m); });
-            });
-          });
-        });
-      }
-      return bypass("https://net52.cc").then(function (verified) {
-        // The t_hash_t cookie arrives URL-encoded (%3A); player.php only
-        // accepts the decoded (::) form as Usertoken - the encoded form
-        // silently returns an unverified ("otp") link. Proven live
-        // 2026-11-01: decoded -> "ok" + verified video_link, encoded ->
-        // "otp" + plain link. The raw form stays correct for the Cookie
-        // header net52 uses, so decode only here, for NewTV.
-        try { verified = decodeURIComponent(verified || ""); } catch (e) {}
-        if (!verified) return nmEmbed(tmdbId, mediaType, season, episode, effTitle);
-        return nmNewTvAll(effTitle, mediaType, season, episode, preferred, verified).then(function (ntv) {
-          if (ntv && ntv.length) return ntv;
-          return nmNet52Mobile(effTitle, mediaType, season, episode, preferred).then(function (m) { return nmReal(m); }).then(function (nm52) {
-            if (nm52 && nm52.length) return nm52;
-            return nmEmbed(tmdbId, mediaType, season, episode, effTitle);
+      // past the 60s device budget. Two changes: (1) the embed is tried
+      // FIRST for movies AND TV (net78, 1 fetch, no session) and its
+      // rows are returned at once — only when the embed has no source
+      // (Matrix) do we fall through to verify -> HLS. TV used to be
+      // HLS-first (the TV player stalls on embed MP4s, proven
+      // 2026-11-01), but the bypass itself now HANGS when net52.cc is
+      // slow (observed 2026-11-28: /mobile/home never answers, so the
+      // whole provider times out at 60s with 0 rows) — and the user's
+      // standing goal is to never miss streams and never hit rate
+      // limits, which embed-first serves: 1 fetch instead of ~14, no
+      // verify traffic at all when the embed has the title. HLS stays
+      // as the fallback when the embed is empty. (2) When verification
+      // fails, skip the HLS chains outright and return [] (embed
+      // already tried). If a show's embed rows stall on the stick,
+      // report it and HLS-first for TV can be revisited.
+      return nmEmbed(tmdbId, mediaType, season, episode, effTitle).then(function (emb) {
+        if (emb && emb.length) return emb;
+        // Verify FIRST (netmirror16, 2026-11-01): a verified session is what
+        // turns NewTV/net52 playlists from the STOP slideshow into real
+        // video. Proven live: userver answers again, verify2 says "All Done"
+        // on attempt 2 and mints t_hash_t, and player.php with that token
+        // as Usertoken mints a verified video_link. net52 reuses the cached
+        // cookie via its own bypass() call, so verification is paid once.
+        // When verification fails the chain continues unverified and the
+        // guard drops any slideshow/removed results instead of serving them.
+        return bypass("https://net52.cc").then(function (verified) {
+          // The t_hash_t cookie arrives URL-encoded (%3A); player.php only
+          // accepts the decoded (::) form as Usertoken - the encoded form
+          // silently returns an unverified ("otp") link. Proven live
+          // 2026-11-01: decoded -> "ok" + verified video_link, encoded ->
+          // "otp" + plain link. The raw form stays correct for the Cookie
+          // header net52 uses, so decode only here, for NewTV.
+          try { verified = decodeURIComponent(verified || ""); } catch (e) {}
+          if (!verified) return [];
+          return nmNewTvAll(effTitle, mediaType, season, episode, preferred, verified).then(function (ntv) {
+            if (ntv && ntv.length) return ntv;
+            return nmNet52Mobile(effTitle, mediaType, season, episode, preferred).then(function (m) { return nmReal(m); });
           });
         });
       });
