@@ -345,6 +345,22 @@
       "contentLanguage": [
         "en"
       ],
+      "description": "MeowTV movies and shows via meowtv.ru (HLS)",
+      "enabled": true,
+      "filename": "providers/meowtv2.js",
+      "id": "meowtv",
+      "name": "MeowTV",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "author": "Converted",
+      "contentLanguage": [
+        "en"
+      ],
       "description": "NetMirror movies and shows",
       "enabled": true,
       "filename": "providers/netmirror19.js",
@@ -615,5 +631,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.2.278"
+  "version": "1.2.279"
 }
